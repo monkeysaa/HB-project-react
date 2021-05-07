@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %}{% endblock %}
+    </title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" crossorigin></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src='https://unpkg.com/react-router@5.2.0/umd/react-router.min' crossorigin></script>
+      <script src='https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min' crossorigin></script>
+    <script
+      src="http://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"></script>
+      <link rel="icon" href="data:,">
+      <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/static/css/style.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <nav class="navbar">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <a class="navbar-brand" href="/profile"> Profile</a>
+      <a class="navbar-brand" href="/index">Lessons  </a>
+      <a class="navbar-brand" href="/users">Users</a>
+      <form class="navbar-form form-inline navbar-right">
+        <div class="input-group search-box">
+          <input type="text" id="search" class="form-control"
+          placeholder="Search here...">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default">
+              <i class="fa fa-search" style:></i></button>
+          </span>
+        </div>
+      </form>
+      <a data-toggle="dropdown" class="navbar-brand navbar-right" href="#" aria-expanded="true">
+          <i class="fa fa-user-circle"></i>Login</a>
+        <ul class="dropdown-menu">
+          <li>
+            <form class="form-inline login-form" action="/login" method="POST">
+              <div class="input group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" placeholder="Username" required>
+              </div>
+              <div class="input group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="text" class="form-control" placeholder="Password" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+          </li>
+        </ul>
+        <a href="/signup" class="navbar-brand navbar-right" href="#" aria-expanded="true">
+          <i class="fa fa-user-o"></i>Sign Up</a>
+        </div>
+    </nav>
+    
+    {% for msg in get_flashed_messages() %}
+      <p class="flash-msg">
+        {{ msg }}
+      </p>
+    {% endfor %}
+
+    {% block js %}{% endblock %}
+
+    {% block body %}{% endblock %}
+
+  </body>
+</html>
