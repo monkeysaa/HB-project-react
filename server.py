@@ -36,6 +36,13 @@ def homepage():
     return render_template('react.html')
 
 
+@app.route('/test')
+def test():
+    """View not-the-homepage."""
+
+    return render_template('test.html')
+
+
 # NAV ROUTES
 # MyProfile link in nav_bar
 @app.route('/profile')
