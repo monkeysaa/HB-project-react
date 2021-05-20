@@ -1,12 +1,13 @@
 """Server for lessons app."""
 
 from flask import Flask
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
 import cloudinary.uploader
 import crud
 import boto3
 import os 
+import pprint
 
 from jinja2 import StrictUndefined
 
@@ -34,6 +35,37 @@ def homepage():
     """View homepage."""
 
     return render_template('react.html')
+
+
+# View all users in React link
+@app.route('/api/users')
+
+def view_users():
+
+    users = []
+    for u in crud.get_users():
+        lessons = []
+        for lesson in u.lessons:
+            lesson.__dict__.pop('_sa_instance_state', None)
+            lessons.append(lesson.__dict__)
+        u.__dict__.pop('_sa_instance_state', None)
+        u.__dict__['lessons'] = lessons
+        users.append(u.__dict__)
+
+    return jsonify(users)
+
+@app.route('/api/top-posts')
+def get_top_posts():
+    # get top posts from the DB
+    top_posts = [
+    {"id": 93, "title": "why kiwis are the best fruit, part 9", "body": "body text for p1"},
+    {"id": 783, "title": "typesetting int he 19th century", "body": "body text for p2"},
+    {"id": 1383, "title": "debugging, a life's tale", "body": "body text for p3"}
+    ]
+
+    # json is just a string. a string that represents JS objects 
+    return jsonify(top_posts)
+
 
 
 @app.route('/test')
