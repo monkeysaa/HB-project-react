@@ -54,6 +54,31 @@ def view_users():
 
     return jsonify(users)
 
+
+@app.route("/api/signup", methods=["POST"])
+def signup():
+
+    # expecting this kind of object as JSON in the request
+    # {"handle": "AliC", "email": "ali@gmail.com", "password": "test"}
+
+    data = request.get_json()
+    handle = data['handle']
+    email = data['email']
+    password = data['password']
+
+    #do database stuff to make a post in your DB
+    user = crud.get_user_by_email(email)
+    try:
+        user = crud.create_user(handle, email, password)
+    except:
+        flash('Email is already in use. Try again.')
+        return jsonify('nope')
+
+    session['user_id'] = user.user_id
+
+    return jsonify('yep')
+
+
 @app.route('/api/top-posts')
 def get_top_posts():
     # get top posts from the DB
@@ -206,7 +231,7 @@ def register_user():
     # Check if user email is already in the database
     user = crud.get_user_by_email(email)
     try:
-        user = crud.create_user(email, password)
+        user = crud.create_user(handle, email, password)
     except:
         flash('Email is already in use. Try again.')
         return redirect('/')
