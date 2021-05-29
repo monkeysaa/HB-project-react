@@ -34,12 +34,28 @@ SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies',
 def homepage():
     """View homepage."""
 
-    return render_template('react.html')
+    try: 
+        if session['isLoggedIn'] == True:
+            return render_template('react.html', isLoggedIn=True)
+    except:
+        session['isLoggedIn'] = False
+        return render_template('react.html', isLoggedIn=False)
 
 
-# View all users in React link
+@app.route('/api/check-login-status')
+def check_login():
+    """Check if user is logged in."""
+
+    try: 
+        if session['isLoggedIn'] == True:
+            return jsonify('Logged in')
+        elif session['isLoggedIn'] == False:
+            return jsonify('Not logged in')
+    except:
+        return jsonify('Error with check-login.json')
+
+
 @app.route('/api/users')
-
 def view_users():
 
     users = []
@@ -75,8 +91,47 @@ def signup():
         return jsonify('nope')
 
     session['user_id'] = user.user_id
+    session['isLoggedIn'] = True
 
     return jsonify('yep')
+
+@app.route('/signup')
+def display_signup_form():
+    """Display form to take in user data."""
+
+    return render_template('react.html')
+
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    """Check session for user, else redirect guest search. """
+
+    # JSON from request: {"email": "ali@gmail.com", "password": "test"}
+
+    data = request.get_json()
+    email = data['email']
+    password = data['password']
+
+    #do database stuff to make a post in your DB
+    user = crud.get_user_by_email(email)
+    try:
+        if password == user.password:
+            session['user_id'] = user.user_id
+            session['isLoggedIn'] = True
+            user_lessons = crud.get_lessons_by_user(user.user_id)
+            return jsonify('success')
+            # later return JSON that includes both user and lesson info
+        else: 
+            return jsonify(f'Wrong password. It should be: {user.password}.')
+    except:
+        return jsonify('No such user.')
+
+
+@app.route('/login')
+def check_if_user():
+    """Check session for user, else redirect to homepage and prompt to login."""
+
+    return render_template('react.html')
 
 
 @app.route('/api/top-posts')
@@ -212,13 +267,6 @@ def get_lessons_json():
 
     return {"lessons": lessons_list}
 
-# LOGIN ROUTES
-@app.route('/signup')
-def display_signup_form():
-    """Display form to take in user data."""
-
-    return render_template('signup.html')
-
 
 # Sign up & Login for new users, from Homepage
 @app.route('/signup', methods=['POST'])
@@ -266,21 +314,6 @@ def verify_user():
         flash("Email not in our system. Try again.")
         return redirect('/')
 
-
-# If /login endpoint typed by hand without logging in
-@app.route('/login')
-def check_if_user():
-    """Check session for user, else redirect to homepage and prompt to login. """
-
-    try:
-        if session['user_id']:
-            user = crud.get_user_by_id(session['user_id'])
-            lessons = crud.get_lessons_by_user(session['user_id'])
-            return render_template(f'user_profile.html', 
-                                   user=user, lessons=lessons)
-    except:
-        flash('Please log in first.')
-        return redirect('/')
 
 
 # SEARCH ROUTES

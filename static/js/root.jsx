@@ -1,14 +1,24 @@
 "use strict";
-// Include a script tag into JS interpreter
 
 // If I need a package, how do I get them?
-// Eventually, this goes at the top of your single-page. 
+// This goes at the top of your single-page. 
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route, useLocation } = ReactRouterDOM;
 
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
+  // variable names: hyphens for class, underscores for IDs, camel for other names
+  const loggedIn = document.getElementById('login_state')
+
+  // if not logged in, send to Search
+  if (loggedIn.dataset.loggedin === 'False') {
+    return (
+      <Login />
+    );
+  } 
+
+  // if logged in, send to Profile
   return (
     <Switch>
       <Route path="/users">
@@ -20,20 +30,24 @@ function Controller() {
       <Route path="/signup">
         <CreateNewUser />
       </Route>
-      <Route path="/">
-        <Home />
+      <Route path="/login">
+        <Login />
+      </Route>
+      <Route exact={true} path="/">
+        <Nav />
       </Route> 
     </Switch>
   );
 }
 
-function Home() {
+function Nav() {
   return (
     <React.Fragment>
       <Link to="/lesson">Test Lesson</Link><br/>
       <Link to="/users">Users and Lessons</Link><br/>
       <Link to="/login">Login</Link><br/>
-      <Link to="/signup">Sign Up</Link>
+      <Link to="/signup">Sign Up</Link><br/>
+      <img src="/static/img/high5.jpg"/>
     </React.Fragment>
   );
 }
@@ -57,10 +71,13 @@ function Home() {
 // eg. one way to style formInputs
 
 
-
+function App() {
+  return 
+    <Router>
+      <Controller />
+    </Router>
+}
 
 ReactDOM.render(
-  <Router>
-    <Controller />
-  </Router>,
+  <App />
   document.getElementById('task'));
