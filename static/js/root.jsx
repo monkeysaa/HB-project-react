@@ -15,6 +15,7 @@ function Controller() {
   if (loggedIn.dataset.loggedin === 'False') {
     return (
       <React.Fragment>
+        <Nav/>
         <Login />
       </React.Fragment>
     );
@@ -22,48 +23,34 @@ function Controller() {
 
   // if logged in, here's the Nav, then body send to Profile
   return (
-    <Switch>
-      <Route path="/users">
-        <UserLessonList />
-      </Route>
-      <Route path="/lesson">
-        <ShowLesson />
-      </Route>
-      <Route path="/signup">
-        <CreateNewUser />
-      </Route>
-      <Route path="/login">
-        <Login />
-      </Route>
-      <Route path="/logout">
-        <Logout />
-      </Route>
-      <Route path="/profile">
-        <Profile />
-      </Route>
-      <Route exact={true} path="/">
-        <Nav />
-      </Route> 
-    </Switch>
-  );
-}
-
-function Nav() {
-  return (
     <React.Fragment>
-      <nav>
-        <Link to="/profile">Profile</Link>
-        <Link to="/users">Users and Lessons</Link>
-        <Link to="/lesson">Test Lesson</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Sign Up</Link>
-        <Link to="/logout">Log Out</Link>
-      </nav>
-      <img src="/static/img/high5.jpg"/>
+      <Nav/>
+      <Switch>
+        <Route path="/users">
+          <UserLessonList />
+        </Route>
+        <Route path="/lesson">
+          <ShowLesson />
+        </Route>
+        <Route path="/signup">
+          <CreateNewUser />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/logout">
+          <Logout />
+        </Route>
+        <Route path="/profile">
+          <Profile />
+        </Route>
+        <Route exact={true} path="/">
+          <img src="/static/img/high5.jpg"/>
+        </Route> 
+      </Switch>
     </React.Fragment>
   );
 }
-
 
 
 // Populate Store
@@ -77,10 +64,6 @@ function Nav() {
 // Look into global states - how does HB want us to handle these? Context providers, original flux pattern, Redux Framework, a few other frameworks...
 // React Store management - trigger events, dispatcher dispatches event, API call, triggers another event --> updates Store, 
 // 
-
-// One component per file
-// Split components by styling
-// eg. one way to style formInputs
 
 
 

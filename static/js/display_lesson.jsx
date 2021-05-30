@@ -52,11 +52,11 @@ function ShowLesson() {
     }
   
     return (
-      <React.Fragment>
+      <section className="lesson">
         <img src={lessonPic}></img>
         <h2>{`${title} by ${author}`}</h2>
         <div>{compCards}</div>
         <button id="newPic">Change lesson pic?</button>
-      </React.Fragment>
+      </section>
     );
   }

@@ -1,4 +1,43 @@
-img {
+/* navigation */
+nav {
+    color: #fff;
+    font-size: 130%;
+    display: flex;
+    justify-content: space-around;
+    background: #fd7e14;
+    padding: .5em;
+    border-radius: 0;
+    border: none;
+}
+
+nav a {
+    color: inherit;
+    padding: 0 1em;
+}
+
+nav img {
+    height: 1.25em;
+    vertical-align: -.1em;
+}
+
+nav button, nav input {
+    background-color: rgb(250, 247, 253);
+    color: rgb(51 51 51);
+    border: none;
+    display: inline-block; 
+    box-sizing: border-box;
+}
+
+nav input {
+    border-radius: 4px 0 0 4px;
+}
+nav button {
+    border-radius: 0 4px 4px 0;
+}
+
+/* other stuff */
+
+.lesson img {
     border-radius: 8px;
     width: 550px; 
     height: 350px;
