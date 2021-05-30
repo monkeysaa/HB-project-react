@@ -114,17 +114,17 @@ def signup():
     password = data['password']
 
     #do database stuff to make a post in your DB
-    user = crud.get_user_by_email(email)
+    # user = crud.get_user_by_email(email)
     try:
         user = crud.create_user(handle, email, password)
     except:
         flash('Email is already in use. Try again.')
-        return jsonify('nope')
+        return {'success': False}
 
     session['user_id'] = user.user_id
     session['isLoggedIn'] = True
 
-    return jsonify('yep')
+    return {'success': True}
 
 
 @app.route("/api/login", methods=["POST"])
@@ -218,6 +218,26 @@ def get_lessons_json():
 
     return {"lessons": lessons_list}
 
+
+@app.route('/api/create_lesson')
+def create_lesson():
+    """Create a new lesson."""
+
+    # JSON from request: {"title": "Wolves"}
+    data = request.get_json()
+    title = data['title']
+    description = data['description']
+
+    try: 
+        new_lesson = crud.create_lesson(title, session['user_id'])
+        session['lesson_id'] = new_lesson.lesson_id
+        return {'success': True}
+
+    except:
+        flash('Lesson with this title already exists. Please be more creative.')
+        return {'success': False}
+
+    return {'success': 'decidedly not'}
 
 
 

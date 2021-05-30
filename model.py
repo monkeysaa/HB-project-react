@@ -141,6 +141,21 @@ class Comp_Tag(db.Model):
         return f'<Assoc {self.tag.name} for {self.comp.name}>'
  
 
+# class Fave(db.Model):
+#     """A favorite item."""
+
+#     __tablename__ = 'faves' 
+#     # Would it make more sense to have the name be the primary key?
+#     fave_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     category = db.Column(db.String)
+
+#     lessons = db.relationship('Lesson', secondary='lesson_faves', viewonly=True)
+#     comps = db.relationship('Comp', secondary='comp_faves', viewonly=True)
+
+#     def __repr__(self):
+#         return f'<Tag {self.category} {self.name}>'
+
+        
 class Fave_Lesson(db.Model):
     """A favorites middle table linking users to liked lessons."""
 

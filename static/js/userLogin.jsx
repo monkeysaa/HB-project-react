@@ -52,9 +52,8 @@ function Login(props) {
               />
               <button onClick={handleLogin}> Log In </button>
             </form>
-            <h2>Or</h2>
-            <Link to="/signup">Click Here to Sign Up</Link><br/>
-        
+            <h2>Or Sign Up</h2>
+            <CreateNewUser />
         </React.Fragment>
       );
   }
@@ -89,7 +88,7 @@ function Login(props) {
 
     return (
         <React.Fragment>
-            <button onClick={processLogout}>New Logout</button>
+            <button onClick={processLogout}> Logout</button>
         </React.Fragment>
     )
 }

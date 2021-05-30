@@ -17,11 +17,11 @@ function CreateNewUser(props) {
       })
       .then(response => response.json())
       .then(data => {
-        if (data === 'nope') {
+        if (data.success == false) {
             alert('Email is already in use. Try again.');
-        } else if (data === 'yep') {
+        } else if (data.success === true) {
             alert('User created successfully!');
-            // Redirect to Profile Page
+            window.location.href = '/profile';
         } else {
             alert('Something done broke');
         }
@@ -29,7 +29,6 @@ function CreateNewUser(props) {
     }
   
     return (
-      // if it's a form, need to prevent default... necessary if no form action?
       <form> 
         Username: 
         <input 
