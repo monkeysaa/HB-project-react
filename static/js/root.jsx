@@ -11,27 +11,35 @@ function Controller() {
   // variable names: hyphens for class, underscores for IDs, camel for other names
   const loggedIn = document.getElementById('login_state')
 
-  // if not logged in, send to Search
+  // // if not logged in, send to Search
   if (loggedIn.dataset.loggedin === 'False') {
     return (
-      <Login />
+      <React.Fragment>
+        <Login />
+      </React.Fragment>
     );
   } 
 
-  // if logged in, send to Profile
+  // if logged in, here's the Nav, then body send to Profile
   return (
     <Switch>
       <Route path="/users">
         <UserLessonList />
       </Route>
       <Route path="/lesson">
-        <ShowLessonTest />
+        <ShowLesson />
       </Route>
       <Route path="/signup">
         <CreateNewUser />
       </Route>
       <Route path="/login">
         <Login />
+      </Route>
+      <Route path="/logout">
+        <Logout />
+      </Route>
+      <Route path="/profile">
+        <Profile />
       </Route>
       <Route exact={true} path="/">
         <Nav />
@@ -43,10 +51,14 @@ function Controller() {
 function Nav() {
   return (
     <React.Fragment>
-      <Link to="/lesson">Test Lesson</Link><br/>
-      <Link to="/users">Users and Lessons</Link><br/>
-      <Link to="/login">Login</Link><br/>
-      <Link to="/signup">Sign Up</Link><br/>
+      <nav>
+        <Link to="/profile">Profile</Link>
+        <Link to="/users">Users and Lessons</Link>
+        <Link to="/lesson">Test Lesson</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/signup">Sign Up</Link>
+        <Link to="/logout">Log Out</Link>
+      </nav>
       <img src="/static/img/high5.jpg"/>
     </React.Fragment>
   );
@@ -71,13 +83,10 @@ function Nav() {
 // eg. one way to style formInputs
 
 
-function App() {
-  return 
-    <Router>
-      <Controller />
-    </Router>
-}
+
 
 ReactDOM.render(
-  <App />
+  <Router>
+    <Controller />
+  </Router>,
   document.getElementById('task'));

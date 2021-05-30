@@ -7,7 +7,6 @@ function Lesson(props) {
   }
   
   function User(props) {
-    // console.log(props.lessons);
   
     return (
       <ul>
@@ -34,7 +33,6 @@ function Lesson(props) {
           }
           userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
         }
-        console.log(userList);
         setAllUserList(userList);
       })
     }, [])

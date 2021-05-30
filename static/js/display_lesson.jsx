@@ -11,7 +11,7 @@ function CompTemplate(props) {
   }
   
 
-function ShowLessonTest() {
+function ShowLesson() {
     const [lesson, setLesson] = React.useState([]);
     const [title, setTitle] = React.useState([]);
     const [comps, setComps] = React.useState([]);
@@ -20,9 +20,10 @@ function ShowLessonTest() {
     const index = lesson_id - 1;
   
     React.useEffect(() => {
-      fetch(`/lessons/${lesson_id}.json`)
+      fetch(`/api/lessons/${lesson_id}.json`)
           .then((response) => response.json())
           .then((data) => {
+            console.log(data)
             setLesson(data.lesson[index]);
             setComps(data.lesson.slice(1,-1));
             })
