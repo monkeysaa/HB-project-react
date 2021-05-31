@@ -67,13 +67,12 @@ def assign_tag_to_lesson(tag, lesson):
 
 
 def assign_lesson_img(imgUrl, lesson_id):
-    
     lesson = get_lesson_by_id(lesson_id)
     lesson.imgUrl = imgUrl
 
     db.session.commit()
 
-    return None
+    return lesson.imgUrl
 
 
 def assign_comp_img(imgUrl, comp_id):

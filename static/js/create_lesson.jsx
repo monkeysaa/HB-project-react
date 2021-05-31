@@ -39,21 +39,17 @@ function NewLesson() {
       // Needs to process multi-form data rather than JSON
 
       const formData  = new FormData();
+      const file = document.getElementById('my-file').files[0];
 
-      formData.append('blob', new Blob(['Hello World!']), 'test')
+      formData.append('my-file', file);
 
       fetch('/api/lesson-pic', {
           method: 'POST',
           body: formData,
-          headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-          },
           })
           .then(response => response.json())
           .then(res => {
-              console.log(res);
               setImgUrl(res);
-              // <img className='lesson' src=imgUrl/>
           })
     }
           
@@ -62,14 +58,20 @@ function NewLesson() {
         // if it's a form, need to prevent default... necessary if no form action?
         <React.Fragment>
           <h2>Create a Lesson</h2>
-          <form 
+          <form onSubmit={handlePic}
             action='/api/lesson-pic' 
             method='POST' encType='multipart/form-data'>
-            <input type='file' name='blob' />
+            <input 
+              id = 'my-file'
+              type='file' name='my-file' /> 
+            {/* sending 'my-file' and file itself as a key-value pair */}
             <input 
               type='submit' 
-              onClick={handlePic}/>
+              />
           </form> 
+          <div>
+            <img className='lesson' src={imgUrl}/>
+          </div>
 
           <form> 
             <input 

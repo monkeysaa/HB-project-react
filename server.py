@@ -229,11 +229,9 @@ def create_lesson():
 
     try: 
         new_lesson = crud.create_lesson(title, session['user_id'])
-        session['lesson_id'] = new_lesson.lesson_id
         return {'success': True}
 
     except:
-        flash('Lesson with this title already exists. Please be more creative.')
         return {'success': False}
 
     return {'success': 'decidedly not'}
@@ -368,17 +366,32 @@ def upload_lesson_image():
     """Save img to Lessons in the db and display via Cloudinary."""
 
     my_file = request.files['my-file'] # note: request arg should match name var on form
+
+    # If lesson_id passed in and user is author, get lesson. Else, create new.
+    try: 
+        lesson = crud.get_lesson_by_id(int(request.files['lesson_id']))
+        if session['user'] != lesson.author: 
+            lesson = crud.create_lesson('Untitled', session['user_id'])
+    except: 
+        # TODO: Nice to have. Change untitled to include date
+        lesson = crud.create_lesson('Untitled', session['user_id'])
+    
+    # TODO: make function handleData() that determines datatype
+    # send to AWS if/when possible
+    # optional: store images in Cloudinary
+    # if video, make sure to return embedded video link for YouTube  
+
+    #upload image to cloudinary
     result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright')
-    img_url = result['secure_url']
 
-    # TODO: Figure out user workflow such that this can be saved to the lesson upon upload. 
-    # img_url = crud.assign_lesson_img(result['secure_url'], session['lesson_id']) 
-
-    # lesson = crud.get_lesson_by_id(session['lesson_id'])
-
-    return jsonify('tests in progress')
+    try: 
+        crud.assign_lesson_img(result['secure_url'], lesson.lesson_id) 
+        return jsonify(lesson.imgUrl)
+        
+    except: 
+        return jsonify('Upload error')
 
 
 
