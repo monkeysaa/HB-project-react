@@ -39,9 +39,6 @@ function Controller() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route path="/logout">
-          <Logout />
-        </Route>
         <Route path="/profile">
           <Profile />
         </Route>
