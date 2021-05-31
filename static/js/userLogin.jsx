@@ -72,24 +72,3 @@ function Login(props) {
 
 //   }
   
-  function Logout(props) {
-
-    function processLogout() {
-        fetch('/api/logout')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success == true) {
-                window.location.href = '/';
-            }
-            else {
-                alert('Server error. Did not process logout correctly.')
-            }
-        })
-    }
-
-    return (
-        <React.Fragment>
-            <button onClick={processLogout}> Logout</button>
-        </React.Fragment>
-    )
-}

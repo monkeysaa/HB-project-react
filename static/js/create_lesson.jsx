@@ -55,7 +55,6 @@ function NewLesson() {
           
 
       return (
-        // if it's a form, need to prevent default... necessary if no form action?
         <React.Fragment>
           <h2>Create a Lesson</h2>
           <form onSubmit={handlePic}

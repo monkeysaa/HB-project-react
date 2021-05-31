@@ -43,13 +43,10 @@ def display_react():
     """Defer to React code on all routes."""
 
     try: 
-        if session['isLoggedIn'] == True:
+        if session['user_id']:
             return render_template('react.html', isLoggedIn=True)
     except:
-        session['isLoggedIn'] = False
         return render_template('react.html', isLoggedIn=False)
-    
-    return render_template('react.html', isLoggedIn=False)
 
 
 # REACT Routes!
@@ -154,11 +151,10 @@ def login():
 
 @app.route("/api/logout")
 def logout():
-    """Log user out of session, clear session cookies. """
+    """Log user out of session by clearing session cookies. """
     
     session.clear()
-    session['isLoggedIn'] = False
-    return jsonify({'success': True})
+    return {'success': True}
 
 
 

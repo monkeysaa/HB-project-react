@@ -6,6 +6,22 @@
 <i class="fa fa-lock"></i> */}
 
 function Nav() {
+
+  function processLogout() {
+    console.log('processing Logout...')
+    fetch('/api/logout')
+    .then(response => response.json())
+    .then(data => {
+        if (data.success == true) {
+            window.location.href = '/';
+        }
+        else {
+            alert('Server error. Did not process logout correctly.')
+        }
+    })
+  }
+
+
     return (
       <React.Fragment>
         <nav>
@@ -19,7 +35,7 @@ function Nav() {
           </form>
           <Link to="/login"><i className="fa fa-user-circle"></i> Login</Link>
           <Link to="/create_lesson">Create Lesson</Link>
-          <Link to="/logout">Log Out</Link>
+          <Link to="/logout" onClick={processLogout}>Log Out</Link>
         </nav>
       </React.Fragment>
     );
