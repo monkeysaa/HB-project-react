@@ -1,19 +1,20 @@
+// fully controlled login form
 function Login(props) {
     // const [errorMessage, setErrorMessage] = React.useState(null);
     const [email, setEmail] = React.useState('')
-    const [pass, setPass] = React.useState('')
+    const [password, setPassword] = React.useState('')
     const [loggedIn, setLoggedIn] = React.useState(false)
     // could do with fetch & check cookies
     // create a variable that would fetch info about session
     
   
-    const handleLogin = (e) => {
-      e.preventDefault();
+    const handleLogin = (evt) => {
+      evt.preventDefault();
   
-      const user = {"email": email, "password": pass}
+      const data = {"email": email, "password": password}
       fetch('/api/login', {
         method: 'POST',
-        body: JSON.stringify(user),
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json'
           },
@@ -47,8 +48,8 @@ function Login(props) {
               Password:
               <input 
                 type="text" 
-                onChange={(e) => setPass(e.target.value)}
-                value={pass} 
+                onChange={(e) => setPassword(e.target.value)}
+                value={password} 
               />
               <button onClick={handleLogin}> Log In </button>
             </form>

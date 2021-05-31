@@ -19,9 +19,6 @@ function Profile() {
     const [username, setUsername] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [lessons, setLessons] = React.useState([]);
-    // const [lessonPic, setLessonPic] = React.useState([]);
-    // const lesson_id = 1;
-    // const index = lesson_id - 1;
   
     React.useEffect(() => {
       fetch('/api/profile.json')
@@ -33,6 +30,10 @@ function Profile() {
             })
     }, []); 
   
+    function createLesson() {
+      console.log('Go-go-gadget-Lesson_Creator!')
+      window.location.href = '/create_lesson';
+    }
     // Link to Create a Lesson
     // Display favorites? 
     // Each Lesson can be edited. Link to Edit-Lesson
@@ -59,6 +60,7 @@ function Profile() {
     return (
       <React.Fragment>
         <h2>{`${username} at ${email}`}</h2>
+        <button onClick={createLesson}> Create New Lesson </button>
         <div>{lessonCards}</div>
       </React.Fragment>
     );

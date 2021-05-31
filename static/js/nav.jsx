@@ -18,7 +18,7 @@ function Nav() {
             <button type="button"><i className="fa fa-search"></i></button>
           </form>
           <Link to="/login"><i className="fa fa-user-circle"></i> Login</Link>
-          <Link to="/signup">Sign Up</Link>
+          <Link to="/create_lesson">Create Lesson</Link>
           <Link to="/logout">Log Out</Link>
         </nav>
       </React.Fragment>

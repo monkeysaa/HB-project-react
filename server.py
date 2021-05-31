@@ -29,12 +29,13 @@ GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th',
 SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies', 
             'Arts/Music', 'Foreign Lang.']
 
-
+@app.route('/create_lesson')
 @app.route('/login')
 @app.route('/signup')
 @app.route('/users')
 @app.route('/users/<user_id>')
 @app.route('/profile')
+@app.route('/lesson')
 @app.route('/lessons')
 @app.route('/lessons/<lesson_id>')
 @app.route('/')
@@ -58,7 +59,6 @@ def check_login():
 
     try: 
         if session['isLoggedIn'] == True:
-            print(session['user_id'])
             return jsonify('Logged in')
         elif session['isLoggedIn'] == False:
             return jsonify('Not logged in')
@@ -192,7 +192,6 @@ def get_lesson_json(lesson_id):
             }
         )
 
-    print(lesson_data)
     return {"lesson": lesson_data}
 
 
@@ -219,7 +218,7 @@ def get_lessons_json():
     return {"lessons": lessons_list}
 
 
-@app.route('/api/create_lesson')
+@app.route('/api/create_lesson', methods=["POST"])
 def create_lesson():
     """Create a new lesson."""
 
@@ -265,8 +264,6 @@ def create_lesson():
 # ROUTES NEEDED
 #     """View all lessons."""
 #     """Display a single lesson in React"""
-#     """Display create_lesson page"""
-#     """Process create_lesson function"""
 #     """Edit existing lesson page"""
 #     """Process edit_lesson function"""
 #     """Display search page"""
@@ -352,21 +349,21 @@ def create_lesson():
 # # LESSON ROUTES
 # # Details for one lesson
 # # Later, limit route access to public lessons or author. Else redirect (to where?)
-@app.route('/lessons/<lesson_id>') # This should be GET
-def show_lesson(lesson_id):
-    """Show details on a particular lesson."""
+# @app.route('/lessons/<lesson_id>') # This should be GET
+# def show_lesson(lesson_id):
+#     """Show details on a particular lesson."""
 
-    session['lesson_id'] = lesson_id
-    lesson = crud.get_lesson_by_id(lesson_id)
+#     session['lesson_id'] = lesson_id
+#     lesson = crud.get_lesson_by_id(lesson_id)
 
-    if lesson.imgUrl==None:
-        lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
+#     if lesson.imgUrl==None:
+#         lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
 
-    return render_template('lesson_details.html', lesson=lesson)
+#     return render_template('lesson_details.html', lesson=lesson)
 
 
 # # Try to combine with above route. For later, maybe turn to RESTful state?
-@app.route('/lesson-pic', methods=['POST']) # This should be PUT? 
+@app.route('/api/lesson-pic', methods=['POST']) # This should be PUT? 
 def upload_lesson_image():
     """Save img to Lessons in the db and display via Cloudinary."""
 
@@ -375,23 +372,16 @@ def upload_lesson_image():
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright')
     img_url = result['secure_url']
-    img_url = crud.assign_lesson_img(result['secure_url'], session['lesson_id']) 
 
-    lesson = crud.get_lesson_by_id(session['lesson_id'])
-    # work out display, e.g. <img src="{{ user.profile_url }}">
-    return redirect(f'/lessons/{lesson.lesson_id}')
+    # TODO: Figure out user workflow such that this can be saved to the lesson upon upload. 
+    # img_url = crud.assign_lesson_img(result['secure_url'], session['lesson_id']) 
+
+    # lesson = crud.get_lesson_by_id(session['lesson_id'])
+
+    return jsonify('tests in progress')
 
 
-# # Directed here from Create-Lesson link
-# # Later, not supposed to use internal links to create
-# @app.route('/create_lesson')
-# def create_lesson():
-#     """Create a new lesson and redirect to editable lesson page."""
 
-#     new_lesson = crud.create_lesson("Lesson title", session['user_id'])
-#     session['lesson_id'] = new_lesson.lesson_id
-
-#     return redirect(f'/lessons/{new_lesson.lesson_id}')
 
 
 # @app.route('/component', methods=['POST'])

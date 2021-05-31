@@ -1,14 +1,12 @@
 "use strict";
-
+// variable names: hyphens for class, underscores for IDs, camel for other names
 // If I need a package, how do I get them?
-// This goes at the top of your single-page. 
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route, useLocation } = ReactRouterDOM;
 
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
-  // variable names: hyphens for class, underscores for IDs, camel for other names
   const loggedIn = document.getElementById('login_state')
 
   // // if not logged in, send to Search
@@ -30,10 +28,13 @@ function Controller() {
           <UserLessonList />
         </Route>
         <Route path="/lesson">
-          <ShowLesson />
+          <ShowLesson lesson_id={1} />
         </Route>
         <Route path="/signup">
           <CreateNewUser />
+        </Route>
+        <Route path="/create_lesson">
+          <NewLesson />
         </Route>
         <Route path="/login">
           <Login />
@@ -64,9 +65,6 @@ function Controller() {
 // Look into global states - how does HB want us to handle these? Context providers, original flux pattern, Redux Framework, a few other frameworks...
 // React Store management - trigger events, dispatcher dispatches event, API call, triggers another event --> updates Store, 
 // 
-
-
-
 
 ReactDOM.render(
   <Router>

@@ -11,12 +11,12 @@ function CompTemplate(props) {
   }
   
 
-function ShowLesson() {
+function ShowLesson(props) {
     const [lesson, setLesson] = React.useState([]);
     const [title, setTitle] = React.useState([]);
     const [comps, setComps] = React.useState([]);
     const [lessonPic, setLessonPic] = React.useState([]);
-    const lesson_id = 1;
+    const lesson_id = props.lesson_id;
     const index = lesson_id - 1;
   
     React.useEffect(() => {
