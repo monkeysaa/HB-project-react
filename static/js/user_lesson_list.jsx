@@ -1,7 +1,7 @@
 function Lesson(props) {
     return (
       <ul>
-        <li> {props.title} </li>
+        <Link to={`/lesson/${props.lesson_id}`}>{props.title}</Link>
       </ul>
     )
   }
@@ -29,7 +29,7 @@ function Lesson(props) {
         for (const u of data) {
           const lessons = [];
           for (const l of u.lessons) {
-            lessons.push(<Lesson key={l.lesson_id} title={l.title}/>);
+            lessons.push(<Lesson key={l.lesson_id} title={l.title} lesson_id={l.lesson_id}/>);
           }
           userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
         }

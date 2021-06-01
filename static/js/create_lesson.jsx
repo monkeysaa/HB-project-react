@@ -4,14 +4,15 @@ function NewLesson() {
     const [title, setTitle] = React.useState('')
     const [description, setDescription] = React.useState('')
     const [imgUrl, setImgUrl] = React.useState('')
+    const [lessonID, setLessonID] = React.useState('')
     // const [link, setLink] = React.useState('')
 
     const submitLesson = (evt) => {
       evt.preventDefault();
 
-      const lesson = {"title": title, "description": description}
+      const lesson = {"title": title, "description": description, "lesson_id": lessonID}
 
-      fetch('/api/create_lesson', {
+      fetch('/api/title_lesson', {
         method: 'POST',
         body: JSON.stringify(lesson),
         headers: {
@@ -25,7 +26,7 @@ function NewLesson() {
       } else if (data.success === true) {
           alert('Lesson created successfully!');
           // TODO: direct to the correct lesson :)
-          window.location.href = '/lesson';
+          window.location.href = `/lesson/<${lessonID}>`;
       } else {
           alert('Something done broke');
       }
@@ -43,13 +44,14 @@ function NewLesson() {
 
       formData.append('my-file', file);
 
-      fetch('/api/lesson-pic', {
+      fetch('/api/add_pic', {
           method: 'POST',
           body: formData,
           })
           .then(response => response.json())
           .then(res => {
-              setImgUrl(res);
+            setLessonID(res.lesson_id)
+            setImgUrl(res.imgUrl);
           })
     }
           
@@ -60,6 +62,11 @@ function NewLesson() {
           <form onSubmit={handlePic}
             action='/api/lesson-pic' 
             method='POST' encType='multipart/form-data'>
+            <input 
+              type="hidden"
+              name="lesson_id"
+              value={lessonID}
+            />
             <input 
               id = 'my-file'
               type='file' name='my-file' /> 
@@ -90,6 +97,11 @@ function NewLesson() {
             {/* <section className='add-component'>
                 <button id='add-content'>Add Content to Lesson</button>
             </section> */}
+            <input 
+              type="hidden"
+              name="lesson_id"
+              value={lessonID}
+            />
             <button onClick={submitLesson}> Save </button>
           </form>
         </React.Fragment>

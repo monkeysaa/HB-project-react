@@ -23,7 +23,7 @@ function ShowLesson(props) {
       fetch(`/api/lessons/${lesson_id}.json`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
+            // console.log(data)
             setLesson(data.lesson[index]);
             setComps(data.lesson.slice(1,-1));
             })

@@ -19,7 +19,8 @@ function Controller() {
     );
   } 
 
-  // if logged in, here's the Nav, then body send to Profile
+  // No Nav while not logged in... except maybe an option to Search and sign up?
+  // Once logged in, here's the Nav, then body send to Profile
   return (
     <React.Fragment>
       <Nav/>
@@ -28,6 +29,7 @@ function Controller() {
           <UserLessonList />
         </Route>
         <Route path="/lesson">
+          {/* Figure out how to get lesson_id from URL and pass to ShowLesson */}
           <ShowLesson lesson_id={1} />
         </Route>
         <Route path="/signup">

@@ -3,6 +3,7 @@
 from model import *
 from flask import session
 
+# Creation functions
 def create_user(handle, email, pwd):
     """Create and return a new user."""
 
@@ -46,7 +47,6 @@ def create_tag(name, category):
 
     return tag
 
-
 # Assignations
 def assign_comp(comp, lesson):
     assoc = Lesson_Comp(lesson=lesson, comp=comp)
@@ -85,6 +85,7 @@ def assign_comp_img(imgUrl, comp_id):
     return None
 
 
+# Searches
 def lesson_exists(title, author_id):
     """Check unique lesson within user."""
     
@@ -96,8 +97,6 @@ def lesson_exists(title, author_id):
         return False
     return True
 
-
-# Searches
 def get_all_lessons():
     """Return all lessons."""
 
@@ -213,6 +212,7 @@ def get_user_by_id(user_id):
 
 def get_user_by_email(email):
     """Get user by email."""
+
     return User.query.filter(User.email == email).first() 
 
     
@@ -226,6 +226,20 @@ def get_user_by_email(email):
 
 #     return Fave_Lessons.query.filter(Fave_Lessons.liker_id == user_id).all()
 
+# UPDATE FUNCTIONS
+def update_lesson_title(lesson_id, new_title):
+    """Get lesson by id and update title."""
+
+    Lesson.query.get(lesson_id).title = new_title
+    db.session.commit()
+    return 'Success!'
+
+def update_lesson_pic(lesson_id, new_imgUrl):
+    """Get lesson by id and update title."""
+
+    Lesson.query.get(lesson_id).imgUrl = new_imgUrl
+    db.session.commit()
+    return 'Success!'
 
 
 if __name__ == '__main__':

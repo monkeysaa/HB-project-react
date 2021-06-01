@@ -161,7 +161,8 @@ def logout():
 @app.route("/api/lessons/<lesson_id>.json")
 def get_lesson_json(lesson_id):
     """Return a JSON response with all cards in DB."""
-
+    
+    print(f'Lesson ID to display is {lesson_id}')
     lesson = crud.get_lesson_by_id(lesson_id)
 
     if lesson.imgUrl == None:
@@ -214,23 +215,80 @@ def get_lessons_json():
     return {"lessons": lessons_list}
 
 
-@app.route('/api/create_lesson', methods=["POST"])
+# # LESSON ROUTES
+# # Details for one lesson
+# # Later, limit route access to public lessons or author. Else redirect (to where?)
+# @app.route('/lessons/<lesson_id>') # This should be GET
+# def show_lesson(lesson_id):
+#     """Show details on a particular lesson."""
+
+#     session['lesson_id'] = lesson_id
+#     lesson = crud.get_lesson_by_id(lesson_id)
+
+#     if lesson.imgUrl==None:
+#         lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
+
+#     return render_template('lesson_details.html', lesson=lesson)
+
+@app.route('/api/title_lesson', methods=["POST"])
 def create_lesson():
-    """Create a new lesson."""
+    """Add title to new lesson, creating if necessary."""
 
     # JSON from request: {"title": "Wolves"}
     data = request.get_json()
     title = data['title']
     description = data['description']
+    lesson_id = data['lesson_id']
 
     try: 
-        new_lesson = crud.create_lesson(title, session['user_id'])
-        return {'success': True}
+        if lesson_id == "":
+            new_lesson = crud.create_lesson(title, session['user_id'])
+            return {'success': True, 'lesson_id': new_lesson.lesson_id}
+        else: 
+            response = update_lesson_title(lesson_id, title)
+            if response == "Success!":
+                return {'success': True, 'lesson_id': new_lesson.lesson_id}
 
     except:
-        return {'success': False}
+        pass
 
-    return {'success': 'decidedly not'}
+    return {'success': False}
+
+
+# # Try to combine with above route. For later, maybe turn to RESTful state?
+@app.route('/api/add_pic', methods=['POST']) # This should be PUT? 
+def upload_lesson_image():
+    """Save img to Lessons in the db and display via Cloudinary."""
+
+    my_file = request.files['my-file'] # note: request arg should match name var on form
+
+    # If lesson_id passed in and user is author, get lesson. Else, create new.
+    try: 
+        lesson = crud.get_lesson_by_id(int(request.files['lesson_id']))
+        if session['user'] != lesson.author: 
+            lesson = crud.create_lesson('Untitled', session['user_id'])
+    except: 
+        # TODO: Nice to have. Change untitled to include date
+        lesson = crud.create_lesson('Untitled', session['user_id'])
+    
+    # TODO: make function handleData() that determines datatype
+    # send to AWS if/when possible
+    # optional: store images in Cloudinary
+    # if video, make sure to return embedded video link for YouTube  
+
+    #upload image to cloudinary
+    result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
+                                        api_secret=CLOUD_SECRET,
+                                        cloud_name='hackbright')
+
+    try: 
+        crud.assign_lesson_img(result['secure_url'], lesson.lesson_id) 
+        print('server checkpoint')
+        return {'imgUrl': lesson.imgUrl, 'lesson_id': lesson.lesson_id}
+        
+    except: 
+        return {'error': 'Upload error'}
+
 
 
 
@@ -340,54 +398,7 @@ def create_lesson():
 #     return render_template('search.html', term=term, lessons=lessons)
 
 
-# # LESSON ROUTES
-# # Details for one lesson
-# # Later, limit route access to public lessons or author. Else redirect (to where?)
-# @app.route('/lessons/<lesson_id>') # This should be GET
-# def show_lesson(lesson_id):
-#     """Show details on a particular lesson."""
 
-#     session['lesson_id'] = lesson_id
-#     lesson = crud.get_lesson_by_id(lesson_id)
-
-#     if lesson.imgUrl==None:
-#         lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
-
-#     return render_template('lesson_details.html', lesson=lesson)
-
-
-# # Try to combine with above route. For later, maybe turn to RESTful state?
-@app.route('/api/lesson-pic', methods=['POST']) # This should be PUT? 
-def upload_lesson_image():
-    """Save img to Lessons in the db and display via Cloudinary."""
-
-    my_file = request.files['my-file'] # note: request arg should match name var on form
-
-    # If lesson_id passed in and user is author, get lesson. Else, create new.
-    try: 
-        lesson = crud.get_lesson_by_id(int(request.files['lesson_id']))
-        if session['user'] != lesson.author: 
-            lesson = crud.create_lesson('Untitled', session['user_id'])
-    except: 
-        # TODO: Nice to have. Change untitled to include date
-        lesson = crud.create_lesson('Untitled', session['user_id'])
-    
-    # TODO: make function handleData() that determines datatype
-    # send to AWS if/when possible
-    # optional: store images in Cloudinary
-    # if video, make sure to return embedded video link for YouTube  
-
-    #upload image to cloudinary
-    result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
-                                        api_secret=CLOUD_SECRET,
-                                        cloud_name='hackbright')
-
-    try: 
-        crud.assign_lesson_img(result['secure_url'], lesson.lesson_id) 
-        return jsonify(lesson.imgUrl)
-        
-    except: 
-        return jsonify('Upload error')
 
 
 
