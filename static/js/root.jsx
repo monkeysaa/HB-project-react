@@ -28,7 +28,8 @@ function Controller() {
         <Route path="/users">
           <UserLessonList />
         </Route>
-        <Route path="/lesson/:id" children={<ShowSingleLesson />} />
+        <Route path="/lesson/:lesson_id/edit" children={<EditLesson/>}/>
+        <Route path="/lesson/:lesson_id" children={<ShowSingleLesson />} />
         <Route path="/lesson"><DisplayTestLesson /></Route>
         <Route path="/signup">
           <CreateNewUser />

@@ -10,6 +10,19 @@ function App() {
     );
   }
 
+//   function ParamsTest() {
+//     // We can use the `useParams` hook here to access
+//     // the dynamic pieces of the URL.
+//     let { id } = useParams();
+//     console.log(`My ID is: ${id}`)
+  
+//     return (
+//       <div>
+//         <h3>ID: {id}</h3>
+//       </div>
+//     );
+//   }
+
 ReactDOM.render(
     <App />,
     document.getElementById('task'));

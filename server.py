@@ -33,13 +33,23 @@ SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies',
 @app.route('/login')
 @app.route('/signup')
 @app.route('/users')
-@app.route('/users/<user_id>')
 @app.route('/profile')
 @app.route('/lesson')
 @app.route('/lessons')
-@app.route('/lesson/<lesson_id>')
 @app.route('/')
 def display_react():
+    """Defer to React code on all routes."""
+
+    try: 
+        if session['user_id']:
+            return render_template('react.html', isLoggedIn=True)
+    except:
+        return render_template('react.html', isLoggedIn=False)
+
+
+@app.route('/lesson/<lesson_id>')
+@app.route('/lesson/<lesson_id>/edit')
+def display_lessons(lesson_id):
     """Defer to React code on all routes."""
 
     try: 
@@ -157,12 +167,13 @@ def logout():
     return {'success': True}
 
 
-
+# # LESSON ROUTES
+# # Details for one lesson
+# # Later, limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
 @app.route("/api/lessons/<lesson_id>.json")
 def get_lesson_json(lesson_id):
-    """Return a JSON response with all cards in DB."""
+    """Get lesson and return lesson data and components in JSON."""
     
-    print(f'Lesson ID to display is {lesson_id}')
     lesson = crud.get_lesson_by_id(lesson_id)
 
     if lesson.imgUrl == None:
@@ -171,6 +182,7 @@ def get_lesson_json(lesson_id):
     lesson_data = []
     comp_data = lesson.comps
 
+    # Add lesson description, etc
     lesson_data.append(
         {
             "lesson_id": lesson.lesson_id,
@@ -215,29 +227,15 @@ def get_lessons_json():
     return {"lessons": lessons_list}
 
 
-# # LESSON ROUTES
-# # Details for one lesson
-# # Later, limit route access to public lessons or author. Else redirect (to where?)
-# @app.route('/lessons/<lesson_id>') # This should be GET
-# def show_lesson(lesson_id):
-#     """Show details on a particular lesson."""
-
-#     session['lesson_id'] = lesson_id
-#     lesson = crud.get_lesson_by_id(lesson_id)
-
-#     if lesson.imgUrl==None:
-#         lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
-
-#     return render_template('lesson_details.html', lesson=lesson)
-
 @app.route('/api/title_lesson', methods=["POST"])
 def create_lesson():
     """Add title to lesson, creating new lesson if necessary."""
 
-    # JSON from request: {"title": "Wolves"}
+    # JSON from request: {"title": title, "lesson_id": lessonID}
+
     data = request.get_json()
+    # Is there an unpacking way to do this? 
     title = data['title']
-    description = data['description']
     lesson_id = (data['lesson_id'])
 
     try: 

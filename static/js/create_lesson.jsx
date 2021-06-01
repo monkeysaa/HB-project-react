@@ -25,7 +25,6 @@ function NewLesson() {
           alert('Something done broke.');
       } else if (data.success === true) {
           alert('Lesson created successfully!');
-          // TODO: direct to the correct lesson :)
           window.location.href = `/lesson/${lessonID}`;
       } else {
           alert('Something done broke');
@@ -83,7 +82,7 @@ function NewLesson() {
             <input 
                 className="new_lesson"
                 type="text" 
-                placeholder="First, give your lesson an awesome title..."
+                placeholder="First, give your lesson a compelling title..."
                 onChange={(e) => setTitle(e.target.value)}
                 value={title} 
             /><br></br>
