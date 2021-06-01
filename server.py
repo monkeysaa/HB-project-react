@@ -240,15 +240,12 @@ def create_lesson():
     description = data['description']
     lesson_id = (data['lesson_id'])
 
-    print(f'title: {title}, description: {description}, lesson_id: {lesson_id}')
-    print(f'title: {type(title)}, description: {type(description)}, lesson_id: {type(lesson_id)}')
     try: 
         if lesson_id == "":
             new_lesson = crud.create_lesson(title, session['user_id'])
             print('no lesson_id, created new lesson')
             return {'success': True, 'lesson_id': new_lesson.lesson_id}
         elif type(lesson_id) == int:
-            print('inside the elif')
             response = crud.update_lesson_title(lesson_id, title)
             print(f'updated lesson {lesson_id}. response: {response}')
             if response == "Success!":
