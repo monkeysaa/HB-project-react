@@ -31,14 +31,10 @@ function Profile() {
     }, []); 
   
     function createLesson() {
-      console.log('Go-go-gadget-Lesson_Creator!')
       window.location.href = '/create_lesson';
     }
-    // Link to Create a Lesson
     // Display favorites? 
-    // Each Lesson can be edited. Link to Edit-Lesson
 
-  
     const lessonCards = [];
   
     for (const lesson of lessons) {
