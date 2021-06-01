@@ -23,6 +23,19 @@ function App() {
 //     );
 //   }
 
+//   function CheckLoginStatus(props) {
+
+//     React.useEffect(() => {
+//         fetch('/api/check-login-status')
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log(data);
+//             setLoggedIn(data);
+//         });
+//     }, []);
+
+//   }
+
 ReactDOM.render(
     <App />,
     document.getElementById('task'));

@@ -27,21 +27,11 @@ function ShowSingleLesson() {
             // console.log(data)
             setLesson(data.lesson[0]);
             setAuthor(data.lesson[0].author);
+            setTitle(data.lesson[0].title);
+            setLessonPic(data.lesson[0].imgUrl);
             setComps(data.lesson.slice(1,-1));
             })
     }, []); 
-  
-    // These features of a lesson can be edited. Handle separately.
-    React.useEffect(() => {
-      setTitle(lesson.title);
-      setLessonPic(lesson.imgUrl);
-    //   Add comps here, since they can be edited
-    }, []); // What should I put in the brackets: title & lessonPic
-    // all inputs have an onchange that calls a function
-    // set state variable in root 
-    // update that state variable, and it updates everythign else
-    // I don't have to have a set-title thing, just have the title of the page be a state variable and it'll know to update them automatically. 
-    // title squiggle state.title
   
     const compCards = [];
   

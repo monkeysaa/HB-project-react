@@ -11,6 +11,7 @@ function NewLesson() {
       evt.preventDefault();
 
       const lesson = {"title": title, "description": description, "lesson_id": lessonID}
+      console.log(`lessonID: ${lessonID}`)
 
       fetch('/api/title_lesson', {
         method: 'POST',
@@ -24,8 +25,9 @@ function NewLesson() {
       if (data.success == false) {
           alert('Something done broke.');
       } else if (data.success === true) {
+          console.log(data.lesson_id);
           alert('Lesson created successfully!');
-          window.location.href = `/lesson/${lessonID}`;
+          window.location.href = `/lesson/${data.lesson_id}`;
       } else {
           alert('Something done broke');
       }

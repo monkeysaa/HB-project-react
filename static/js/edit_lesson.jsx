@@ -1,5 +1,4 @@
 "use strict";
-// 
 
 function CompTemplate(props) {
     return (
@@ -18,12 +17,6 @@ function EditLesson() {
     const [lessonPic, setLessonPic] = React.useState('');
     const [author, setAuthor] = React.useState('')
 
-    // Figure out how to handle these and where to set this up. 
-    // const photoDiv = []
-    // photoDiv.push(
-    //   <button onClick={handleNewPhoto}>Edit Photo</button>;
-    // )
-
     // Do not remove or it will break
     let { lesson_id } = useParams();
   
@@ -31,20 +24,20 @@ function EditLesson() {
       fetch(`/api/lessons/${lesson_id}.json`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
+            // console.log(data)
             setLesson(data.lesson[0]);
             setAuthor(data.lesson[0].author);
+            setTitle(data.lesson[0].title);
+            setLessonPic(data.lesson[0].imgUrl);
             setComps(data.lesson.slice(1,-1));
             })
     }, []); 
   
-    // These features of a lesson can be edited. Handle separately.
-    // Figure out how often to re-render and what to put in final brackets
-    React.useEffect(() => {
-      setTitle(lesson.title);
-      setLessonPic(lesson.imgUrl);
-    //   Add comps here, since they can be edited?
-    }, []);
+    // Consider handling editable features of a lesson in a separate useEffect hook.
+    // If so, need to figure out how often to re-render and what to put in final brackets
+    // React.useEffect(() => {
+      // // Add comps, title, imgUrl here, since they can be edited?
+    // }, []);
   
     const compCards = [];
   
@@ -59,12 +52,24 @@ function EditLesson() {
       );
     }
 
-    const handlePhotoChange() {
-      // set <div id="photodiv"> to visible rather than hidden
+    function handlePhotoChange(el) {
+      // remove hidden attribute on photodiv change features
+      if (document.getElementById('photodiv').hidden) {
+        document.getElementById('photodiv').removeAttribute("hidden");
+      } 
+      else {
+        document.getElementById('photodiv').setAttribute("hidden");
+      }
     }
 
-    const handleTitleChange() {
-      // set <div id="titlediv"> to visible rather than hidden
+    function handleTitleChange() {
+      // remove hidden attribute on titlediv change features
+      if (document.getElementById('titlediv').hidden) {
+        document.getElementById('titlediv').removeAttribute("hidden");
+      } 
+      else {
+        document.getElementById('titlediv').setAttribute("hidden");
+      }
     }
 
     // Copied from Create Lesson wtih setLessonID removed. Needs to be refactored.
@@ -82,7 +87,6 @@ function EditLesson() {
           })
           .then(response => response.json())
           .then(res => {
-            // setLessonID(res.lesson_id)
             setLessonPic(res.imgUrl);
           })
     }
@@ -102,18 +106,19 @@ function EditLesson() {
       })
       .then(response => response.json())
       .then(data => {
-      if (data.success == false) {
-          alert('Something done broke.');
-      } else if (data.success === true) {
-          alert('Lesson created successfully!');
-          window.location.href = `/lesson/${lesson_id}`;
-      } else {
-          alert('Something done broke');
-      }
+        if (data.success == false) {
+            alert('Something done broke.');
+        } else if (data.success === true) {
+            alert('Lesson updated successfully!');
+            window.location.href = `/lesson/${lesson_id}`;
+        } else {
+            alert('Something done broke');
+        }
       })
-      }
+    }
           
-    
+    // Set up onChange functions to take title, description, etc. 
+    // Test onChange for key-value pair rather than using formData above
 
     return (
       <section className="lesson">
@@ -122,8 +127,8 @@ function EditLesson() {
         </div>
         <img src={lessonPic}></img>
         <button onClick={handlePhotoChange}>Edit Cover Photo</button>
-        {/* make photodiv hidden and onclick */}
-        <div id="photodiv">
+        <div id="photodiv" hidden>
+
           <form 
               onSubmit={updatePhoto}
               action='/api/lesson-pic' 
@@ -132,43 +137,40 @@ function EditLesson() {
                 type="hidden"
                 name="lesson_id"
                 value={lesson_id}
-              />
-              <input 
+              /> 
+                <input 
                 id = 'my-file'
-                type='file' name='my-file' /> 
+                type='file' 
+                name='my-file' /> 
               <input 
                 type='submit' 
                 />
             </form> 
+
         </div>
         <h2>{`${title} by ${author}`}</h2>
         <button onClick={handleTitleChange}>Edit Title</button>
-        <div id="titlediv">
-        <form> 
-            <input 
-                className="edit_lesson"
-                type="text" 
-                placeholder={title}
-                onChange={(e) => setTitle(e.target.value)}
-                value={title} 
-            /><br></br>
-            <input 
-                className="edit_lesson"
-                type="text" 
-                placeholder={description}
-                onChange={(e) => setDescription(e.target.value)}
-                value={description} />
-            <section className='add-content'> 
-            {/* potentially two classes: add content AND add-component */}
-                <button id='add-content'>Add Content to Lesson</button>
-            </section>
-            <input 
-              type="hidden"
-              name="lesson_id"
-              value={lesson_id}
-            />
-            <button onClick={updateLesson}> Save </button>
-          </form>
+        <div id="titlediv" hidden>
+          <form> 
+              <input 
+                  className="edit_lesson"
+                  type="text" 
+                  placeholder="Give your lesson a compelling title..."
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+              /><br></br>
+              <section className='add-content'> 
+              {/* potentially two classes: add content AND add-component */}
+                  <button id='add-content'>Add Content to Lesson</button>
+              </section>
+              <input 
+                type="hidden"
+                name="lesson_id"
+                value={lesson_id}
+              />
+              <button onClick={updateLesson}> Save </button>
+            </form>
+
         </div>
         <div>{compCards}</div>
       </section>

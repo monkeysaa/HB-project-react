@@ -4,9 +4,6 @@ function Login(props) {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [loggedIn, setLoggedIn] = React.useState(false)
-    // could do with fetch & check cookies
-    // create a variable that would fetch info about session
-    
   
     const handleLogin = (evt) => {
       evt.preventDefault();
@@ -59,16 +56,5 @@ function Login(props) {
       );
   }
 
-//   function CheckLoginStatus(props) {
 
-//     React.useEffect(() => {
-//         fetch('/api/check-login-status')
-//         .then(response => response.json())
-//         .then(data => {
-//             console.log(data);
-//             setLoggedIn(data);
-//         });
-//     }, []);
-
-//   }
   
