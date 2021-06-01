@@ -28,10 +28,11 @@ function Controller() {
         <Route path="/users">
           <UserLessonList />
         </Route>
-        <Route path="/lesson">
-          {/* Figure out how to get lesson_id from URL and pass to ShowLesson */}
-          <ShowLesson lesson_id={1} />
-        </Route>
+        <Route path="/lesson/:id" children={<SingleLesson />} />
+        {/* <Route path="/lesson"> */}
+          {/* Figure out how to get lesson_id from URL and pass to ShowLesson
+          <ShowLesson lesson_id={1} /> */}
+        {/* </Route> */}
         <Route path="/signup">
           <CreateNewUser />
         </Route>
@@ -47,11 +48,23 @@ function Controller() {
         <Route exact={true} path="/">
           <img src="/static/img/high5.jpg"/>
         </Route> 
+
       </Switch>
     </React.Fragment>
   );
 }
 
+function SingleLesson() {
+  // We can use the `useParams` hook here to access
+  // the dynamic pieces of the URL.
+  let { id } = useParams();
+
+  return (
+    <div>
+      <h3>ID: {id}</h3>
+    </div>
+  );
+}
 
 // Populate Store
 // to update Lesson --> full cycle 

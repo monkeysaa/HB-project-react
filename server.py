@@ -37,7 +37,7 @@ SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies',
 @app.route('/profile')
 @app.route('/lesson')
 @app.route('/lessons')
-@app.route('/lessons/<lesson_id>')
+@app.route('/lesson/<lesson_id>')
 @app.route('/')
 def display_react():
     """Defer to React code on all routes."""
@@ -232,25 +232,30 @@ def get_lessons_json():
 
 @app.route('/api/title_lesson', methods=["POST"])
 def create_lesson():
-    """Add title to new lesson, creating if necessary."""
+    """Add title to lesson, creating new lesson if necessary."""
 
     # JSON from request: {"title": "Wolves"}
     data = request.get_json()
     title = data['title']
     description = data['description']
-    lesson_id = data['lesson_id']
+    lesson_id = (data['lesson_id'])
 
+    print(f'title: {title}, description: {description}, lesson_id: {lesson_id}')
+    print(f'title: {type(title)}, description: {type(description)}, lesson_id: {type(lesson_id)}')
     try: 
         if lesson_id == "":
             new_lesson = crud.create_lesson(title, session['user_id'])
+            print('no lesson_id, created new lesson')
             return {'success': True, 'lesson_id': new_lesson.lesson_id}
-        else: 
-            response = update_lesson_title(lesson_id, title)
+        elif type(lesson_id) == int:
+            print('inside the elif')
+            response = crud.update_lesson_title(lesson_id, title)
+            print(f'updated lesson {lesson_id}. response: {response}')
             if response == "Success!":
-                return {'success': True, 'lesson_id': new_lesson.lesson_id}
+                return {'success': True, 'lesson_id': lesson_id}
 
     except:
-        pass
+        print('Except something done broke')
 
     return {'success': False}
 

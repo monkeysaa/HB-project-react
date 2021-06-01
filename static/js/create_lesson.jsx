@@ -22,11 +22,11 @@ function NewLesson() {
       .then(response => response.json())
       .then(data => {
       if (data.success == false) {
-          alert('Lesson with this title already exists. Please be more creative.');
+          alert('Something done broke.');
       } else if (data.success === true) {
           alert('Lesson created successfully!');
           // TODO: direct to the correct lesson :)
-          window.location.href = `/lesson/<${lessonID}>`;
+          window.location.href = `/lesson/${lessonID}`;
       } else {
           alert('Something done broke');
       }
