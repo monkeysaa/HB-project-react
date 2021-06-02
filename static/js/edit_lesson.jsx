@@ -10,21 +10,24 @@ function CompTemplate(props) {
     );
   }
 
+// Why is this looping infinite times??
 function EditLesson() {
+
+  debugger;
     const [lesson, setLesson] = React.useState([]);
     const [title, setTitle] = React.useState('');
     const [comps, setComps] = React.useState([]);
     const [lessonPic, setLessonPic] = React.useState('');
     const [author, setAuthor] = React.useState('')
 
-    // Do not remove or it will break
     let { lesson_id } = useParams();
+    console.log(lesson_id);
   
     React.useEffect(() => {
       fetch(`/api/lessons/${lesson_id}.json`)
           .then((response) => response.json())
           .then((data) => {
-            // console.log(data)
+            console.log(data,lesson[0]);
             setLesson(data.lesson[0]);
             setAuthor(data.lesson[0].author);
             setTitle(data.lesson[0].title);
@@ -32,12 +35,6 @@ function EditLesson() {
             setComps(data.lesson.slice(1,-1));
             })
     }, []); 
-  
-    // Consider handling editable features of a lesson in a separate useEffect hook.
-    // If so, need to figure out how often to re-render and what to put in final brackets
-    // React.useEffect(() => {
-      // // Add comps, title, imgUrl here, since they can be edited?
-    // }, []);
   
     const compCards = [];
   
@@ -52,7 +49,28 @@ function EditLesson() {
       );
     }
 
-    function handlePhotoChange(el) {
+    React.useEffect(() => {
+      // Add comps, title, imgUrl here, since they can be edited
+
+        const lessonData = []
+        lessonData.push (
+          {
+            "lesson_id": lesson_id, 
+            "title": title, 
+            "author": author, 
+            "imgUrl": lessonPic
+          }
+        )
+
+        for (let comp of comps) {
+          lessonData.push(comp)
+        }
+
+        setLesson(lessonData)
+      }, [lessonPic, comps, title]);
+
+    // Refactor these two; they're nearly identical
+    function handlePhotoChange() {
       // remove hidden attribute on photodiv change features
       if (document.getElementById('photodiv').hidden) {
         document.getElementById('photodiv').removeAttribute("hidden");
@@ -72,7 +90,7 @@ function EditLesson() {
       }
     }
 
-    // Copied from Create Lesson wtih setLessonID removed. Needs to be refactored.
+    // Create Lesson function, minus setLessonID. Refactor with React?
     const updatePhoto = (evt) => {
       evt.preventDefault();
 
@@ -91,13 +109,11 @@ function EditLesson() {
           })
     }
   
-    // Copied from Create Lesson wtih setLessonID removed. Needs to be refactored.
+    // Create Lesson function, minus setLessonID. Refactor with React?
     const updateLesson = (evt) => {
       evt.preventDefault();
 
-      const lesson = {"title": title, "lesson_id": lesson_id}
-
-      fetch('/api/title_lesson', {
+      fetch('/api/update_lesson', {
         method: 'POST',
         body: JSON.stringify(lesson),
         headers: {
@@ -106,14 +122,12 @@ function EditLesson() {
       })
       .then(response => response.json())
       .then(data => {
-        if (data.success == false) {
-            alert('Something done broke.');
-        } else if (data.success === true) {
-            alert('Lesson updated successfully!');
-            window.location.href = `/lesson/${lesson_id}`;
+        if (data.success == true) {
+            // alert('Something done broke.');
+            alert('Got a response')
         } else {
-            alert('Something done broke');
-        }
+            alert('Whyyyyy <sob>')
+        } 
       })
     }
           
@@ -124,6 +138,7 @@ function EditLesson() {
       <section className="lesson">
         <div>
           <h3> Editing Lesson {lesson_id}</h3>
+          <button onClick={updateLesson}> Save Changes </button>
         </div>
         <img src={lessonPic}></img>
         <button onClick={handlePhotoChange}>Edit Cover Photo</button>

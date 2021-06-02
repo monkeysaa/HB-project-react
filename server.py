@@ -227,16 +227,44 @@ def get_lessons_json():
     return {"lessons": lessons_list}
 
 
+@app.route('/api/update_lesson', methods=["POST"])
+def update_lesson():
+    """Take in new lesson data and update the database."""
+
+    # JSON from request: {"title": title, "lesson_id": lessonID}
+
+    data = request.get_json() 
+    print(data)
+    print(data[0])
+    print(data(1))
+        
+
+    # try: 
+    #     if lesson_id == "":
+    #         new_lesson = crud.create_lesson(title, session['user_id'])
+    #         print('no lesson_id, created new lesson')
+    #         return {'success': True, 'lesson_id': new_lesson.lesson_id}
+    #     elif type(lesson_id) == int:
+    #         response = crud.update_lesson_title(lesson_id, title)
+    #         print(f'updated lesson {lesson_id}. response: {response}')
+    #         if response == "Success!":
+    #             return {'success': True, 'lesson_id': lesson_id}
+
+    # except:
+    #     print('Except something done broke')
+
+    return {'success': True}
+
+
 @app.route('/api/title_lesson', methods=["POST"])
 def create_lesson():
     """Add title to lesson, creating new lesson if necessary."""
 
     # JSON from request: {"title": title, "lesson_id": lessonID}
 
-    data = request.get_json()
-    # Is there an unpacking way to do this? 
+    data = request.get_json() 
     title = data['title']
-    lesson_id = (data['lesson_id'])
+    lesson_id = data['lesson_id']
 
     try: 
         if lesson_id == "":
