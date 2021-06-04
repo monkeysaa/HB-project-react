@@ -15,6 +15,9 @@ function ShowSingleLesson() {
     const [title, setTitle] = React.useState('');
     const [comps, setComps] = React.useState([]);
     const [lessonPic, setLessonPic] = React.useState('');
+    const [overview, setOverview] = React.useState('');
+
+    // If I want this to be props rather than a state var, how/where do I set that up? 
     const [author, setAuthor] = React.useState('')
 
 
@@ -29,6 +32,7 @@ function ShowSingleLesson() {
             setAuthor(data.lesson[0].author);
             setTitle(data.lesson[0].title);
             setLessonPic(data.lesson[0].imgUrl);
+            setOverview(data.lesson[0].overview);
             setComps(data.lesson.slice(1,-1));
             })
     }, []); 
@@ -58,6 +62,7 @@ function ShowSingleLesson() {
         </div>
         <img src={lessonPic}></img>
         <h2>{`${title} by ${author}`}</h2>
+        <h3>{overview}</h3>
         <div>{compCards}</div>
       </section>
     );

@@ -13,35 +13,27 @@ function CompTemplate(props) {
 
 function EditLesson() {
 
-  const { lesson_id } = useParams();
-  console.log(lesson_id);
+  let { lesson_id } = useParams();
+  console.log(lesson);
   
+  const [title, setTitle] = React.useState('');
+  const [author, setAuthor] = React.useState('');
+  const [overview, setOverview] = React.useState('');
+  // const [comps, setComps] = React.useState([]);
+  const [lessonPic, setLessonPic] = React.useState('');
+
+
   fetch(`/api/lessons/${lesson_id}.json`)
   .then((response) => response.json())
   .then((data) => {
     console.log(data);
-    lesson = data.lesson[0];
-  })
-  .then(() => {
-    const [title, setTitle] = React.useState(lesson.title);
-    const [author, setAuthor] = React.useState(lesson.author);
-    const [overview, setOverview] = React.useState(lesson.overview);
-    const [lessonPic, setLessonPic] = React.useState(lesson.imgUrl);
-    // const [comps, setComps] = React.useState([]);
-  })
-
-
-  // fetch(`/api/lessons/${lesson_id}.json`)
-  // .then((response) => response.json())
-  // .then((data) => {
-  //   console.log(data);
-  //   console.log(data.lesson[0]);
-  //   setAuthor(data.lesson[0].author); // Better as props. How to pass to updateLesson?
-  //   setTitle(data.lesson[0].title);
-  //   setOverview(data.lesson[0].overview);
-  //   setLessonPic(data.lesson[0].imgUrl);
-  //   // setComps(data.lesson.slice(1,-1));
-  //   })
+    console.log(data.lesson[0]);
+    setAuthor(data.lesson[0].author); // Better as props. How to pass to updateLesson?
+    setTitle(data.lesson[0].title);
+    setOverview(data.lesson[0].overview);
+    setLessonPic(data.lesson[0].imgUrl);
+    // setComps(data.lesson.slice(1,-1));
+    })
 
   // React.useEffect(() => {
   //   response = fetch(`/api/lessons/${lesson_id}.json`)
@@ -123,39 +115,39 @@ function EditLesson() {
   
 
   // Create Lesson function, minus setLessonID. Refactor with React?
-  // const updateLesson = (evt) => {
-  //   evt.preventDefault();
+  const updateLesson = (evt) => {
+    evt.preventDefault();
 
-  //   const lesson = []
-  //   lesson.push (
-  //     {
-  //       "lesson_id": lesson_id, 
-  //       "title": title, 
-  //       "overview": overview,
-  //       "imgUrl": lessonPic
-  //     }
-  //   )
+    const lesson = []
+    lesson.push (
+      {
+        "lesson_id": lesson_id, 
+        "title": title, 
+        "overview": overview,
+        "imgUrl": lessonPic
+      }
+    )
 
-  //   // for (let comp of comps) {
-  //   //   lesson.push(comp)
-  //   // }
+    // for (let comp of comps) {
+    //   lesson.push(comp)
+    // }
 
 
-  // fetch('/api/update_lesson', {
-  //   method: 'POST',
-  //   body: JSON.stringify(lesson),
-  //   headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  // })
-  // .then(response => response.json())
-  // .then(data => {
-  //   if (data.success == true) {
-  //       // alert('Something done broke.');
-  //       alert('Got a response')
-  //   } 
-  // })
-  // }
+  fetch('/api/update_lesson', {
+    method: 'POST',
+    body: JSON.stringify(lesson),
+    headers: {
+        'Content-Type': 'application/json'
+      },
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success == true) {
+        // alert('Something done broke.');
+        alert('Got a response')
+    } 
+  })
+  }
           
   // Set up onChange functions to take title, description, etc. 
   // Test onChange for key-value pair rather than using formData above
@@ -164,6 +156,7 @@ function EditLesson() {
     <section className="lesson">
       <div>
         <h3> Editing Lesson {lesson_id}</h3>
+        <button onClick={updateLesson}> Save Changes </button>
       </div>
       <img src={lessonPic}></img>
       <div>
@@ -171,7 +164,7 @@ function EditLesson() {
 
         <div id="photodiv" hidden>
           <form 
-            onSubmit={updateLesson}
+            onSubmit={updatePhoto}
             action='/api/lesson-pic' 
             method='POST' encType='multipart/form-data'>
             <input 
@@ -186,14 +179,6 @@ function EditLesson() {
             <input 
               type='submit' 
               />
-            <h2>{`${title} by ${author}`}</h2>
-            <input 
-                className="edit_lesson"
-                type="text" 
-                placeholder="Give your lesson a compelling title..."
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-            /><br></br>
           </form> 
         </div>
 

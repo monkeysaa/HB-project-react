@@ -279,9 +279,8 @@ def update_lesson():
         my_file = request.files['my-file']
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
-                                        cloud_name='hackbright')
-        imgUrl = result['secure_url']  
-        imgUrl = crud.assign_lesson_img(imgUrl, lesson_id)
+                                        cloud_name='hackbright') 
+        imgUrl = crud.assign_lesson_img(result['secure_url'], lesson_id)
 
     # save other data to lesson
     try: 

@@ -6,7 +6,7 @@ function EditLesson() {
     console.log(lesson_id);
     const [title, setTitle] = React.useState('');
     const [author, setAuthor] = React.useState('');
-    // const [overview, setOverview] = React.useState('');
+    const [overview, setOverview] = React.useState('');
     const [lessonPic, setLessonPic] = React.useState('');
     
     React.useEffect(() => {
@@ -17,11 +17,9 @@ function EditLesson() {
         setTitle(data.lesson[0].title);
         setAuthor(data.lesson[0].author);
         setLessonPic(data.lesson[0].imgUrl);
+        setOverview(data.lesson[0].overview);
       })
       // .then(() => {
-
-      // //   setOverview(lesson.overview);
-
       // // const [comps, setComps] = React.useState([]);
       // })
     }, []);
@@ -36,7 +34,7 @@ function EditLesson() {
         {
           "lesson_id": lesson_id, 
           "title": title, 
-          // "overview": overview,
+          "overview": overview,
         });
       
       // handle components
@@ -46,7 +44,7 @@ function EditLesson() {
         
       formData.append('my-file', file);
       formData.append('title', title);
-      // formData.append('overview', overview);
+      formData.append('overview', overview);
       formData.append('lesson_id', lesson_id);
 
       fetch('/api/update_lesson', {
@@ -90,9 +88,6 @@ function EditLesson() {
                   id = 'my-file'
                   type='file' 
                   name='my-file' /> 
-                <input 
-                  type='submit' 
-                  />
                 <h2>{`Change title from ${title} to:`}</h2>
                 <input 
                     className="edit_lesson"
@@ -100,7 +95,18 @@ function EditLesson() {
                     placeholder="Give your lesson a compelling title..."
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
-                /><br></br>
+                /><br/>
+                <h2>{`Edit your lesson overview:`}</h2>
+                <input 
+                  className="edit_lesson"
+                  type="text" 
+                  placeholder="Then, add a catchy description!"
+                  onChange={(e) => setOverview(e.target.value)}
+                  value={overview}
+                /><br/>
+                <input 
+                  type='submit' 
+                />
               </form> 
             </div>
     
