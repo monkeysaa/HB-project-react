@@ -15,11 +15,17 @@ def create_user(handle, email, pwd):
     return new_user
 
 
-def create_lesson(title, author_id, description = "", public = False):
-    """Create and return a new lesson."""
+def create_lesson(lesson_dict):
+    """Save lesson data to the database and return lesson object."""
 
-    new_lesson = Lesson(title=title, description=description, 
-                        author_id=author_id, public=public)
+    # lesson_dict: 
+    # {'title': '', 'author_id': int, description: '', imgUrl: '' or None, 'public': False}
+
+    new_lesson = Lesson(title=lesson_dict['title'], 
+                      overview=lesson_dict['overview'], 
+                      author_id=lesson_dict['author_id'], 
+                      public=lesson_dict['public'],
+                      imgUrl=lesson_dict['imgUrl'])
     
     db.session.add(new_lesson)
     db.session.commit()
@@ -46,43 +52,6 @@ def create_tag(name, category):
     db.session.commit()
 
     return tag
-
-# Assignations
-def assign_comp(comp, lesson):
-    assoc = Lesson_Comp(lesson=lesson, comp=comp)
-
-    db.session.add(assoc)
-    db.session.commit()
-
-    return assoc
-
-
-def assign_tag_to_lesson(tag, lesson):
-    assoc = Lesson_Tag(lesson=lesson, tag=tag)
-
-    db.session.add(assoc)
-    db.session.commit()
-
-    return assoc
-
-
-def assign_lesson_img(imgUrl, lesson_id):
-    lesson = get_lesson_by_id(lesson_id)
-    lesson.imgUrl = imgUrl
-
-    db.session.commit()
-
-    return lesson.imgUrl
-
-
-def assign_comp_img(imgUrl, comp_id):
-    
-    lesson = get_comp_by_id(lesson_id)
-    lesson.imgUrl = imgUrl
-
-    db.session.commit()
-
-    return None
 
 
 # Searches
@@ -234,12 +203,57 @@ def update_lesson_title(lesson_id, new_title):
     db.session.commit()
     return 'Success!'
 
+
 def update_lesson_pic(lesson_id, new_imgUrl):
     """Get lesson by id and update title."""
 
     Lesson.query.get(lesson_id).imgUrl = new_imgUrl
     db.session.commit()
     return 'Success!'
+
+
+def assign_lesson_img(imgUrl, lesson_id):
+    lesson = get_lesson_by_id(lesson_id)
+    lesson.imgUrl = imgUrl
+
+    db.session.commit()
+
+    return lesson.imgUrl
+
+def update_lesson_overview(lesson_id, new_overview):
+    """Get lesson by id and update overview."""
+
+    Lesson.query.get(lesson_id).overview = new_overview
+    db.session.commit()
+    return 'Success!'
+
+
+def assign_comp(comp, lesson):
+    assoc = Lesson_Comp(lesson=lesson, comp=comp)
+
+    db.session.add(assoc)
+    db.session.commit()
+
+    return assoc
+
+
+def assign_tag_to_lesson(tag, lesson):
+    assoc = Lesson_Tag(lesson=lesson, tag=tag)
+
+    db.session.add(assoc)
+    db.session.commit()
+
+    return assoc
+
+
+def assign_comp_img(imgUrl, comp_id):
+    
+    lesson = get_comp_by_id(lesson_id)
+    lesson.imgUrl = imgUrl
+
+    db.session.commit()
+
+    return None
 
 
 if __name__ == '__main__':

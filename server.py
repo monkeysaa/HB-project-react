@@ -120,8 +120,6 @@ def signup():
     email = data['email']
     password = data['password']
 
-    #do database stuff to make a post in your DB
-    # user = crud.get_user_by_email(email)
     try:
         user = crud.create_user(handle, email, password)
     except:
@@ -177,7 +175,7 @@ def get_lesson_json(lesson_id):
     lesson = crud.get_lesson_by_id(lesson_id)
 
     if lesson.imgUrl == None:
-        lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
+        lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
     
     lesson_data = []
     comp_data = lesson.comps
@@ -189,6 +187,7 @@ def get_lesson_json(lesson_id):
             "title": lesson.title,
             "author": lesson.author.email,
             "imgUrl": lesson.imgUrl,
+            "overview": lesson.overview
         }
     )
 
@@ -213,7 +212,7 @@ def get_lessons_json():
 
     for lesson in lessons:
         if lesson.imgUrl == None:
-            lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1619906696/zzwwu2rbkbve3eozoihx.png'
+            lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
 
         lessons_list.append(
             {
@@ -227,95 +226,73 @@ def get_lessons_json():
     return {"lessons": lessons_list}
 
 
-@app.route('/api/update_lesson', methods=["POST"])
-def update_lesson():
-    """Take in new lesson data and update the database."""
-
-    # JSON from request: {"title": title, "lesson_id": lessonID}
-
-    data = request.get_json() 
-    print(data)
-    print(data[0])
-    print(data(1))
-        
-
-    # try: 
-    #     if lesson_id == "":
-    #         new_lesson = crud.create_lesson(title, session['user_id'])
-    #         print('no lesson_id, created new lesson')
-    #         return {'success': True, 'lesson_id': new_lesson.lesson_id}
-    #     elif type(lesson_id) == int:
-    #         response = crud.update_lesson_title(lesson_id, title)
-    #         print(f'updated lesson {lesson_id}. response: {response}')
-    #         if response == "Success!":
-    #             return {'success': True, 'lesson_id': lesson_id}
-
-    # except:
-    #     print('Except something done broke')
-
-    return {'success': True}
-
-
-@app.route('/api/title_lesson', methods=["POST"])
+@app.route('/api/create_lesson', methods=["POST"])
 def create_lesson():
     """Add title to lesson, creating new lesson if necessary."""
 
-    # JSON from request: {"title": title, "lesson_id": lessonID}
+    lesson_data = {
+            'title': 'Untitled', 
+            'author_id': session['user_id'],
+            'overview': '', 
+            'img_Url': None,
+            'public': False
+    }
 
-    data = request.get_json() 
-    title = data['title']
-    lesson_id = data['lesson_id']
-
-    try: 
-        if lesson_id == "":
-            new_lesson = crud.create_lesson(title, session['user_id'])
-            print('no lesson_id, created new lesson')
-            return {'success': True, 'lesson_id': new_lesson.lesson_id}
-        elif type(lesson_id) == int:
-            response = crud.update_lesson_title(lesson_id, title)
-            print(f'updated lesson {lesson_id}. response: {response}')
-            if response == "Success!":
-                return {'success': True, 'lesson_id': lesson_id}
-
-    except:
-        print('Except something done broke')
-
-    return {'success': False}
-
-
-# # Try to combine with above route. For later, maybe turn to RESTful state?
-@app.route('/api/add_pic', methods=['POST']) # This should be PUT? 
-def upload_lesson_image():
-    """Save img to Lessons in the db and display via Cloudinary."""
-
-    my_file = request.files['my-file'] # note: request arg should match name var on form
-
-    # If lesson_id passed in and user is author, get lesson. Else, create new.
-    try: 
-        lesson = crud.get_lesson_by_id(int(request.files['lesson_id']))
-        if session['user'] != lesson.author: 
-            lesson = crud.create_lesson('Untitled', session['user_id'])
-    except: 
-        # TODO: Nice to have. Change untitled to include date
-        lesson = crud.create_lesson('Untitled', session['user_id'])
-    
-    # TODO: make function handleData() that determines datatype
-    # send to AWS if/when possible
-    # optional: store images in Cloudinary
-    # if video, make sure to return embedded video link for YouTube  
-
-    #upload image to cloudinary
-    result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
+    # If photo, upload to CLoudinary and save link to imgUrl
+    if 'my-file' not in request.files:
+        lesson_data['imgUrl'] = "/static/img/placeholder.png"
+    else: 
+        my_file = request.files['my-file']
+        result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright')
+        lesson_data['imgUrl'] = result['secure_url']
+    
+    # save data to variables
+    if 'title' in request.form: 
+        lesson_data['title'] = request.form['title']
+    if 'overview' in request.form:
+        lesson_data['overview'] = request.form['overview']
 
+    db_lesson = crud.create_lesson(lesson_data)
+    
     try: 
-        crud.assign_lesson_img(result['secure_url'], lesson.lesson_id) 
-        print('server checkpoint')
-        return {'imgUrl': lesson.imgUrl, 'lesson_id': lesson.lesson_id}
-        
+        return {'success': True, 'lesson_id': db_lesson.lesson_id}
     except: 
-        return {'error': 'Upload error'}
+        print('Except something done broke')
+        return {'success': False}
+
+# One endpoint for Create Component 
+# def create_component(): 
+
+# One endpoint for Add Component to Lesson
+# def add_comp_to_lesson():
+
+@app.route('/api/update_lesson', methods=["POST"])
+def update_lesson():
+    """Update the database with fresh data."""
+    
+    lesson_id = request.form['lesson_id']
+    lesson = crud.get_lesson_by_id(lesson_id)
+    # If photo, upload to CLoudinary and save link to imgUrl
+    if 'my-file' in request.files:
+        my_file = request.files['my-file']
+        result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
+                                        api_secret=CLOUD_SECRET,
+                                        cloud_name='hackbright')
+        imgUrl = result['secure_url']  
+        imgUrl = crud.assign_lesson_img(imgUrl, lesson_id)
+
+    # save other data to lesson
+    try: 
+        if 'title' in request.form: 
+            crud.update_lesson_title(lesson_id, request.form['title'])
+        if 'overview' in request.form:
+            crud.update_lesson_overview(lesson_id, request.form['overview'])
+    except:
+        print("Error with saving new Title and/or Overview to database.")
+    
+    return {'success': True}
 
 
 

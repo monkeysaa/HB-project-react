@@ -65,18 +65,12 @@ for n in range(4, 13):
 # Create fake lessons, store them in a list so we can assign fake components...
 lessons_in_db = []
 for lesson in lesson_data:
-    #unpack each lesson in lesson data from json file
-    title, desc, public, imgUrl = (lesson['title'], 
-                                  lesson['description'], 
-                                  lesson['public'],
-                                  lesson['imgUrl'])
-
     # choose an author at random
     user = choice(users_in_db)
 
     # create a lesson and append it to lessons_in_db
-    db_lesson = crud.create_lesson(title, user.user_id, desc, public)
-    db_lesson.imgUrl = imgUrl
+    lesson['author_id'] = user.user_id
+    db_lesson = crud.create_lesson(lesson)
     lessons_in_db.append(db_lesson)
 
     # assign components to lessons by hard-coding

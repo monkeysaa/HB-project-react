@@ -32,7 +32,7 @@ class Lesson(db.Model):
 
     lesson_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    description = db.Column(db.Text)
+    overview = db.Column(db.Text)
     public = db.Column(db.Boolean)
     author_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     imgUrl = db.Column(db.String)

@@ -44,6 +44,7 @@ function NewLesson() {
       const file = document.getElementById('my-file').files[0];
 
       formData.append('my-file', file);
+      formData.append('lesson_id', lessonID)
 
       fetch('/api/add_pic', {
           method: 'POST',
@@ -61,17 +62,25 @@ function NewLesson() {
         <React.Fragment>
           <h2>Create a Lesson</h2>
           <form onSubmit={handlePic}
-            action='/api/lesson-pic' 
+            action='/api/create_lesson' 
             method='POST' encType='multipart/form-data'>
-            <input 
-              type="hidden"
-              name="lesson_id"
-              value={lessonID}
-            />
             <input 
               id = 'my-file'
               type='file' name='my-file' /> 
-            {/* sending 'my-file' and file itself as a key-value pair */}
+            <input 
+                className="new_lesson"
+                type="text" 
+                placeholder="First, give your lesson a compelling title..."
+                onChange={(e) => setTitle(e.target.value)}
+                value={title} 
+            />            <br/>
+            <input 
+                className="new_lesson"
+                type="text" 
+                placeholder="Then, add a catchy description!"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description} 
+            /><br/>
             <input 
               type='submit' 
               />
@@ -87,7 +96,8 @@ function NewLesson() {
                 placeholder="First, give your lesson a compelling title..."
                 onChange={(e) => setTitle(e.target.value)}
                 value={title} 
-            /><br></br>
+            />
+            <br></br>
             <input 
                 className="new_lesson"
                 type="text" 
@@ -95,6 +105,7 @@ function NewLesson() {
                 onChange={(e) => setDescription(e.target.value)}
                 value={description} 
             />
+
             {/* <section className='add-component'>
                 <button id='add-content'>Add Content to Lesson</button>
             </section> */}
