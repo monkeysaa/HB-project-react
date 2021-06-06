@@ -3,6 +3,7 @@
 from flask import Flask
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
+from youtube import (is_YouTube_video, get_YouTube_ID, handle_YouTube)
 import cloudinary.uploader
 import crud
 import boto3
@@ -29,6 +30,8 @@ GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th',
 SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies', 
             'Arts/Music', 'Foreign Lang.']
 
+# Basic REACT Routing
+# TODO: catch-all to set this up as the default
 @app.route('/create_lesson')
 @app.route('/login')
 @app.route('/signup')
@@ -59,7 +62,8 @@ def display_lessons(lesson_id):
         return render_template('react.html', isLoggedIn=False)
 
 
-# REACT Routes!
+# USER Routes
+# TODO: Is this ever used? 
 @app.route('/api/check-login-status')
 def check_login():
     """Check if user is logged in."""
@@ -73,6 +77,7 @@ def check_login():
         return jsonify('Error with check-login.json')
 
 
+# TODO: Is this necessary? 
 @app.route('/api/users')
 def view_users():
 
@@ -87,6 +92,7 @@ def view_users():
         users.append(u.__dict__)
 
     return jsonify(users)
+
 
 @app.route("/api/profile.json")
 def display_profile():
@@ -111,9 +117,6 @@ def display_profile():
 
 @app.route("/api/signup", methods=["POST"])
 def signup():
-
-    # expecting this kind of object as JSON in the request
-    # {"handle": "AliC", "email": "ali@gmail.com", "password": "test"}
 
     data = request.get_json()
     handle = data['handle']
@@ -142,7 +145,6 @@ def login():
     email = data['email']
     password = data['password']
 
-    #do database stuff to make a post in your DB
     user = crud.get_user_by_email(email)
     try:
         if password == user.password:
@@ -224,51 +226,11 @@ def get_lessons_json():
         )
 
     return {"lessons": lessons_list}
-
-
-def is_YouTube_video(link):
-    """Check whether video contains YouTube domains"""
-
-    if "www.youtube.com" in link or "youtu.be" in link:
-        return True
-    return False
-
-
-def get_YouTube_ID(link): 
-    """ Take in youtube link and return the YouTube-allocated video ID
-
-    >>> get_YouTube_ID('https://www.youtube.com/watch?v=K1-nt5_bRlQ')
-    'K1-nt5_bRlQ'
-    >>> get_YouTube_ID('www.youtube.com/watch?v=K1-nt5_bRlQ')
-    'K1-nt5_bRlQ'
-    >>> get_YouTube_ID("https://youtu.be/X5EoUD-BIss?t=12")
-    'X5EoUD-BIss'
-    >>> get_YouTube_ID("https://www.youtube.com/watch?v=yAlDDoWfu3I&feature=emb_logo")
-    'yAlDDoWfu3I'
-    """
-    
-    if 'watch?v=' in link:
-        video_id = link.split('watch?v=')[1]
-    elif 'https://youtu.be/' in link:
-        video_id = link[17:]
-    
-    video_id = video_id.split('?')[0]
-    video_id = video_id.split('&')[0]
-
-    return video_id
-
-
-def handle_YouTube(link):
-    """ Take in link, determine whether YouTube, and if so, return YouTube dictionary"""
-    if is_YouTube_video(link):
-        yt_id = get_YouTube_ID(link)
-        return {'imgUrl': f"https://img.youtube.com/vi/{yt_id}/0.jpg",
-            'embed': "<iframe width='560' height='315' src='https://www.youtube.com/embed/{yt_id}' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>"}
     
 
 @app.route('/api/create_lesson', methods=["POST"])
 def create_lesson():
-    """Add title to lesson, creating new lesson if necessary."""
+    """Create new lesson and lesson-comp DB assocations."""
 
     lesson_data = {
             'title': 'Untitled', 
@@ -293,12 +255,10 @@ def create_lesson():
         lesson_data['title'] = request.form['title']
     if request.form['overview'] != '':
         lesson_data['overview'] = request.form['overview']
-    # TODO: Check whether link is youtube link. 
-    # if request.form['link'] != '':
-        #  handleVideo(link)
-        #  else handle other link
 
     db_lesson = crud.create_lesson(lesson_data)
+
+    # TODO: For each component, create DB association.
     
     try: 
         return {'success': True, 'lesson_id': db_lesson.lesson_id}
@@ -307,7 +267,21 @@ def create_lesson():
         return {'success': False}
 
 # One endpoint for Create Component 
-# def create_component(): 
+@app.route('/api/create_component', methods=["POST"])
+def create_component(): 
+    """Create new component and save to DB."""
+
+    # data = request.get_json()
+    # comp_link = data.comp_link
+    comp_link = 'www.youtube.com/watch?v=K1-nt5_bRlQ' #TODO: DELETE!!
+
+    # Other YouTube functions needed?
+    vid_data = handle_YouTube(comp_link)
+    user_id = session['user_id']
+
+    new_comp = crud.create_comp(name="Test", comp_type='link', url = vid_data['imgUrl'], imgUrl = vid_data['imgUrl'], )
+    print(new_comp)
+    return {'success': 'uncertain'}
 
 # One endpoint for Add Component to Lesson
 # def add_comp_to_lesson():
@@ -333,6 +307,10 @@ def update_lesson():
             crud.update_lesson_title(lesson_id, request.form['title'])
         if 'overview' in request.form:
             crud.update_lesson_overview(lesson_id, request.form['overview'])
+    
+    # TODO: 
+    # DECIDE! If new components passed, create_comp(), then build association -- here or there?
+
     except:
         print("Error with saving new Title and/or Overview to database.")
     

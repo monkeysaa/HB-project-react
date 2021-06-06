@@ -58,6 +58,7 @@ class Comp(db.Model):
     name = db.Column(db.String)
     url = db.Column(db.String)
     imgUrl = db.Column(db.String)
+    # yt_id = db.Column(db.String) # if YouTube video specifically, YouTube's id
     vid_length = db.Column(db.Float) # if video, length in minutes if using YouTube api.
 
     lessons = db.relationship('Lesson', secondary='lesson_comps', viewonly=True)

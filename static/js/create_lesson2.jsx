@@ -1,8 +1,11 @@
 // should this be a separate component or a function within the Lesson Object? Or Profile Page?
 
 function NewLesson() {
-    const [title, setTitle] = React.useState('')
-    const [overview, setOverview] = React.useState('')
+    const [title, setTitle] = React.useState('');
+    const [overview, setOverview] = React.useState('');
+    const [test, setTest] = React.useState('');
+
+    const makeTest = (evt) => setTest(evt.target.value);
 
     const createLesson = (evt) => {
       evt.preventDefault();
@@ -13,6 +16,17 @@ function NewLesson() {
       formData.append('lesson-pic', file);
       formData.append('title', title);
       formData.append('overview', overview);
+
+  // comps = []
+  // for (const comp of comps) {
+  //   comps.push(
+  //     <CompTemplate
+  //       key={comp.component}
+  // //       img={comp.c_img}
+  //       comp_link={link}
+  //     />
+  //   );
+  // }
 
       fetch('/api/create_lesson', {
           method: 'POST',
@@ -29,14 +43,7 @@ function NewLesson() {
       })
     }
   
-  function unhideComponent() {
-    // remove hidden attribute on photodiv change features
 
-    if (document.getElementById('lessonComponent').hidden) {
-      document.getElementById('lessonComponent').removeAttribute("hidden");
-    } 
-    return 'sad! test no work'
-  }
 
   return (
     <React.Fragment>
@@ -63,15 +70,10 @@ function NewLesson() {
               value={overview} 
           /><br/>
         </section>
-        {/* Button should Add Component Div */}
-        <button type='button' 
-          onClick={unhideComponent}>Add Content to Lesson</button>
-        <LessonComponentCase unhideComponent/>
-        <input type='submit' 
-// onClick={addComponent}
-          />
+        <LessonComponentCase />
+        <input type='submit' />
       </form> 
-      {/* Add a plus --> when clicked, adds a component */}
+      {/* Add a plus --> when clicked,adds a component */}
       {/* Show a minus */}
 
     </React.Fragment>

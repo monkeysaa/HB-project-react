@@ -35,6 +35,58 @@ function App() {
 //     }, []);
 
 //   }
+// COMPONENT STUFF
+  // list of all components in this lesson
+
+  // comps = []
+  // for (const comp of comps) {
+  //   comps.push(
+  //     <CompTemplate
+  //       key={comp.component}
+  //       title={comp.component}
+  //       img={comp.c_img}
+  //       link={comp.c_link}
+  //     />
+  //   );
+  // }
+
+//   function addComponent() {
+
+//   }
+
+//   function deleteComp() {
+
+//   }
+//   // const addComponent() {
+//   //   console.log('add component here');
+//   // }
+
+//   return (
+//     <React.Fragment>
+//       <section id="lessonComponent" hidden>
+//         <LessonComponent comp_id='1' />
+//         {/* <input 
+//           id = 'my-component'
+//           type='file' 
+//           name='comp-file' /> 
+//         <input 
+//           type='submit' 
+//           onClick={addComponent}
+//           /> */}
+//           {/* Add a plus button that when clicked adds a component */}
+//       </section>
+//     </React.Fragment>
+//   )
+// }
+
+  // function unhideComponent() {
+  //   // remove hidden attribute on photodiv change features
+
+  //   if (document.getElementById('lessonComponent').hidden) {
+  //     document.getElementById('lessonComponent').removeAttribute("hidden");
+  //   } 
+  //   return 'sad! test no work'
+  // }
 
 ReactDOM.render(
     <App />,

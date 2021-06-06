@@ -6,7 +6,8 @@ function CompTemplate(props) {
         <p> <a href={`${props.link}`}> {props.title} </a> </p>
         <img src={props.img} />
         <iframe width='560' height='315' src={`${props.link}`} title={props.title} frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
-        {/* <iframe width='560' height='315' src='https://www.youtube.com/embed/X5EoUD-BIss?start=12' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe> */}
+        <p>hello</p>
+        <iframe width='560' height='315' src='https://player.pbs.org/viralplayer/3054932177/' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
       </div>
     );
   }
@@ -44,7 +45,7 @@ function ShowSingleLesson() {
       compCards.push(
         <CompTemplate
           key={comp.component}
-          title={comp.component}
+          // title={comp.component}
           img={comp.c_img}
           link={comp.c_link}
         />
