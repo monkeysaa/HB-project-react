@@ -3,9 +3,10 @@
 function CompTemplate(props) {
     return (
       <div className="component">
-        <p> {props.title} </p>
+        <p> <a href={`${props.link}`}> {props.title} </a> </p>
         <img src={props.img} />
-        <a href={`${props.link}`}> </a>
+        <iframe width='560' height='315' src={`${props.link}`} title={props.title} frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
+        {/* <iframe width='560' height='315' src='https://www.youtube.com/embed/X5EoUD-BIss?start=12' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe> */}
       </div>
     );
   }

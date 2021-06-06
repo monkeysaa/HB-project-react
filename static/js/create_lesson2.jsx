@@ -1,4 +1,4 @@
-// should this be a separate component or a function within the Profile page?
+// should this be a separate component or a function within the Lesson Object? Or Profile Page?
 
 function NewLesson() {
     const [title, setTitle] = React.useState('')
@@ -7,13 +7,10 @@ function NewLesson() {
     const createLesson = (evt) => {
       evt.preventDefault();
 
-      // Code for uploading lessonpic
-      // Needs to process multi-form data rather than JSON
-
       const formData  = new FormData();
-      const file = document.getElementById('my-file').files[0];
+      const file = document.getElementById('lesson-pic').files[0];
 
-      formData.append('my-file', file);
+      formData.append('lesson-pic', file);
       formData.append('title', title);
       formData.append('overview', overview);
 
@@ -31,17 +28,26 @@ function NewLesson() {
         }
       })
     }
-          
+  
+  function unhideComponent() {
+    // remove hidden attribute on photodiv change features
 
-    return (
-      <React.Fragment>
-        <h2>Create a Lesson</h2>
-        <form onSubmit={createLesson}
-          action='/api/create_lesson' 
-          method='POST' encType='multipart/form-data'>
+    if (document.getElementById('lessonComponent').hidden) {
+      document.getElementById('lessonComponent').removeAttribute("hidden");
+    } 
+    return 'sad! test no work'
+  }
+
+  return (
+    <React.Fragment>
+      <h2>Create a Lesson</h2>
+      <form onSubmit={createLesson}
+        action='/api/create_lesson' 
+        method='POST' encType='multipart/form-data'>
+        <section id="primaryLesson">
           <input 
-            id = 'my-file'
-            type='file' name='my-file' /> 
+            id = 'lesson-pic'
+            type='file' name='lesson-pic' /> 
           <input 
               className="new_lesson"
               type="text" 
@@ -56,15 +62,19 @@ function NewLesson() {
               onChange={(e) => setOverview(e.target.value)}
               value={overview} 
           /><br/>
-          {/* <section className='add-component'>
-              <button id='add-content'>Add Content to Lesson</button>
-          </section> */}
-          <input 
-            type='submit' 
-            />
-        </form> 
+        </section>
+        {/* Button should Add Component Div */}
+        <button type='button' 
+          onClick={unhideComponent}>Add Content to Lesson</button>
+        <LessonComponentCase unhideComponent/>
+        <input type='submit' 
+// onClick={addComponent}
+          />
+      </form> 
+      {/* Add a plus --> when clicked, adds a component */}
+      {/* Show a minus */}
 
-      </React.Fragment>
+    </React.Fragment>
 
-    )
+  )
 }

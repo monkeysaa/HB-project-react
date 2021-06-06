@@ -226,6 +226,46 @@ def get_lessons_json():
     return {"lessons": lessons_list}
 
 
+def is_YouTube_video(link):
+    """Check whether video contains YouTube domains"""
+
+    if "www.youtube.com" in link or "youtu.be" in link:
+        return True
+    return False
+
+
+def get_YouTube_ID(link): 
+    """ Take in youtube link and return the YouTube-allocated video ID
+
+    >>> get_YouTube_ID('https://www.youtube.com/watch?v=K1-nt5_bRlQ')
+    'K1-nt5_bRlQ'
+    >>> get_YouTube_ID('www.youtube.com/watch?v=K1-nt5_bRlQ')
+    'K1-nt5_bRlQ'
+    >>> get_YouTube_ID("https://youtu.be/X5EoUD-BIss?t=12")
+    'X5EoUD-BIss'
+    >>> get_YouTube_ID("https://www.youtube.com/watch?v=yAlDDoWfu3I&feature=emb_logo")
+    'yAlDDoWfu3I'
+    """
+    
+    if 'watch?v=' in link:
+        video_id = link.split('watch?v=')[1]
+    elif 'https://youtu.be/' in link:
+        video_id = link[17:]
+    
+    video_id = video_id.split('?')[0]
+    video_id = video_id.split('&')[0]
+
+    return video_id
+
+
+def handle_YouTube(link):
+    """ Take in link, determine whether YouTube, and if so, return YouTube dictionary"""
+    if is_YouTube_video(link):
+        yt_id = get_YouTube_ID(link)
+        return {'imgUrl': f"https://img.youtube.com/vi/{yt_id}/0.jpg",
+            'embed': "<iframe width='560' height='315' src='https://www.youtube.com/embed/{yt_id}' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>"}
+    
+
 @app.route('/api/create_lesson', methods=["POST"])
 def create_lesson():
     """Add title to lesson, creating new lesson if necessary."""
@@ -238,21 +278,25 @@ def create_lesson():
             'public': False
     }
 
-    # If photo, upload to CLoudinary and save link to imgUrl
-    if 'my-file' not in request.files:
+    # If photo, upload to CLoudinary and save link to lesson_data
+    if 'lesson-pic' not in request.files:
         lesson_data['imgUrl'] = "/static/img/placeholder.png"
     else: 
-        my_file = request.files['my-file']
+        my_file = request.files['lesson-pic']
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright')
         lesson_data['imgUrl'] = result['secure_url']
     
-    # save data to variables
-    if 'title' in request.form: 
+    # if title and overview, save them to lesson_data
+    if request.form['title'] != '':
         lesson_data['title'] = request.form['title']
-    if 'overview' in request.form:
+    if request.form['overview'] != '':
         lesson_data['overview'] = request.form['overview']
+    # TODO: Check whether link is youtube link. 
+    # if request.form['link'] != '':
+        #  handleVideo(link)
+        #  else handle other link
 
     db_lesson = crud.create_lesson(lesson_data)
     
@@ -274,6 +318,7 @@ def update_lesson():
     
     lesson_id = request.form['lesson_id']
     lesson = crud.get_lesson_by_id(lesson_id)
+
     # If photo, upload to CLoudinary and save link to imgUrl
     if 'my-file' in request.files:
         my_file = request.files['my-file']
@@ -282,7 +327,7 @@ def update_lesson():
                                         cloud_name='hackbright') 
         imgUrl = crud.assign_lesson_img(result['secure_url'], lesson_id)
 
-    # save other data to lesson
+    # update database with other info
     try: 
         if 'title' in request.form: 
             crud.update_lesson_title(lesson_id, request.form['title'])

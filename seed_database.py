@@ -99,6 +99,13 @@ for lesson in lesson_data:
             crud.assign_comp(comps_in_db[8], db_lesson)
             crud.assign_comp(comps_in_db[9], db_lesson)
             tag = crud.get_tag_by_name('Writing')
+            crud.assign_tag_to_lesson(tag, db_lesson), 
+    
+    elif db_lesson.title == 'Hoverboards and Superconductors':
+            crud.assign_comp(comps_in_db[10], db_lesson)
+            crud.assign_comp(comps_in_db[11], db_lesson)
+            tag = crud.get_tag_by_name('Science')
+            tag = crud.get_tag_by_name('Writing')
             crud.assign_tag_to_lesson(tag, db_lesson)
     
 

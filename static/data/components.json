@@ -8,7 +8,7 @@
     {
         "name": "Wolves of Yellowstone",
         "comp_type": "video",
-        "url": "https://www.nationalgeographic.org/media/wolves-yellowstone/#wolves-of-yellowstone",
+        "url": "https://res.cloudinary.com/dtpgi0zck/video/upload/q_auto/vc_vp9/v1/videos/Wolves%20of%20Yellowstone.webm?_s=vp-1.5.1",
         "imgUrl": "/static/img/wolves_of_yellowstone.jpg"
     },
     {
@@ -58,5 +58,17 @@
         "comp_type": "video",
         "url": "https://www.youtube.com/watch?v=K1-nt5_bRlQ",
         "imgUrl": ""
+    }, 
+    {
+        "name": "Superconductive Magnetic Levitation",
+        "comp_type": "video",
+        "url": "https://www.youtube.com/embed/X5EoUD-BIss?start=12",
+        "imgUrl": "https://img.youtube.com/vi/X5EoUD-BIss/0.jpg"
+    },
+    {
+        "name":"WIRED: How the Most Promising Hoverboards Actually Work",
+        "comp_type": "link",
+        "url": "https://www.wired.com/2015/10/how-the-most-promising-hoverboards-actually-work/",
+        "imgUrl": "https://www.wired.com/images/icons/logo-black.svg"
     }
 ]

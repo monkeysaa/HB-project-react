@@ -18,6 +18,12 @@
         "imgUrl": "/static/img/wolves_rivers.jpg"
     },
     {
+        "title": "Hoverboards and Superconductors",
+        "overview": "Is the Lexus hoverboard as awesome as it looks?",
+        "public": true,
+        "imgUrl": "/static/img/lexus-hoverboard.jpg"
+    },
+    {
         "title": "Call to action intro",
         "overview": "about writing CTAs",
         "public": true,

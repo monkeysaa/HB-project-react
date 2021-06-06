@@ -138,3 +138,43 @@ function DisplayTestLesson() {
         
 //     except: 
 //         return {'error': 'Server error'}
+
+
+// From base.html -- DROPDOWN
+// <!-- DON'T DELETE until you've figured out the hover drop-down stuff -->
+//     <!-- <nav class="navbar">
+//       <a class="navbar-brand" href="/" id="home"><i class="fa fa-home"></i></a>
+//       <a class="navbar-brand" id="profile_link"> Profile</a>
+//       <a class="navbar-brand" id="lessons_link">Lessons  </a>
+//       <a class="navbar-brand" id="users_link">Users</a>
+//       <form class="navbar-form form-inline navbar-right">
+//         <div class="input-group search-box">
+//           <input type="text" id="search" class="form-control"
+//           placeholder="Search here...">
+//           <span class="input-group-btn">
+//             <button type="button" class="btn btn-default">
+//               <i class="fa fa-search" style:></i></button>
+//           </span>
+//         </div>
+//       </form>
+//       <a data-toggle="dropdown" class="navbar-brand navbar-right" href="#" aria-expanded="true">
+//           <i class="fa fa-user-circle"></i>Login</a>
+//         <ul class="dropdown-menu">
+//           <li>
+//             <form class="form-inline login-form" action="/login" method="POST">
+//               <div class="input group">
+//                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
+//                 <input type="text" class="form-control" placeholder="Email" required>
+//               </div>
+//               <div class="input group">
+//                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+//                 <input type="text" class="form-control" placeholder="Password" required>
+//               </div>
+//               <button type="submit" class="btn btn-primary">Login</button>
+//             </form>
+//           </li>
+//         </ul>
+//         <a href="/signup" class="navbar-brand navbar-right" href="#" aria-expanded="true">
+//           <i class="fa fa-user-o"></i>Sign Up</a>
+//         </div>
+//     </nav> -->
