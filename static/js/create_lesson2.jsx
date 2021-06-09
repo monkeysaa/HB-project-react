@@ -6,17 +6,16 @@ function NewLesson() {
   // comps: An array of POJOs, each with data for a single lesson component. 
   const [comps, setComps] = React.useState([]); 
   
-  // an array of LessonComponent cards
-  let lessonComponents = [];
+  let compCards = [];   // an array of Lesson-Component cards to display
 
   for (const comp of comps) {
-    lessonComponents.push(
-      <CompTemplate
+    compCards.push(
+      <CompCard
         key={comp.id}
         id={comp.id}
         type={comp.type}
         img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
-        url={comp.url}  // e.g. video link
+        url={comp.url}  // e.g. link or embedded video link
         text={comp.text}
       />
     );
@@ -100,7 +99,7 @@ function NewLesson() {
         <img id='placeholder' src='/static/img/placeholder.png' hidden/>
         <h3 className="new_lesson">{overview}</h3>
         <div id="comps">
-          {lessonComponents}
+          {compCards}
         </div>
       </section>
 

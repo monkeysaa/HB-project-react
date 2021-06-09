@@ -30,11 +30,13 @@ function ShowSingleLesson() {
   
     for (const comp of comps) {
       compCards.push(
-        <CompTemplate
-          key={comp.component}
-          // title={comp.component}
-          img={comp.c_img}
-          link={comp.c_link}
+        <CompCard
+          key={comp.id}
+          id={comp.id}
+          type={comp.type}
+          img={comp.imgUrl}
+          link={comp.url}
+          text={comp.text}
         />
       );
     }

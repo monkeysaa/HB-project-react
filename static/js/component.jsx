@@ -23,11 +23,11 @@ function DisplaySavedComps(props, lessonID) {
     comps.push(
       <div>
         <p>BOOOO, We are here :(</p>
-      <CompTemplate
+      <CompCard
         key={value.comp_id}
         // title={comp.component}
         img={value.imgUrl}
-        link={value.url}
+        url={value.url}
       />
       </div>
 
@@ -39,18 +39,20 @@ function DisplaySavedComps(props, lessonID) {
 // Nice to have: Create cards for Components to drag them around. 
 function ComponentInputCase({comps, setComps}) {
   const [inputComps, setInputComps] = React.useState([0]);
-  const [link, setLink] = React.useState('');
+  const [url, setUrl] = React.useState('');
   const [imgUrl, setImgUrl] = React.useState('');
   const compsHTML = [];
 
+  // TODO: Remove this loop, as only one place to enter Component. 
+  // TODO: On Component display, create a way to delete or move components
   let key = 0;
   for (let comp of inputComps) {
     let param = key
     compsHTML.push(
       <div key={key}>
-        <CreateComp link={link} setLink={setLink} comps={comps} setComps={setComps}/>
-        <button type='button' onClick={() => removeComponent(param)}>Delete</button>
-        <p>Save this link: {`${link}`}</p> 
+        <CreateComp url={url} setUrl={setUrl} comps={comps} setComps={setComps}/>
+        {/* <button type='button' onClick={() => removeComponent(param)}> <i className="fa fa-trash" /> </button> */}
+        <p>Paste a link</p> 
       </div>
     );
     key += 1;
@@ -87,7 +89,7 @@ function ComponentInputCase({comps, setComps}) {
   return (
     <React.Fragment>
       {compsHTML}
-      <button type='button' onClick={() => addComponent()}>Add Component</button>
+      {/* <button type='button' onClick={() => addComponent()}>Add Component</button> */}
       {/* Buttons to add new button */}
       {/* Buttons to move around existing components */}
     </React.Fragment>
@@ -101,20 +103,20 @@ function ComponentInputCase({comps, setComps}) {
 
 // function CompAdded()
 
-function CreateComp({link, setLink, comps, setComps}) {
+function CreateComp({url, setUrl, comps, setComps}) {
   const [tempComps, setTempComps] = React.useState([]);
 
   // Saves to Database
   const saveComp = () => {
  
-    if(link === "") {
+    if(url === "") {
       alert('Update this field before adding.');
     }
 
     else {
       fetch("/api/create_component", {
         method: "POST",
-        body: JSON.stringify({link}),
+        body: JSON.stringify({url}),
         headers: {
           "Content-Type": "application/json"
         },
@@ -135,13 +137,14 @@ function CreateComp({link, setLink, comps, setComps}) {
         <p>Add a New Lesson Component</p>
         <label htmlFor="componentInput"></label>
         <input 
-              className="comp_link"
-              type="text" 
-              placeholder="Paste full website url here"
-              onChange={(e) => setLink(e.target.value)}
-              value={link} 
-          />
-         <button type='button' onClick={saveComp }>Add</button>
+          className="comp_link"
+          type="text" 
+          placeholder="Paste full website url here"
+          onChange={(e) => setUrl(e.target.value)}
+          value={url} 
+        />
+        <button type='button' onClick={saveComp }><i className="fa fa-check-circle"/></button>
+
 
     </React.Fragment>
   )
@@ -178,41 +181,53 @@ function CreateComp({link, setLink, comps, setComps}) {
 //   );
 // }
 
-function CompTemplate(props) {
+function VidFrame({props, video_id, img_id}) {
+  console.log(props.url, props.type, props.id);
+  console.log(img_id, video_id);
+
+
+  React.useEffect(() => {
+    if (props.type === 'video') {
+      document.getElementById(img_id).setAttribute("hidden", true);
+      console.log('test1');
+    }
+    else {
+      document.getElementById(video_id).innerHTML = "";
+      console.log('test2');
+    }
+  });
+
+  return (
+    <iframe 
+      id={video_id} 
+      width='560' 
+      height='315' 
+      src={`${props.url}`} 
+      title={props.type} 
+      frameBorder='0' 
+      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
+      allowFullScreen 
+    ></iframe>
+  );
+}
+
+function CompCard(props) {
+  // uses props.id, type, url, img
 
   console.log(props.id);
   const video_id = `comp_video_${props.id}`;
   const img_id = `comp_img_${props.id}`;
 
-  React.useEffect(() => {
-    if (props.type === 'video') {
-      document.getElementById(img_id).setAttribute("hidden", true);
-      document.getElementById(video_id).removeAttribute("hidden");
-    }
-  });
-
-
   return (
     <div className="component" id={props.id}>
       <p> <a href={`${props.url}`}> {props.type} </a> </p>
       <img id={img_id} src={props.img} />
-      <iframe 
-        id={video_id} 
-        width='560' 
-        height='315' 
-        src={`${props.url}`} 
-        title={props.title} 
-        frameBorder='0' 
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
-        allowFullScreen 
-        hidden
-      >
-      </iframe>
+      <VidFrame props={props} video_id={video_id} img_id={img_id}/>
     </div>
   );
 }
 
-function TestCompTemplate(props) {
+function TestCompCard(props) {
   const c_link = 'https://www.youtube.com/watch?v=X5EoUD-BIss';
   return (
     <div className="component">

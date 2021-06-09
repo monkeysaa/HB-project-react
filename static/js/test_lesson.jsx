@@ -14,6 +14,7 @@ function DisplayTestLesson() {
       fetch(`/api/lessons/${lesson_id}.json`)
           .then((response) => response.json())
           .then((data) => {
+            console.log(data);
             setLesson(data.lesson[0]);
             setComps(data.lesson.slice(1,-1));
             setTitle(data.lesson[0].title);
@@ -22,22 +23,16 @@ function DisplayTestLesson() {
             })
     }, []); 
   
-    // // These features of a lesson can be edited. Handle separately.
-    // React.useEffect(() => {
-    //   setTitle(lesson.title);
-    //   setLessonPic(lesson.imgUrl);
-    // });
-  
     const compCards = [];
   
     for (const comp of comps) {
       console.log(comp);
       compCards.push(
-        <TestCompTemplate
-          key={comp.component}
-          title={comp.component}
-          img={comp.c_img}
-          link={comp.c_link}
+        <CompCard
+          key={comp.id}
+          title={comp.id}
+          img={comp.imgUrl}
+          url={comp.url}
         />
       );
     }

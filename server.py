@@ -3,7 +3,7 @@
 from flask import Flask
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
-from youtube import (is_YouTube_video, get_YouTube_ID, handle_YouTube)
+from process_link import (handle_YouTube, scrape_data)
 import cloudinary.uploader
 import crud
 import boto3
@@ -196,9 +196,11 @@ def get_lesson_json(lesson_id):
     for comp in lesson.comps:
         lesson_data.append(
             {
-                "component": comp.name,
-                "c_link": comp.url,
-                "c_img": comp.imgUrl,
+                "id": comp.comp_id,
+                "url": comp.url,
+                "img": comp.imgUrl,
+                "type": comp.comp_type,
+                "text": comp.text
             }
         )
 
@@ -288,13 +290,14 @@ def create_component():
     """Create new component and save to DB."""
 
     data = request.get_json()
-    c_type = 'link' # TODO: data['type']
-    link = data['link']
+    c_type = 'url' # TODO: data['type']
+    url = data['url']
 
-    vid_data = handle_YouTube(link)
+    url_data = scrape_data(url)
+    print(url_data)
+    vid_data = handle_YouTube(url)
     if 'yt_id' in vid_data:
         c_type = 'video'
-        print('This is a video.')
     user_id = session['user_id']
 
     new_comp = crud.create_comp(name="Test", comp_type=c_type, url = vid_data['url'], imgUrl = vid_data['imgUrl'], )
@@ -316,7 +319,7 @@ def update_lesson():
     lesson_id = request.form['lesson_id']
     lesson = crud.get_lesson_by_id(lesson_id)
 
-    # If photo, upload to CLoudinary and save link to imgUrl
+    # If photo, upload to CLoudinary and save to imgUrl
     if 'my-file' in request.files:
         my_file = request.files['my-file']
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
