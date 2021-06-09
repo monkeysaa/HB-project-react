@@ -24,8 +24,9 @@ def parse_data(source_plus):
 
 def scrape_data(url):
     # get title, then strip title and source -- divided by pipe, dash, dot·
-    reqs = requests.get(url)
-    soup = BeautifulSoup(reqs.text, 'html.parser')
+    raw_html = requests.get(url)
+    soup = BeautifulSoup(raw_html.text, 'html.parser')
+
 
     try: 
         source_plus = soup.title.string.strip()
@@ -33,26 +34,27 @@ def scrape_data(url):
 
         parsed = (parse_data(source_plus))
         title = parsed['title']
-        source = parsed['source']
+        print(f'Title line 36: ${title}')
+        web_source = parsed['source']
 
     except: 
         title = soup.title.string.strip()
-        source = None
+        web_source = None
+    
+    import pdb; pdb.set_trace();
+    try: 
+        description_plus = soup.select('meta[name="description"]')
+        description = description_plus[0].attrs["content"]
+    except: 
+        description = None
 
     try: 
-        icon_link = soup.find("link", rel="shortcut icon")
+        icon_link = soup.find('link', rel='shortcut icon')
         favicon = icon_link['href']
     except: 
         favicon = None
-    for tag in soup.find_all("meta"):
-        if tag.get("property", None) == "og:title":
-            title = tag.get("content", None)
-        else: title = None
-        if tag.get("property", None) == "og:description":
-            description = tag.get("content", None)
-        else: description = None
 
-    return {'title': title, 'source': source, 'description': description, 
+    return {'title': title, 'source': web_source, 'description': description, 
             'icon_img': favicon}
 
 

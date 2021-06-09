@@ -294,14 +294,13 @@ def create_component():
     url = data['url']
 
     url_data = scrape_data(url)
-    print(url_data)
     vid_data = handle_YouTube(url)
     if 'yt_id' in vid_data:
         c_type = 'video'
     user_id = session['user_id']
 
     new_comp = crud.create_comp(name="Test", comp_type=c_type, url = vid_data['url'], imgUrl = vid_data['imgUrl'], )
-
+    
     return {'success': True, 
             'id': new_comp.comp_id,
             'type': new_comp.comp_type,
