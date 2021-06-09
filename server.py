@@ -266,25 +266,48 @@ def create_lesson():
         print('Except something done broke')
         return {'success': False}
 
-# One endpoint for Create Component 
+# COMPONENT ENDPOINTS
+@app.route('/api/get_comps/<lesson_id>')
+def get_comps(lesson_id):
+    """Retrieve all components for a given lesson id"""
+    comp_dict = {}
+
+    lesson = crud.get_lesson_by_id(1)
+    for comp in lesson.comps:
+        comp_dict[comp.comp_id] = {}
+        comp_dict[comp.comp_id]['id'] = comp.comp_id
+        comp_dict[comp.comp_id]['c_type'] = comp.comp_type
+        comp_dict[comp.comp_id]['url'] = comp.url
+        comp_dict[comp.comp_id]['imgUrl'] = comp.imgUrl
+
+    print(comp_dict)
+    return jsonify([comp_dict])
+
 @app.route('/api/create_component', methods=["POST"])
 def create_component(): 
     """Create new component and save to DB."""
 
-    # data = request.get_json()
-    # comp_link = data.comp_link
-    comp_link = 'www.youtube.com/watch?v=K1-nt5_bRlQ' #TODO: DELETE!!
+    data = request.get_json()
+    c_type = 'link' # TODO: data['type']
+    link = data['link']
 
-    # Other YouTube functions needed?
-    vid_data = handle_YouTube(comp_link)
+    vid_data = handle_YouTube(link)
+    if 'yt_id' in vid_data:
+        c_type = 'video'
+        print('This is a video.')
     user_id = session['user_id']
 
-    new_comp = crud.create_comp(name="Test", comp_type='link', url = vid_data['imgUrl'], imgUrl = vid_data['imgUrl'], )
-    print(new_comp)
-    return {'success': 'uncertain'}
+    new_comp = crud.create_comp(name="Test", comp_type=c_type, url = vid_data['url'], imgUrl = vid_data['imgUrl'], )
 
-# One endpoint for Add Component to Lesson
-# def add_comp_to_lesson():
+    return {'success': True, 
+            'id': new_comp.comp_id,
+            'type': new_comp.comp_type,
+            'url': new_comp.url, 
+            'imgUrl': new_comp.imgUrl,
+            'text': new_comp.text}
+
+# Endpoint to link Component to Lesson
+# def link_comp_to_lesson():
 
 @app.route('/api/update_lesson', methods=["POST"])
 def update_lesson():

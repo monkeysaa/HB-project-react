@@ -36,10 +36,36 @@ nav button {
 }
 
 .new_lesson {
-    width: 500px;
+    margin: auto;
     text-align: center;
-    font-size: 20px;
+    border: solid;
 }
+
+/* Lessons and Components */
+img {
+    display: block;
+    margin: auto; 
+}
+.create-lesson {
+    display: flex;
+}
+
+/* Brackets mean an element with an attribute whose type=text */
+.lesson-inputs [type=text]{
+    width: 75%;
+}
+
+/* Assigns to direct children of create-lessons */
+.create-lesson > * {
+    flex: 1;
+}
+    /* 
+    given total of 1000, 
+    flex: 50px (will assign the 50px
+    flex: 2 (split remainder 3 ways, allocating 2:1 for additionals
+    flex: 1 */
+    /* can assign as auto, number, as #: ___ and then it will allocate the rest automatically */
+
 
 [hidden] {
     display: none;

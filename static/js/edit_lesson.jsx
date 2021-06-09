@@ -1,14 +1,14 @@
 "use strict";
 
-function CompTemplate(props) {
-    return (
-      <div className="component">
-        <p> {props.title} </p>
-        <img src={props.img} />
-        <a href={`${props.link}`}> </a>
-      </div>
-    );
-  }
+// function CompTemplate(props) {
+//     return (
+//       <div className="component">
+//         <p> {props.title} </p>
+//         <img src={props.img} />
+//         <a href={`${props.link}`}> </a>
+//       </div>
+//     );
+//   }
 
 
 function EditLesson() {

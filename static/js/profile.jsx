@@ -13,7 +13,19 @@ function LessonTemplate(props) {
       </div>
     );
   }
-  
+
+function LessonCard(props) {
+    return (
+      <div className="card">
+        <div className="card_body">
+          <img src="" />
+          <h2 className="card_title"></h2>
+          <p className="card_description"></p>
+        </div>
+        <button className="card_btn">View Lesson</button>
+      </div>
+    )
+  }
 
 function Profile() {
     const [username, setUsername] = React.useState("");

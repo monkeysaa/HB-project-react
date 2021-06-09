@@ -1,17 +1,5 @@
 "use strict";
 
-function CompTemplate(props) {
-    return (
-      <div className="component">
-        <p> <a href={`${props.link}`}> {props.title} </a> </p>
-        <img src={props.img} />
-        <iframe width='560' height='315' src={`${props.link}`} title={props.title} frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
-        <p>hello</p>
-        <iframe width='560' height='315' src='https://player.pbs.org/viralplayer/3054932177/' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
-      </div>
-    );
-  }
-
 function ShowSingleLesson() {
     const [lesson, setLesson] = React.useState([]);
     const [title, setTitle] = React.useState('');
@@ -20,7 +8,7 @@ function ShowSingleLesson() {
     const [overview, setOverview] = React.useState('');
 
     // If I want this to be props rather than a state var, how/where do I set that up? 
-    const [author, setAuthor] = React.useState('')
+    const [author, setAuthor] = React.useState('');
 
 
     let { lesson_id } = useParams();
@@ -29,7 +17,6 @@ function ShowSingleLesson() {
       fetch(`/api/lessons/${lesson_id}.json`)
           .then((response) => response.json())
           .then((data) => {
-            // console.log(data)
             setLesson(data.lesson[0]);
             setAuthor(data.lesson[0].author);
             setTitle(data.lesson[0].title);

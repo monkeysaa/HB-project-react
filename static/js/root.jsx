@@ -70,4 +70,4 @@ ReactDOM.render(
   <Router>
     <Controller />
   </Router>,
-  document.getElementById('task'));
+  document.getElementById('root'));
