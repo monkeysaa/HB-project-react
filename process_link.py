@@ -34,14 +34,12 @@ def scrape_data(url):
 
         parsed = (parse_data(source_plus))
         title = parsed['title']
-        print(f'Title line 36: ${title}')
         web_source = parsed['source']
 
     except: 
         title = soup.title.string.strip()
         web_source = None
     
-    import pdb; pdb.set_trace();
     try: 
         description_plus = soup.select('meta[name="description"]')
         description = description_plus[0].attrs["content"]
@@ -49,13 +47,24 @@ def scrape_data(url):
         description = None
 
     try: 
-        icon_link = soup.find('link', rel='shortcut icon')
+        icon_link = soup.find('link', rel='icon')
         favicon = icon_link['href']
     except: 
         favicon = None
 
     return {'title': title, 'source': web_source, 'description': description, 
             'icon_img': favicon}
+
+# TODO: Build function to check whether a url won't display in iFrame 
+# def isIFrameDisabled(url):
+#     try: 
+        # get headers
+        # Make sure it's lowercase
+        # Check Content-Security-Policy
+        # If Content-SEcurity-Policy set --> return True
+        # Check X-Frame Options
+        # Elif X-Frame set to DENY OR SAMEORIGIN --> return True
+        # Else return false
 
 
 def is_YouTube_video(url):

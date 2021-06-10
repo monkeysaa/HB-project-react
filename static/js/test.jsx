@@ -270,3 +270,62 @@ ReactDOM.render(
 //     <button className="card_btn">View Lesson</button>
 //   </div>
 // );
+
+
+// function LessonComponent({props, lessonID}) {
+//     const [id, setID] = React.useState(null); // This will tell us whether or not it exists in DB
+    
+//     const components = [];
+
+//     for (comp of comps) {
+//       let param = key;
+//       if (id) {
+//         components.push(
+//           <DisplaySavedComps lessonID = {lessonID} />
+//         );
+//       }
+//       components.push(
+//         <CompTemplate 
+//           key={key}
+//           link={comp.url}
+//         />
+//       );
+//       key += 1;
+
+//     }
+
+
+//     return (
+//       <React.Fragment>
+//         <div>Lesson Components</div>
+//         <div> { components } </div>
+//         {/* <iframe width='560' height='315' src='https://player.pbs.org/viralplayer/3054932177/' title='YouTube video player' frameBorder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowFullScreen></iframe> */}
+//       </React.Fragment>
+//     );
+
+// }
+
+  // function CompListItem(props) {
+  //   return  <p> <a href={`${props.link}`}> {props.link} </a> </p>
+  
+  // }
+
+  // function CompList(props) {
+  //   const [compList, setCompList] = React.useState([]);
+
+
+// Component Lifecycle: 
+// Creation: User uploads text or files. 
+// OR User makes use of someone else's component by favoriting. 
+
+// NewComponent. If it doesn't exist...  Has button to save to DB. 
+// Component. If it's in the database, need a call to DB to get info, and then 
+//             either a display or we'll just need it to be present / accessible
+
+
+// Double Linked List  
+//   Generate ids to CreateLessonComps section eg. lowercase --> uppercase alphabet
+//   Nodes correspond div ids or sections ids "a-display", "a-input"
+//   Each node will have an ID, a type, the data of the component. 
+//       handling files: https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
+//

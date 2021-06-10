@@ -294,19 +294,30 @@ def create_component():
     url = data['url']
 
     url_data = scrape_data(url)
+    # url_data is of form: {'title': "", 'source': '', 'description': '',  'icon_img': ''}
+
     vid_data = handle_YouTube(url)
     if 'yt_id' in vid_data:
         c_type = 'video'
     user_id = session['user_id']
 
-    new_comp = crud.create_comp(name="Test", comp_type=c_type, url = vid_data['url'], imgUrl = vid_data['imgUrl'], )
-    
+    new_comp = crud.create_comp(c_type, vid_data['url'], vid_data['imgUrl'])
+    new_comp.title = url_data['title']
+    new_comp.source = url_data['source']
+    new_comp.description = url_data['description']
+    new_comp.icon_img = url_data['icon_img']
+
     return {'success': True, 
             'id': new_comp.comp_id,
             'type': new_comp.comp_type,
             'url': new_comp.url, 
             'imgUrl': new_comp.imgUrl,
-            'text': new_comp.text}
+            'text': new_comp.text,
+            'title': new_comp.title,
+            'source': new_comp.source,
+            'icon_img': new_comp.icon_img,
+            'description': new_comp.description
+            }
 
 # Endpoint to link Component to Lesson
 # def link_comp_to_lesson():

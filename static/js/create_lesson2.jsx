@@ -17,6 +17,10 @@ function NewLesson() {
         img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
         url={comp.url}  // e.g. link or embedded video link
         text={comp.text}
+        title={comp.title}
+        source={comp.source}
+        icon_img={comp.icon_img}
+        description={comp.description}
       />
     );
   }
@@ -34,6 +38,7 @@ function NewLesson() {
     formData.append('lesson-pic', file);
     formData.append('title', title);
     formData.append('overview', overview);
+    formData.append('comps', comps);
 
     fetch('/api/create_lesson', {
         method: 'POST',
@@ -94,7 +99,7 @@ function NewLesson() {
       {/* Show a minus */}
       </section>
       <section className="lesson-display">
-        <p>Display a Lesson</p>
+        <p hidden>Display a Lesson</p>
         <h2 className="new_lesson">{title}</h2>
         <img id='placeholder' src='/static/img/placeholder.png' hidden/>
         <h3 className="new_lesson">{overview}</h3>

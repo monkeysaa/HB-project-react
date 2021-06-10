@@ -35,6 +35,17 @@ function DisplaySavedComps(props, lessonID) {
   }
 }
 
+// TODO: If website's X-Frames set to DENY, do not render iFrame. 
+// X-Frame-Options listed within the HTTP response header
+
+const displayImageInput = (id) => {
+  // remove hidden attribute on an element
+  console.log(id);
+  if (document.getElementById(id).hidden) {
+    document.getElementById(id).removeAttribute("hidden");
+  } 
+
+}
 
 // Nice to have: Create cards for Components to drag them around. 
 function ComponentInputCase({comps, setComps}) {
@@ -51,6 +62,12 @@ function ComponentInputCase({comps, setComps}) {
     compsHTML.push(
       <div key={key}>
         <CreateComp url={url} setUrl={setUrl} comps={comps} setComps={setComps}/>
+        {/* <button type="button" onClick{() => displayImageInput}> <i className="fa fa-image" /> </button> */}
+        <input 
+          id = 'comp-pic'
+          type = 'file'
+          name = 'comp-pic' 
+        ></input>
         {/* <button type='button' onClick={() => removeComponent(param)}> <i className="fa fa-trash" /> </button> */}
         <p>Paste a link</p> 
       </div>
@@ -153,45 +170,45 @@ function CreateComp({url, setUrl, comps, setComps}) {
 // #*#######################################################################*#
 // #*#                          DISPLAY SAVED COMPONENT                    #*#
 // #*#######################################################################*#
-// function CompCard(props) {
+function CompCard(props) {
+  // uses props.id, type, url, img
 
-//   const videoElement = `comp_card_${props.id}`;
+  console.log(props.id);
+  const video_id = `comp_video_${props.id}`;
+  const img_id = `comp_img_${props.id}`;
 
-//   if (props.type == 'video') {
-//     document.getElementById(videoElement).removeAttribute("hidden");
-//     console.log('is video');
-//   }
+  return (
+    <section className="component" id={props.id}>
+      <h3> <a href={`${props.url}`}> {props.title} Title </a> </h3>
 
-//   return (
-//     <div className="component-card">
-//       <img src={props.img} />
-//       <iframe 
-//         id={`comp_card_${props.id}`} 
-//         width='560' height='315' 
-//         src={`${props.link}`} 
-//         title={props.title} 
-//         frameBorder='0' 
-//         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
-//         allowFullScreen 
-//         hidden>
-//       </iframe> 
-//       <p> <a href={`${props.link}`}> {`${props.type}`} </a> </p>
-//       <p className={props.text}></p>
-//     </div>
-//   );
-// }
+      {/* will display either img OR iFrame, but not both */}
+      <img id={img_id} src={props.img}/> 
+      <IFrame props={props} video_id={video_id} img_id={img_id}/>
+      <p className='source'><img src={`${props.icon_img}`}/> {props.source}</p>
+      <p> {props.description} </p>
+      <p className='comp-btns'> 
+        <button 
+          type='button' 
+          onClick={() => console.log('figure out how to trash comp')}> 
+          <i className="fa fa-trash" /> 
+        </button>
+      </p>
+    </section>
+  );
+}
 
-function VidFrame({props, video_id, img_id}) {
-  console.log(props.url, props.type, props.id);
-  console.log(img_id, video_id);
 
+function IFrame({props, video_id, img_id}) {
 
   React.useEffect(() => {
-    if (props.type === 'video') {
+    if (props.type === 'video' | props.type === 'url') {
+
+      // TODO: if iFrames are disabled, show placeholder image rather than iFrame
+      // else... 
       document.getElementById(img_id).setAttribute("hidden", true);
       console.log('test1');
     }
-    else {
+    else {  // handles case of files, etc
       document.getElementById(video_id).innerHTML = "";
       console.log('test2');
     }
@@ -211,21 +228,6 @@ function VidFrame({props, video_id, img_id}) {
   );
 }
 
-function CompCard(props) {
-  // uses props.id, type, url, img
-
-  console.log(props.id);
-  const video_id = `comp_video_${props.id}`;
-  const img_id = `comp_img_${props.id}`;
-
-  return (
-    <div className="component" id={props.id}>
-      <p> <a href={`${props.url}`}> {props.type} </a> </p>
-      <img id={img_id} src={props.img} />
-      <VidFrame props={props} video_id={video_id} img_id={img_id}/>
-    </div>
-  );
-}
 
 function TestCompCard(props) {
   const c_link = 'https://www.youtube.com/watch?v=X5EoUD-BIss';
@@ -251,61 +253,3 @@ function TestCompCard(props) {
 
 // https://www.youtube.com/watch?v=4mz-dJFkmrk
 
-
-// function LessonComponent({props, lessonID}) {
-//     const [id, setID] = React.useState(null); // This will tell us whether or not it exists in DB
-    
-//     const components = [];
-
-//     for (comp of comps) {
-//       let param = key;
-//       if (id) {
-//         components.push(
-//           <DisplaySavedComps lessonID = {lessonID} />
-//         );
-//       }
-//       components.push(
-//         <CompTemplate 
-//           key={key}
-//           link={comp.url}
-//         />
-//       );
-//       key += 1;
-
-//     }
-
-
-//     return (
-//       <React.Fragment>
-//         <div>Lesson Components</div>
-//         <div> { components } </div>
-//         {/* <iframe width='560' height='315' src='https://player.pbs.org/viralplayer/3054932177/' title='YouTube video player' frameBorder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowFullScreen></iframe> */}
-//       </React.Fragment>
-//     );
-
-// }
-
-  // function CompListItem(props) {
-  //   return  <p> <a href={`${props.link}`}> {props.link} </a> </p>
-  
-  // }
-
-  // function CompList(props) {
-  //   const [compList, setCompList] = React.useState([]);
-
-
-// Component Lifecycle: 
-// Creation: User uploads text or files. 
-// OR User makes use of someone else's component by favoriting. 
-
-// NewComponent. If it doesn't exist...  Has button to save to DB. 
-// Component. If it's in the database, need a call to DB to get info, and then 
-//             either a display or we'll just need it to be present / accessible
-
-
-// Double Linked List  
-//   Generate ids to CreateLessonComps section eg. lowercase --> uppercase alphabet
-//   Nodes correspond div ids or sections ids "a-display", "a-input"
-//   Each node will have an ID, a type, the data of the component. 
-//       handling files: https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
-//

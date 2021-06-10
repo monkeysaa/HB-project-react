@@ -33,11 +33,10 @@ def create_lesson(lesson_dict):
     return new_lesson
 
 
-def create_comp(name, comp_type, url = None, imgUrl=None, text = None, vid_length = None):
+def create_comp(comp_type, url = None, imgUrl = None):
     """Create and return a new lesson."""
 
-    new_component = Comp(name=name, comp_type=comp_type, 
-                        url=url, imgUrl=imgUrl, vid_length=vid_length)
+    new_component = Comp(comp_type=comp_type, url=url, imgUrl=imgUrl)
     
     db.session.add(new_component)
     db.session.commit()

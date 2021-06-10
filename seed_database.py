@@ -35,13 +35,10 @@ with open('static/data/components.json') as f:
 comps_in_db = []
 for comp in comp_data:
     #unpack each component in comp_data from json file
-    name, comp_type, url, imgUrl = (comp['name'],
-                            comp['comp_type'],
-                            comp['url'],
-                            comp['imgUrl'])
+    comp_type, url, imgUrl = (comp['comp_type'], comp['url'], comp['imgUrl'])
 
     # create a component and append it to comps_in_db
-    db_comp = crud.create_comp(name, comp_type, url, imgUrl)
+    db_comp = crud.create_comp(comp_type, url, imgUrl)
     comps_in_db.append(db_comp)
 
 # Create fake tags, store them in a list so we can assign them later...

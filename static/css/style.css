@@ -1,4 +1,6 @@
-/* navigation */
+/*######################################################################
+/*##                          Nav Styling                             ##
+/*#####################################################################*/
 nav {
     color: #fff;
     font-size: 130%;
@@ -35,17 +37,54 @@ nav button {
     border-radius: 0 4px 4px 0;
 }
 
+/*######################################################################
+/*##                          Page-Wide Styling                       ##
+/*#####################################################################*/
+
+img {
+    display: block;
+    margin: auto; 
+}
+
+[hidden] {
+    display: none;
+}
+
+body {
+    background: white;
+    color: rgb(42 46 51);
+    font-family: 'Varela Round', sans-serif;
+}
+
+main {
+    padding: 2rem;
+}
+
+.form-inline {
+    display: inline-block;
+}
+
+.fa {
+    padding-left: 0em 1em;
+    /* padding-left: .5em; */
+    /* text-align: center; */
+}
+
+/*######################################################################
+/*##                          Lesson Styling                          ##
+/*#####################################################################*/
+.lesson img {
+    border-radius: 8px;
+    width: 550px; 
+    height: 350px;
+}
+
 .new_lesson {
     margin: auto;
     text-align: center;
     border: solid;
 }
 
-/* Lessons and Components */
-img {
-    display: block;
-    margin: auto; 
-}
 .create-lesson {
     display: flex;
 }
@@ -66,21 +105,40 @@ img {
     flex: 1 */
     /* can assign as auto, number, as #: ___ and then it will allocate the rest automatically */
 
-
-[hidden] {
-    display: none;
+/*######################################################################
+/*##                          Component Styling                       ##
+/*#####################################################################*/
+.component {
+    display: flex;
+    flex-flow: column; 
+    /* flex-flow: column makes children stack vertically. */
+    /* can make these wrap rather than shrinking */
 }
 
-/* other stuff */
-
-.lesson img {
-    border-radius: 8px;
-    width: 550px; 
-    height: 350px;
+.component img, .component iframe {
+    order: -1;
+    /* The visual layout will be different than conceptual, eg. headline comes first */
+    /* This makes it come first in the column */
 }
 
-#pdf-div {
-    display: none;
+.component > * {
+    margin: 0;
+}
+
+.component > :not(img, iframe) {
+    padding: 0.75rem 1rem;
+}
+
+.source > img {
+    display: inline;
+}
+
+.comp-btns {
+    text-align: right;
+}
+
+.comp-btns > button {
+    margin: 0 .5em; 
 }
 
 img.comp-img {
@@ -89,25 +147,9 @@ img.comp-img {
     height: 350px;
 }
 
-body {
-    background: white;
-    color: rgb(42 46 51);
-    font-family: 'Varela Round', sans-serif;
-}
 
-main {
-    padding: 2rem;
-}
 
-.form-inline {
-    display: inline-block;
-}
-
-.fa {
-    padding-left: 0em 1em;
-}
-
-.nav > * {
+/* .nav > * {
     padding-inline-start: 2 em 0;
 }
 .navbar {
@@ -305,9 +347,5 @@ main {
 
 .input-group-addon {
     padding-right: 1.5em;
-}
+} */
 
-.fa {
-    padding-left: .5em;
-    text-align: center;
-}
