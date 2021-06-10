@@ -37,8 +37,12 @@ def scrape_data(url):
         web_source = parsed['source']
 
     except: 
-        title = soup.title.string.strip()
         web_source = None
+    
+    try:
+        title = soup.title.string.strip()
+    except: 
+        title = None
     
     try: 
         description_plus = soup.select('meta[name="description"]')

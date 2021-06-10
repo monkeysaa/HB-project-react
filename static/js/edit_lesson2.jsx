@@ -19,9 +19,6 @@ function EditLesson() {
         setLessonPic(data.lesson[0].imgUrl);
         setOverview(data.lesson[0].overview);
       })
-      // .then(() => {
-      // // const [comps, setComps] = React.useState([]);
-      // })
     }, []);
 
     function handleEdit() {

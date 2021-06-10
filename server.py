@@ -177,10 +177,9 @@ def get_lesson_json(lesson_id):
     lesson = crud.get_lesson_by_id(lesson_id)
 
     if lesson.imgUrl == None:
-        lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
+        lesson.imgUrl = '/static/img/img1.jpg'
     
     lesson_data = []
-    comp_data = lesson.comps
 
     # Add lesson description, etc
     lesson_data.append(
@@ -197,10 +196,14 @@ def get_lesson_json(lesson_id):
         lesson_data.append(
             {
                 "id": comp.comp_id,
+                "type": comp.comp_type,
                 "url": comp.url,
                 "img": comp.imgUrl,
-                "type": comp.comp_type,
-                "text": comp.text
+                "text": comp.text,
+                "title": comp.title,
+                "source": comp.source,
+                "icon_img": comp.icon_img,
+                "description": comp.description
             }
         )
 
@@ -242,7 +245,7 @@ def create_lesson():
             'imgUrl': None,
             'public': False
     }
-    import pdb; pdb.set_trace()
+
     # If photo, upload to CLoudinary and save link to lesson_data
     if 'lesson-pic' not in request.files:
         lesson_data['imgUrl'] = "/static/img/placeholder.png"
@@ -301,7 +304,11 @@ def create_component():
     c_type = 'url' # TODO: data['type']
     url = data['url']
 
-    url_data = scrape_data(url) # {'title': "", 'source': "", ...etc}
+    try:    # Data scraping experimental; this function is likely to fail.
+        url_data = scrape_data(url) # {'title': "", 'source': "", ...etc}
+    except: 
+        url_data = {'title': None, 'source': None, 'description': None, 'icon_img': None}
+
     vid_data = handle_YouTube(url) #{'type': 'video', 'url': "", 'imgUrl': ""}
     if 'yt_id' not in vid_data:
         vid_data['yt_id'] = None

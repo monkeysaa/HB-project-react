@@ -81,7 +81,6 @@ function ComponentInputCase({comps, setComps}) {
 // function CompAdded()
 
 function CreateComp({url, setUrl, comps, setComps}) {
-  const [tempComps, setTempComps] = React.useState([]);
 
   // Saves to Database
   const saveComp = () => {
@@ -133,6 +132,33 @@ function CreateComp({url, setUrl, comps, setComps}) {
 // #*#######################################################################*#
 // #*#                          DISPLAY NEW COMPONENT                      #*#
 // #*#######################################################################*#
+function CompContainer({comps}) {
+
+  const compCards = [];
+  
+  for (const comp of comps) {
+    compCards.push(
+      <CompCard
+        key={comp.id}
+        id={comp.id}
+        type={comp.type}
+        url={comp.url} // e.g. link or embedded video link
+        img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
+        text={comp.text}
+        title={comp.title}
+        source={comp.source}
+        icon_img={comp.icon_img}
+        description={comp.description}
+      />
+    );
+  }
+
+  return (
+    <div>{compCards}</div>
+
+  );
+}
+
 function CompCard(props) {
   // uses props.id, type, url, img
 
@@ -142,7 +168,7 @@ function CompCard(props) {
 
   return (
     <section className="component" id={props.id}>
-      <h3> <a href={`${props.url}`}> {props.title} Title </a> </h3>
+      <h3> <a href={`${props.url}`}> {props.title} </a> </h3>
 
       {/* will display either img OR iFrame, but not both */}
       <img id={img_id} src={props.img}/> 

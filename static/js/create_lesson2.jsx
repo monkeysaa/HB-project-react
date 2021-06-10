@@ -14,8 +14,8 @@ function NewLesson() {
         key={comp.id}
         id={comp.id}
         type={comp.type}
-        img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
         url={comp.url}  // e.g. link or embedded video link
+        img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
         text={comp.text}
         title={comp.title}
         source={comp.source}
@@ -59,7 +59,7 @@ function NewLesson() {
       if (res.success === false) {
           alert('something done broke.');
       } else if (res.success == true) {
-          alert('Lesson created successfully!');
+          alert(`Lesson ${res.lesson_id} created successfully!`);
           window.location.href = `/lesson/${res.lesson_id}`;
       }
     })
