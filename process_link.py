@@ -15,7 +15,7 @@ def parse_data(source_plus):
 
     elif len(re_list) > 2:
         web_source = re_list[-1]
-        title = re.split(pattern = source, string = source_plus)[0]
+        title = re.split(pattern = web_source, string = source_plus)[0]
         return {'source': web_source, 'title': title.strip('|·—- ')}
     
     else:
@@ -115,6 +115,6 @@ def handle_YouTube(url):
         yt_id = get_YouTube_ID(url)
         return {'imgUrl': f'https://img.youtube.com/vi/{yt_id}/0.jpg',
             'url': f'https://www.youtube.com/embed/{yt_id}',
-            'yt_id': yt_id}
+            'yt_id': yt_id, 'type': 'video'}
     else: 
-        return{'imgUrl': url, 'url': url}
+        return{'imgUrl': url, 'url': url, 'type': 'url'}

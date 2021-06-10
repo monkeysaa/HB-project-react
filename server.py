@@ -234,14 +234,15 @@ def get_lessons_json():
 def create_lesson():
     """Create new lesson and lesson-comp DB assocations."""
 
+    # Default lesson data, in case users don't include all info
     lesson_data = {
             'title': 'Untitled', 
             'author_id': session['user_id'],
             'overview': '', 
-            'img_Url': None,
+            'imgUrl': None,
             'public': False
     }
-
+    import pdb; pdb.set_trace()
     # If photo, upload to CLoudinary and save link to lesson_data
     if 'lesson-pic' not in request.files:
         lesson_data['imgUrl'] = "/static/img/placeholder.png"
@@ -261,6 +262,13 @@ def create_lesson():
     db_lesson = crud.create_lesson(lesson_data)
 
     # TODO: For each component, create DB association.
+    # Set up as [] as default...but perhaps it's a string? 
+    if request.form['component-ids'] != []:
+        comp_data = request.form['component-ids'] # str e.g. '30,31,32'
+        component_ids = comp_data.split(',')
+        for comp_id in component_ids:
+            db_comp = crud.get_comp_by_id(int(comp_id))
+            crud.assign_comp(db_comp, db_lesson)
     
     try: 
         return {'success': True, 'lesson_id': db_lesson.lesson_id}
@@ -293,19 +301,21 @@ def create_component():
     c_type = 'url' # TODO: data['type']
     url = data['url']
 
-    url_data = scrape_data(url)
-    # url_data is of form: {'title': "", 'source': '', 'description': '',  'icon_img': ''}
+    url_data = scrape_data(url) # {'title': "", 'source': "", ...etc}
+    vid_data = handle_YouTube(url) #{'type': 'video', 'url': "", 'imgUrl': ""}
+    if 'yt_id' not in vid_data:
+        vid_data['yt_id'] = None
 
-    vid_data = handle_YouTube(url)
-    if 'yt_id' in vid_data:
-        c_type = 'video'
     user_id = session['user_id']
 
-    new_comp = crud.create_comp(c_type, vid_data['url'], vid_data['imgUrl'])
-    new_comp.title = url_data['title']
-    new_comp.source = url_data['source']
-    new_comp.description = url_data['description']
-    new_comp.icon_img = url_data['icon_img']
+    new_comp = crud.create_comp(vid_data['type'], 
+                                vid_data['yt_id'],
+                                vid_data['url'], 
+                                vid_data['imgUrl'],
+                                url_data['title'],
+                                url_data['source'],
+                                url_data['description'], 
+                                url_data['icon_img'])
 
     return {'success': True, 
             'id': new_comp.comp_id,
@@ -316,8 +326,7 @@ def create_component():
             'title': new_comp.title,
             'source': new_comp.source,
             'icon_img': new_comp.icon_img,
-            'description': new_comp.description
-            }
+            'description': new_comp.description}
 
 # Endpoint to link Component to Lesson
 # def link_comp_to_lesson():

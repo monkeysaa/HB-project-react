@@ -53,19 +53,23 @@ class Comp(db.Model):
     __tablename__ = 'comps'
 
     comp_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    comp_type = db.Column(db.String, nullable=False) # video, worksheet, image, text, etc
+    comp_type = db.Column(db.String, nullable=False) # url, video, pdf, image, text
     text = db.Column(db.Text)
-    name = db.Column(db.String)
     url = db.Column(db.String)
+    # After processing or scraping
+    title = db.Column(db.String)
+    source = db.Column(db.String)
+    description = db.Column(db.Text)
+    icon_img = db.Column(db.String)
     imgUrl = db.Column(db.String)
-    # yt_id = db.Column(db.String) # if YouTube video specifically, YouTube's id
-    vid_length = db.Column(db.Float) # if video, length in minutes if using YouTube api.
+    yt_id = db.Column(db.String) # if YouTube video, YouTube's id for video rendering
+    # vid_length = db.Column(db.Float) # if video, length in minutes if using YouTube api.
 
     lessons = db.relationship('Lesson', secondary='lesson_comps', viewonly=True)
     tags = db.relationship('Tag', secondary='comp_tags', viewonly=True)
 
     def __repr__(self):
-        return f'<Component id={self.comp_id} name={self.name}>'
+        return f'<Component type={self.comp_type} id={self.comp_id}>'
 
 
 class Lesson_Comp(db.Model):

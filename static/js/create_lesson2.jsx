@@ -26,11 +26,21 @@ function NewLesson() {
   }
 
   React.useEffect(() => {
+    for (let comp of comps) {
+      console.log('Component Update!')
+      console.log(comp);
+    }
     
   }, [comps]);
 
   const createLesson = (evt) => {
     evt.preventDefault();
+
+    // push all lesson component ids into an array
+    let comp_ids = [];
+    for (let comp of comps) {
+      comp_ids.push(comp.id);
+    }
 
     const formData  = new FormData();
     const file = document.getElementById('lesson-pic').files[0];
@@ -38,7 +48,7 @@ function NewLesson() {
     formData.append('lesson-pic', file);
     formData.append('title', title);
     formData.append('overview', overview);
-    formData.append('comps', comps);
+    formData.append('component-ids', comp_ids);
 
     fetch('/api/create_lesson', {
         method: 'POST',

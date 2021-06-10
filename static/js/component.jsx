@@ -1,53 +1,18 @@
 // const { checkPropTypes } = require("prop-types");
 
-// #*#######################################################################*#
-// #*#                          Display Saved Components                   #*#
-// #*#######################################################################*#
-function DisplaySavedComps(props, lessonID) {
-  const [dbComps, setDbComps] = React.useState([]);
-  const comps = [];
-
-  React.useEffect(() => {
-  fetch(`/api/get_comps/${props.lesson_id}`) 
-  // endpoint for retrieving all lesson components from DB, using lesson_id. 
-  .then((response) => response.json())
-  .then((data) => {
-    if (data) {
-      setDbComps(data[0]);
-      console.log(data[0]);
-    }
-    })
-  }, [])
-
-  for (const [comp, value] of Object.entries(dbComps)) {
-    comps.push(
-      <div>
-        <p>BOOOO, We are here :(</p>
-      <CompCard
-        key={value.comp_id}
-        // title={comp.component}
-        img={value.imgUrl}
-        url={value.url}
-      />
-      </div>
-
-    );
-  }
-}
-
+// TODO: Nice to have: Create cards for Components to drag them around. 
 // TODO: If website's X-Frames set to DENY, do not render iFrame. 
 // X-Frame-Options listed within the HTTP response header
+// 
+// const displayImageInput = (id) => {
+//   // remove hidden attribute on an element
+//   console.log(id);
+//   if (document.getElementById(id).hidden) {
+//     document.getElementById(id).removeAttribute("hidden");
+//   } 
+// }
 
-const displayImageInput = (id) => {
-  // remove hidden attribute on an element
-  console.log(id);
-  if (document.getElementById(id).hidden) {
-    document.getElementById(id).removeAttribute("hidden");
-  } 
 
-}
-
-// Nice to have: Create cards for Components to drag them around. 
 function ComponentInputCase({comps, setComps}) {
   const [inputComps, setInputComps] = React.useState([0]);
   const [url, setUrl] = React.useState('');
@@ -74,11 +39,6 @@ function ComponentInputCase({comps, setComps}) {
     );
     key += 1;
   }
-
-  
-// #*########################################################################*#
-// #*#                      Display an Additional Input Component         #*#
-// #*########################################################################*#
 
    function addComponent(index = -1, comp = 0) {
     let tempComps = [...inputComps];
@@ -140,11 +100,14 @@ function CreateComp({url, setUrl, comps, setComps}) {
       })
       .then(response => response.json())
       .then(res => {
+        console.log(res);
         let fetchComps = [...comps];
         fetchComps.push(res);
         setComps(fetchComps);
       })
     }
+
+    document.querySelector(".comp_link").innerHTML = "";
     
   };
 
@@ -160,7 +123,7 @@ function CreateComp({url, setUrl, comps, setComps}) {
           onChange={(e) => setUrl(e.target.value)}
           value={url} 
         />
-        <button type='button' onClick={saveComp }><i className="fa fa-check-circle"/></button>
+        <button type='button' onClick={saveComp }><i className="fa fa-plus"/></button>
 
 
     </React.Fragment>
@@ -168,7 +131,7 @@ function CreateComp({url, setUrl, comps, setComps}) {
 }
 
 // #*#######################################################################*#
-// #*#                          DISPLAY SAVED COMPONENT                    #*#
+// #*#                          DISPLAY NEW COMPONENT                      #*#
 // #*#######################################################################*#
 function CompCard(props) {
   // uses props.id, type, url, img
@@ -187,6 +150,16 @@ function CompCard(props) {
       <p className='source'><img src={`${props.icon_img}`}/> {props.source}</p>
       <p> {props.description} </p>
       <p className='comp-btns'> 
+        <button 
+          type='button' 
+          onClick={() => console.log('figure out how to move comp')}> 
+          <i className="fa fa-toggle-up" /> 
+        </button>
+        <button 
+          type='button' 
+          onClick={() => console.log('figure out how to move comp')}> 
+          <i className="fa fa-toggle-down" /> 
+        </button>
         <button 
           type='button' 
           onClick={() => console.log('figure out how to trash comp')}> 
@@ -252,4 +225,40 @@ function TestCompCard(props) {
 }
 
 // https://www.youtube.com/watch?v=4mz-dJFkmrk
+
+// #*#######################################################################*#
+// #*#                          Display Saved Components                   #*#
+// #*#######################################################################*#
+function DisplaySavedComps(props, lessonID) {
+  const [dbComps, setDbComps] = React.useState([]);
+  const comps = [];
+
+  React.useEffect(() => {
+  fetch(`/api/get_comps/${props.lesson_id}`) 
+  // endpoint for retrieving all lesson components from DB, using lesson_id. 
+  .then((response) => response.json())
+  .then((data) => {
+    if (data) {
+      setDbComps(data[0]);
+      console.log(data[0]);
+    }
+    })
+  }, [])
+
+  for (const [comp, value] of Object.entries(dbComps)) {
+    comps.push(
+      <div>
+        <p>BOOOO, We are here :(</p>
+      <CompCard
+        key={value.comp_id}
+        // title={comp.component}
+        img={value.imgUrl}
+        url={value.url}
+      />
+      </div>
+
+    );
+  }
+}
+
 

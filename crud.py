@@ -20,7 +20,7 @@ def create_lesson(lesson_dict):
 
     # lesson_dict: 
     # {'title': '', 'author_id': int, description: '', imgUrl: '' or None, 'public': False}
-
+    print(lesson_dict)
     new_lesson = Lesson(title=lesson_dict['title'], 
                       overview=lesson_dict['overview'], 
                       author_id=lesson_dict['author_id'], 
@@ -33,10 +33,13 @@ def create_lesson(lesson_dict):
     return new_lesson
 
 
-def create_comp(comp_type, url = None, imgUrl = None):
-    """Create and return a new lesson."""
+def create_comp(comp_type, yt_id, url = None, imgUrl = None, title = None, 
+                source = None, description = None, icon_img = None):
+    """Create and return a new component."""
 
-    new_component = Comp(comp_type=comp_type, url=url, imgUrl=imgUrl)
+    new_component = Comp(comp_type=comp_type, yt_id=yt_id, url=url, imgUrl=imgUrl, 
+                        title=title, source=source, description=description,
+                        icon_img=icon_img)
     
     db.session.add(new_component)
     db.session.commit()
@@ -247,8 +250,8 @@ def assign_tag_to_lesson(tag, lesson):
 
 def assign_comp_img(imgUrl, comp_id):
     
-    lesson = get_comp_by_id(lesson_id)
-    lesson.imgUrl = imgUrl
+    comp = get_comp_by_id(comp_id)
+    comp.imgUrl = imgUrl
 
     db.session.commit()
 
