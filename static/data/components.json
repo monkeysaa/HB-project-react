@@ -1,74 +1,134 @@
 [
     {
         "name": "How Wolves Change Rivers",
-        "comp_type": "video",
-        "url": "https://youtu.be/ysa5OBhXz-Q",
-        "imgUrl": "/static/img/wolves_rivers.jpg"
+        "type": "video",
+        "url": "https://www.youtube.com/embed/ysa5OBhXz-Q",
+        "imgUrl": "https://img.youtube.com/vi/ysa5OBhXz-Q/0.jpg",
+        "title": "How Wolves Change Rivers",
+        "text": "Use with younger students to inspire discussion around change-making cascades. Explore trophic cascades to reinforce comp and/or persuasive (change-maker) writing.",
+        "source": "YouTube",
+        "yt_id": "ysa5OBhXz-Q",
+        "description": "When wolves were reintroduced to Yellowstone National Park in the United States after being absent nearly 70 years, the most remarkable 'trophic cascade'...",
+        "favicon": "https://www.youtube.com/s/desktop/3a32c481/img/favicon.ico"
     },
     {
         "name": "Wolves of Yellowstone",
-        "comp_type": "video",
-        "url": "https://res.cloudinary.com/dtpgi0zck/video/upload/q_auto/vc_vp9/v1/videos/Wolves%20of%20Yellowstone.webm?_s=vp-1.5.1",
-        "imgUrl": "/static/img/wolves_of_yellowstone.jpg"
+        "type": "video",
+        "url": "https://www.youtube.com/embed/Ql3rY-XyQ3k",
+        "imgUrl": "https://img.youtube.com/vi/Ql3rY-XyQ3k/0.jpg", 
+        "text": "How to tell a story: Combine with How Wolves Change Rivers to explore how small changes can impact readers / viewers. Reinforces cascade for comp kids.",
+        "title": "Wolves of Yellowstone",
+        "source": "YouTube",
+        "yt_id": "Ql3rY-XyQ3k",
+        "description": "Gray wolves were reintroduced into Yellowstone National Park in 1995, which have since resulted in a trophic cascade through the entire ecosystem. After the ...",
+        "favicon": "https://www.youtube.com/s/desktop/3a32c481/img/favicon.ico"
     },
     {
-        "name": "Grey Wolf Educator Guide",
-        "comp_type": "curriculum",
-        "url": "https://www.nationalgeographic.org/media/gray-wolf-educator-guide/?utm_source=BibblioRCM_Row",
-        "imgUrl": "/static/img/Grey_Wolf_Educator_Guide.png"
-    },
-    {
-        "name": "Multiplying fractions completed example",
-        "comp_type": "img",
-        "url": "https://wakelet.com/wake/ZANhnTFIL2xy-47beJR_f",
-        "imgUrl": ""
-    },
-    {
-        "name": "Multiplying fractions game",
-        "comp_type": "img",
-        "url": "https://www.wootmath.com/interactive/topic/fractions-on-a-number-line",
-        "imgUrl": ""
-    },
-    {
-        "name": "Multiplying fractions - Khan Academy video & practice",
-        "comp_type": "video",
-        "url": "https://www.khanacademy.org/math/cc-fifth-grade-math/5th-multiply-fractions/imp-multiplying-fractions/v/visualizing-fraction-products",
-        "imgUrl": ""
-    },
-    {
-        "name": "Wolves in Yellowstone Worksheet1",
-        "comp_type": "link",
-        "url": "https://d43fweuh3sg51.cloudfront.net/media/media_files/Wolves_StudentHandout_Part_1_UPLOAD.pdf",
-        "imgUrl": ""
-    },
-    {
-        "name": "Wolves in Yellowstone Worksheet2",
-        "comp_type": "link",
+        "name": "Wolves in Yellowstone Student Worksheet",
+        "type": "url",
         "url": "https://d43fweuh3sg51.cloudfront.net/media/media_files/Wolves_Student_Worksheet_Part_2_UPLOAD.pdf",
-        "imgUrl": ""
+        "imgUrl": "https://d43fweuh3sg51.cloudfront.net/media/media_files/Wolves_Student_Worksheet_Part_2_UPLOAD.pdf",
+        "text": "Middle school expansion worksheets reinforce concepts of trophic cascades for comprehension students",
+        "title": "Wolves in Yellowstone Student Worksheet (2 of 2)",
+        "source": "PBS",
+        "yt_id": null,
+        "description": "Gray wolves were reintroduced into Yellowstone National Park in 1995, which have since resulted in a trophic cascade through the entire ecosystem.",
+        "favicon": "https://www.pbs.org/static/images/favicons/apple-touch-icon.cd53d5e995a1.png"
+    },
+    {
+        "name": "Multiplying fractions - cheesy rap video",
+        "type": "video",
+        "url": "https://www.youtube.com/embed/CcDGRLosAf0",
+        "imgUrl": "https://img.youtube.com/vi/CcDGRLosAf0/0.jpg",
+        "text": "Cheesy rap may appeal to goofy and/or rhymically-inclined students",
+        "title": "Multiplying Fractions Song | Math Rap Video",
+        "source": "YouTube",
+        "yt_id": "CcDGRLosAf0",
+        "description": "Explore our ever-growing library of math videos and highly engaging related activities at https://www.numberock.com.Thank you for watching our Multiplying Fractions...",
+        "favicon": null
+    },
+    {
+        "name": "Multiplying 2 fractions: fraction model",
+        "type": "img",
+        "url": "https://www.khanacademy.org/math/cc-fifth-grade-math/5th-multiply-fractions/imp-multiplying-fractions/v/visualizing-fraction-products",
+        "imgUrl": "https://img.youtube.com/vi/hr_mTd-oJ-M/0.jpg",
+        "text": "Older students may prefer Khan Academy video and practice problems: https://www.khanacademy.org/math/cc-fifth-grade-math/5th-multiply-fractions/imp-multiplying-fractions/v/visualizing-fraction-products",
+        "title": "Multiplying 2 fractions: Fraction model",
+        "source": "Khan Academy",
+        "yt_id": "hr_mTd-oJ-M",
+        "description": "Here's a great way to visualize fraction multiplication problems. Once you understand this, doing them on your own will be a lot easier!Practice this lesson ...",
+        "favicon": "https://www.khanacademy.org/favicon.ico?logo"
+    },
+    {
+        "name": "Author's Purpose is to Persuade",
+        "type": "img",
+        "url": null,
+        "imgUrl": "/static/img/persuasive-template.jpg",
+        "text": "Friendly, accessible template for K-3 persuasive writing",
+        "title": "The Author's Purpose is to Persuade",
+        "source": "Pinterest",
+        "yt_id": null,
+        "description": "https://www.pinterest.com/pin/431219733048762901/",
+        "favicon": "https://s.pinimg.com/webapp/favicon-54a5b2af.png"
+    },
+    {
+        "name": "Persuasive Template",
+        "type": "img",
+        "url": null,
+        "imgUrl": "/static/img/persuade.jpg",
+        "text": "Bright, cartoonish. Defines 'persuade' in simple langauge",
+        "title": "Persuasive Template",
+        "source": "Pinterest",
+        "yt_id": null,
+        "description": "https://www.pinterest.com/pin/200621358374383798/",
+        "favicon": "https://s.pinimg.com/webapp/favicon-54a5b2af.png"
     },
     {
         "name": "Call to action",
-        "comp_type": "link",
+        "type": "url",
         "url": "https://www.grammarly.com/blog/call-to-action/",
-        "imgUrl": ""
+        "imgUrl": "https://www.grammarly.com/blog/call-to-action/",
+        "text": "Middle School extension: Call to Action Writing",
+        "title": "Tips and Tricks for Writing a Perfect Call to Action",
+        "source": "Grammarly",
+        "yt_id": null,
+        "description": "Different ways you can start a narrative for Creative Writing.",
+        "favicon": "https://contenthub-static.grammarly.com/assets/img/524adc79be04712e3a336059c"
     },
     {
         "name": "Writing a Hook",
-        "comp_type": "video",
+        "type": "video",
         "url": "https://www.youtube.com/watch?v=K1-nt5_bRlQ",
-        "imgUrl": ""
+        "imgUrl": "https://img.youtube.com/vi/K1-nt5_bRlQ/0.jpg",
+        "text": "Entertaining, particularly for reluctant writers in 4th, 5th, 6th grades",
+        "title": "Writing a Hook",
+        "source": "YouTube",
+        "yt_id": "K1-nt5_bRlQ",
+        "description": "The trick to a good Call to Action is making the audience feel motivated to act in a certain way. Learn how to write one in any genre.",
+        "favicon": "https://www.youtube.com/s/desktop/3a32c481/img/favicon.ico"
     }, 
     {
-        "name": "Superconductive Magnetic Levitation",
-        "comp_type": "video",
+        "name": "Superconducting Magnetic Levitation",
+        "type": "video",
         "url": "https://www.youtube.com/embed/X5EoUD-BIss?start=12",
-        "imgUrl": "https://img.youtube.com/vi/X5EoUD-BIss/0.jpg"
+        "imgUrl": "https://img.youtube.com/vi/X5EoUD-BIss/0.jpg",
+        "text": "Part of Weird Science series for writing and comp students. Typically, grades 4 and up.",
+        "title": "Superconducting Magnetic Levitation",
+        "source": "YouTube",
+        "yt_id": null,
+        "description": "Join the Vsauce3 Community: http://patreon.com/vsauce3Thanks to Snowdrama and Pauline Atchoum for their patronage! twitter: http://twitter.com/vsaucethreeins...",
+        "favicon": "https://www.youtube.com/s/desktop/3a32c481/img/favicon.ico"
     },
     {
         "name":"WIRED: How the Most Promising Hoverboards Actually Work",
-        "comp_type": "link",
+        "type": "url",
         "url": "https://www.wired.com/2015/10/how-the-most-promising-hoverboards-actually-work/",
-        "imgUrl": "https://www.wired.com/images/icons/logo-black.svg"
+        "imgUrl": "https://media.wired.com/photos/5955b6b296d7ef123a1d42fb/master/w_2560%2Cc_limit/hoverboard-lead.jpg",
+        "text": "Intro activity to engage mechanically-minded reluctant readers and writers. Visualizing and tell-backs are critical.",
+        "title": "'How the Most Promising Hoverboards Actually Work | WIRED",
+        "source": "WIRED",
+        "yt_id": null,
+        "description": "Everyone wants a hoverboard. Here are three real hoverboards that exist right now.",
+        "favicon": "https://www.wired.com/verso/static/wired/assets/favicon.ico"
     }
 ]

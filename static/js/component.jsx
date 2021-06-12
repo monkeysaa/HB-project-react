@@ -15,8 +15,6 @@
 
 function ComponentInputCase({comps, setComps}) {
   const [inputComps, setInputComps] = React.useState([0]);
-  const [url, setUrl] = React.useState('');
-  const [imgUrl, setImgUrl] = React.useState('');
   const compsHTML = [];
 
   // TODO: Remove this loop, as only one place to enter Component. 
@@ -26,15 +24,9 @@ function ComponentInputCase({comps, setComps}) {
     let param = key
     compsHTML.push(
       <div key={key}>
-        <CreateComp url={url} setUrl={setUrl} comps={comps} setComps={setComps}/>
+        <CreateComp comps={comps} setComps={setComps}/>
         {/* <button type="button" onClick{() => displayImageInput}> <i className="fa fa-image" /> </button> */}
-        <input 
-          id = 'comp-pic'
-          type = 'file'
-          name = 'comp-pic' 
-        ></input>
         {/* <button type='button' onClick={() => removeComponent(param)}> <i className="fa fa-trash" /> </button> */}
-        <p>Paste a link</p> 
       </div>
     );
     key += 1;
@@ -80,63 +72,138 @@ function ComponentInputCase({comps, setComps}) {
 
 // function CompAdded()
 
-function CreateComp({url, setUrl, comps, setComps}) {
+function CreateComp({comps, setComps}) {
+  const [url, setUrl] = React.useState('');
+  const [compType, setCompType] = React.useState('');
+  const [text, setText] = React.useState('');
 
-  // Saves to Database
   const saveComp = () => {
- 
-    if(url === "") {
-      alert('Update this field before adding.');
+
+    const formData  = new FormData();
+    formData.append('type', compType);
+
+    switch (compType) {
+      case 'url':
+        if (url === '') {
+          alert('Update this field before adding.');
+        }
+        formData.append('url', url);
+        break;
+      case 'img':
+        const file = document.getElementById('comp-pic').files[0];
+        formData.append('comp-pic', file);
+        break;
+      case 'text':
+
     }
 
-    else {
-      fetch("/api/create_component", {
-        method: "POST",
-        body: JSON.stringify({url}),
-        headers: {
-          "Content-Type": "application/json"
-        },
-      })
-      .then(response => response.json())
-      .then(res => {
-        console.log(res);
-        let fetchComps = [...comps];
-        fetchComps.push(res);
-        setComps(fetchComps);
-      })
-    }
+    fetch("/api/create_component", {
+        method: 'POST',
+        body: formData,
+        })
+    .then(response => response.json())
+    .then(res => {
+      console.log(res);
+      let fetchComps = [...comps];
+      fetchComps.push(res);
+      setComps(fetchComps);
+    })
 
-    document.querySelector(".comp_link").innerHTML = "";
-    
   };
 
+  // // Saves to Database
+  // const saveUrl = () => {
+ 
+  //   if(url === "") {
+  //     alert('Update this field before adding.');
+  //   }
+
+  //   else {
+  //     const data = {'url': url, 'type': 'url'}
+
+  //     fetch(/api/create_component/", {
+  //       method: "POST",
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //     })
+  //     .then(response => response.json())
+  //     .then(res => {
+  //       console.log(res);
+  //       let fetchComps = [...comps];
+  //       fetchComps.push(res);
+  //       setComps(fetchComps);
+  //     })
+  //   }
+
+  // };
+  // const addText = () => {
+  //   setCompType('text');
+  //   const textHTML = [
+  //     <Text text={text} setText={setText}/>
+  //   ];
+  // }
 
   return (
     <React.Fragment>
         <p>Add a New Lesson Component</p>
         <label htmlFor="componentInput"></label>
+        <i className="fa fa-link"></i>
         <input 
-          className="comp_link"
+          id = 'comp_url'
           type="text" 
           placeholder="Paste full website url here"
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => { setUrl(e.target.value); setCompType('url') }}
           value={url} 
         />
-        <button type='button' onClick={saveComp }><i className="fa fa-plus"/></button>
-
+        <button type='button' onClick={ saveComp }>
+          <i className="fa fa-plus"/></button>
+{/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
+        <p>
+          <i className="fa fa-image"></i>
+          Upload an image
+          <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
+          <button type='button' onClick={() => { saveComp; setCompType('img') }}>
+            <i className="fa fa-plus"/></button>
+        </p>
+        <form>
+          <label id='comp_text' for='comp_text' name='comp_text'>Add Text:</label>
+          <textarea id='comp_text' name='comp_text' rows='5' cols='33'
+          placeholder='Add Text' value={(text) => setText(text)}> </textarea>
+          <input type='submit' onClick={() => {saveComp; setCompType('text')}}/>
+        </form>
 
     </React.Fragment>
   )
 }
 
+// function Text({text, setText}) {
+//   const editor = useMemo(() => withReact(createEditor()), []);
+//   const [value, setValue] = useState([]);
+//   return (
+//     // Add the editable component inside the context.
+//     <Slate
+//       editor={editor}
+//       value={value}
+//       onChange={newValue => setValue(newValue)}
+//     >
+//       <Editable />
+//     </Slate>
+//   )
+// }
+
 // #*#######################################################################*#
 // #*#                          DISPLAY NEW COMPONENT                      #*#
 // #*#######################################################################*#
 function CompContainer({comps}) {
-
+  // comps is data-container 
+  // compCards is temp display-container
+  // CompCard is the template for display
   const compCards = [];
   
   for (const comp of comps) {
+    console.log(comp);
     compCards.push(
       <CompCard
         key={comp.id}
@@ -147,7 +214,7 @@ function CompContainer({comps}) {
         text={comp.text}
         title={comp.title}
         source={comp.source}
-        icon_img={comp.icon_img}
+        favicon={comp.favicon}
         description={comp.description}
       />
     );
@@ -160,9 +227,8 @@ function CompContainer({comps}) {
 }
 
 function CompCard(props) {
-  // uses props.id, type, url, img
+  // props: id, type, url, img, text, title, source, favicon, description
 
-  console.log(props.id);
   const video_id = `comp_video_${props.id}`;
   const img_id = `comp_img_${props.id}`;
 
@@ -171,9 +237,10 @@ function CompCard(props) {
       <h3> <a href={`${props.url}`}> {props.title} </a> </h3>
 
       {/* will display either img OR iFrame, but not both */}
+
       <img id={img_id} src={props.img}/> 
       <IFrame props={props} video_id={video_id} img_id={img_id}/>
-      <p className='source'><img src={`${props.icon_img}`}/> {props.source}</p>
+      <p className='source'><img src={`${props.favicon}`}/> {props.source}</p>
       <p> {props.description} </p>
       <p className='comp-btns'> 
         <button 
@@ -196,20 +263,20 @@ function CompCard(props) {
   );
 }
 
-
+// Ask Seema about passing variables both in & outside props
+// TODO: if iFrames are disabled, show placeholder url
+      // else... 
 function IFrame({props, video_id, img_id}) {
 
   React.useEffect(() => {
-    if (props.type === 'video' | props.type === 'url') {
+    if ((props.type === 'video') | (!(props.id === 5) && !(props.id === 10) )){
 
-      // TODO: if iFrames are disabled, show placeholder image rather than iFrame
-      // else... 
       document.getElementById(img_id).setAttribute("hidden", true);
-      console.log('test1');
+      // console.log('test1');
     }
     else {  // handles case of files, etc
       document.getElementById(video_id).innerHTML = "";
-      console.log('test2');
+      // console.log('test2');
     }
   });
 
@@ -250,7 +317,6 @@ function TestCompCard(props) {
   );
 }
 
-// https://www.youtube.com/watch?v=4mz-dJFkmrk
 
 // #*#######################################################################*#
 // #*#                          Display Saved Components                   #*#

@@ -9,7 +9,7 @@
         "title": "Multiplying fractions",
         "overview": "about multiplying fractions",
         "public": false,
-        "imgUrl": null
+        "imgUrl": "/static/img/multiply_fractions.png"
     },
     {
         "title": "Trophic cascades",
@@ -27,6 +27,6 @@
         "title": "Call to action intro",
         "overview": "about writing CTAs",
         "public": true,
-        "imgUrl": "/static/img/img1.jpg"
+        "imgUrl": "/static/img/unimpressed.jpg"
     }
 ]

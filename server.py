@@ -3,12 +3,13 @@
 from flask import Flask
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db
-from process_link import (handle_YouTube, scrape_data)
+from process_link import (handle_url, scrape_data)
 import cloudinary.uploader
 import crud
 import boto3
 import os 
 import pprint
+import bs4
 
 from jinja2 import StrictUndefined
 
@@ -35,6 +36,7 @@ SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies',
 @app.route('/create_lesson')
 @app.route('/login')
 @app.route('/signup')
+@app.route('/search')
 @app.route('/users')
 @app.route('/profile')
 @app.route('/lesson')
@@ -63,7 +65,7 @@ def display_lessons(lesson_id):
 
 
 # USER Routes
-# TODO: Is this ever used? 
+# TODO: Delete? 
 @app.route('/api/check-login-status')
 def check_login():
     """Check if user is logged in."""
@@ -168,18 +170,18 @@ def logout():
 
 
 # # LESSON ROUTES
-# # Details for one lesson
 # # Later, limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
 @app.route("/api/lessons/<lesson_id>.json")
-def get_lesson_json(lesson_id):
+def show_single_lesson_json(lesson_id):
     """Get lesson and return lesson data and components in JSON."""
     
     lesson = crud.get_lesson_by_id(lesson_id)
 
     if lesson.imgUrl == None:
-        lesson.imgUrl = '/static/img/img1.jpg'
+        lesson.imgUrl = '/static/img/unimpressed.jpg'
     
     lesson_data = []
+    comp_data = []
 
     # Add lesson description, etc
     lesson_data.append(
@@ -193,7 +195,7 @@ def get_lesson_json(lesson_id):
     )
 
     for comp in lesson.comps:
-        lesson_data.append(
+        comp_data.append(
             {
                 "id": comp.comp_id,
                 "type": comp.comp_type,
@@ -202,12 +204,12 @@ def get_lesson_json(lesson_id):
                 "text": comp.text,
                 "title": comp.title,
                 "source": comp.source,
-                "icon_img": comp.icon_img,
+                "favicon": comp.favicon,
                 "description": comp.description
             }
         )
 
-    return {"lesson": lesson_data}
+    return {"lesson": lesson_data, "comps": comp_data}
 
 
 @app.route("/api/lessons.json")
@@ -293,47 +295,56 @@ def get_comps(lesson_id):
         comp_dict[comp.comp_id]['url'] = comp.url
         comp_dict[comp.comp_id]['imgUrl'] = comp.imgUrl
 
-    print(comp_dict)
     return jsonify([comp_dict])
 
-@app.route('/api/create_component', methods=["POST"])
-def create_component(): 
+@app.route('/api/create_component/<type>', methods=["POST"])
+def create_component(type): 
     """Create new component and save to DB."""
 
-    data = request.get_json()
-    c_type = 'url' # TODO: data['type']
-    url = data['url']
+    filetype = request.files['type']
+    if filetype == 'url':
 
-    try:    # Data scraping experimental; this function is likely to fail.
-        url_data = scrape_data(url) # {'title': "", 'source': "", ...etc}
-    except: 
-        url_data = {'title': None, 'source': None, 'description': None, 'icon_img': None}
+        url = request.files['url']
+        v_comp = handle_url(url)
+        
+        # TODO: Data scraping algorithms need work
+        try:    
+            s_comp = scrape_data(url) 
+        except: 
+            'Data scraping failed, but research is underway!'
+        
+        print('about to save component: ')
+        print(v_comp)
+        print(s_comp)
+        comp = {
+            'type': v_comp['type'],
+            'url': v_comp['url'],
+            'imgUrl': v_comp['imgUrl'],
+            'text': None,
+            'title': s_comp['title'],
+            'yt_id': v_comp['yt_id'],
+            'source': s_comp['source'],
+            'favicon': s_comp['favicon'],
+            'description': s_comp['description'],
+        }
 
-    vid_data = handle_YouTube(url) #{'type': 'video', 'url': "", 'imgUrl': ""}
-    if 'yt_id' not in vid_data:
-        vid_data['yt_id'] = None
+    elif filetype == 'img':
+        comp['type'] = 'img'
+        img = request.files['comp-pic']
+        result = cloudinary.uploader.upload( my_file, api_key=CLOUD_KEY, 
+            api_secret=CLOUD_SECRET, cloud_name='hackbright' )
+        comp['imgUrl'] = result['secure_url']
 
-    user_id = session['user_id']
+        print('about to save component: ')
+        print(comp)
 
-    new_comp = crud.create_comp(vid_data['type'], 
-                                vid_data['yt_id'],
-                                vid_data['url'], 
-                                vid_data['imgUrl'],
-                                url_data['title'],
-                                url_data['source'],
-                                url_data['description'], 
-                                url_data['icon_img'])
+        # TODO: get shortcut for this
+        db_comp = crud.create_comp(comp['type'], comp['yt_id'], comp['url'], 
+                        comp['imgUrl'], comp['text'], comp['title'], 
+                        comp['source'], comp['favicon'], comp['description'])
 
-    return {'success': True, 
-            'id': new_comp.comp_id,
-            'type': new_comp.comp_type,
-            'url': new_comp.url, 
-            'imgUrl': new_comp.imgUrl,
-            'text': new_comp.text,
-            'title': new_comp.title,
-            'source': new_comp.source,
-            'icon_img': new_comp.icon_img,
-            'description': new_comp.description}
+    return {'success': True, 'comp': comp}
+
 
 # Endpoint to link Component to Lesson
 # def link_comp_to_lesson():
@@ -353,20 +364,76 @@ def update_lesson():
                                         cloud_name='hackbright') 
         imgUrl = crud.assign_lesson_img(result['secure_url'], lesson_id)
 
-    # update database with other info
-    try: 
-        if 'title' in request.form: 
-            crud.update_lesson_title(lesson_id, request.form['title'])
-        if 'overview' in request.form:
-            crud.update_lesson_overview(lesson_id, request.form['overview'])
-    
-    # TODO: 
-    # DECIDE! If new components passed, create_comp(), then build association -- here or there?
+    # update database with other info 
+    if 'title' in request.form: 
+        crud.update_lesson_title(lesson_id, request.form['title'])
+    if 'overview' in request.form:
+        crud.update_lesson_overview(lesson_id, request.form['overview'])
 
-    except:
-        print("Error with saving new Title and/or Overview to database.")
-    
     return {'success': True}
+
+# # SEARCH ROUTES
+@app.route('/api/search/<searchstring>.json')
+def run_search(searchstring):
+    """Search for lesson by term."""
+
+    print('WE HAVE ARRIVED HERE')
+    
+    print(searchstring)
+    lesson_matches = set() # a set of Lesson objects
+    lesson_data = []
+
+    # data = request.get_json()
+    # term = data['searchString']
+    # print(term)
+    # grade = data['grade']
+    # subject = data['subject']
+    # user_handle = data['user'] # search for lessons by userhandle
+    # search_terms = {
+    #     'term': term, 'grade': grade, 'subject': subject, 'user': user
+    # }
+
+    # for category in search_terms:
+    #     if category:
+    #         lessons = crud.process_lesson_search(terms[category], category)
+    lessons = crud.get_lessons_by_term(searchstring)
+    if lessons == []:
+        user_queried = crud.get_user_by_username(searchstring)
+        lessons = crud.get_lessons_by_user(user_queried.user_id)
+    for lesson in lessons:
+        lesson_matches.add(lesson)
+
+    for lesson in lesson_matches: 
+        lesson_data.append({
+            'id': lesson.lesson_id,
+            'title': lesson.title,
+            'author': lesson.author.handle,
+            # 'tags': lesson.tags,
+            'imgUrl': lesson.imgUrl
+        })
+    return {'success': True, 'lesson_data': lesson_data}
+    # return {'search_terms': search_terms, 'lesson_data': lesson_data}
+
+
+
+# @app.route('/search', methods=['GET'])
+# def display_search_results():
+#     """Search for lesson by term."""
+    
+#     lesson_matches = set()
+#     term = request.args.get('term')
+#     grade = request.args.get('grade')
+#     subject = request.args.get('subject')
+#     user = (request.args.get('user'))
+#     terms = {term: 'term', grade: 'grade', subject: 'subject', user: 'user'}
+
+#     for category in terms:
+#         if category:
+#             lessons = crud.process_lesson_search(terms[category], category)
+#             for lesson in lessons:
+#                 lesson_matches.add(lesson)
+
+#     return render_template('search.html', term=term, lessons=lessons)
 
 
 
@@ -455,26 +522,6 @@ def update_lesson():
 #         return redirect('/')
 
 
-
-# # SEARCH ROUTES
-# @app.route('/search', methods=['GET'])
-# def display_search_results():
-#     """Search for lesson by term."""
-    
-#     lesson_matches = set()
-#     term = request.args.get('term')
-#     grade = request.args.get('grade')
-#     subject = request.args.get('subject')
-#     user = (request.args.get('user'))
-#     terms = {term: 'term', grade: 'grade', subject: 'subject', user: 'user'}
-
-#     for category in terms:
-#         if category:
-#             lessons = crud.process_lesson_search(terms[category], category)
-#             for lesson in lessons:
-#                 lesson_matches.add(lesson)
-
-#     return render_template('search.html', term=term, lessons=lessons)
 
 
 

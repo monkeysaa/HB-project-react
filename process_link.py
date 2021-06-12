@@ -37,12 +37,8 @@ def scrape_data(url):
         web_source = parsed['source']
 
     except: 
-        web_source = None
-    
-    try:
-        title = soup.title.string.strip()
-    except: 
-        title = None
+        web_source = 'Source Unknown'
+        title = source_plus
     
     try: 
         description_plus = soup.select('meta[name="description"]')
@@ -56,8 +52,8 @@ def scrape_data(url):
     except: 
         favicon = None
 
-    return {'title': title, 'source': web_source, 'description': description, 
-            'icon_img': favicon}
+    return {'title': title, 'source': web_source, 'descr': description, 
+            'favicon': favicon}
 
 # TODO: Build function to check whether a url won't display in iFrame 
 # def isIFrameDisabled(url):
@@ -113,7 +109,7 @@ def get_YouTube_ID(url):
     return video_id
 
 
-def handle_YouTube(url):
+def handle_url(url):
     """ Take in link, determine whether YouTube, and if so, return YouTube dictionary"""
     if is_YouTube_video(url):
         yt_id = get_YouTube_ID(url)
@@ -121,4 +117,4 @@ def handle_YouTube(url):
             'url': f'https://www.youtube.com/embed/{yt_id}',
             'yt_id': yt_id, 'type': 'video'}
     else: 
-        return{'imgUrl': url, 'url': url, 'type': 'url'}
+        return{'imgUrl': url, 'url': url, 'yt_id': None, 'type': 'url'}

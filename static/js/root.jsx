@@ -2,14 +2,20 @@
 // variable names: hyphens for class, underscores for IDs, camel for other names
 // If I need a package, how do I get them?
 const Router = ReactRouterDOM.BrowserRouter;
-const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route, useLocation } = ReactRouterDOM;
-const { Card, Button, ListGroup, ListGroupItem } = ReactBootstrap;
+const { useHistory, useParams, Redirect, Switch, 
+        Prompt, Link, Route } = ReactRouterDOM;
+// const { Card, Button, ListGroup, ListGroupItem } = ReactBootstrap;
+
+// import { createEditor } from 'slate';
+// import { Slate, Editable, withReact } from 'slate-react'
 
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
   const loggedIn = document.getElementById('login_state')
 
+  // Create a Slate editor object that won't change across renders. 
+  // const editor = useMemo(() => withReact(createEditor()), [])
   // // if not logged in, send to Search
   if (loggedIn.dataset.loggedin === 'False') {
     return (
@@ -43,6 +49,9 @@ function Controller() {
         </Route>
         <Route path="/profile">
           <Profile />
+        </Route>
+        <Route path="/search">
+          <Search />
         </Route>
         <Route exact={true} path="/">
           <img src="/static/img/high5.jpg"/>

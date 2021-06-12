@@ -59,8 +59,8 @@ class Comp(db.Model):
     # After processing or scraping
     title = db.Column(db.String)
     source = db.Column(db.String)
-    description = db.Column(db.Text)
-    icon_img = db.Column(db.String)
+    description = db.Column(db.Text) # website-provided description for video or site
+    favicon = db.Column(db.String)
     imgUrl = db.Column(db.String)
     yt_id = db.Column(db.String) # if YouTube video, YouTube's id for video rendering
     # vid_length = db.Column(db.Float) # if video, length in minutes if using YouTube api.

@@ -20,7 +20,7 @@ def create_lesson(lesson_dict):
 
     # lesson_dict: 
     # {'title': '', 'author_id': int, description: '', imgUrl: '' or None, 'public': False}
-    print(lesson_dict)
+
     new_lesson = Lesson(title=lesson_dict['title'], 
                       overview=lesson_dict['overview'], 
                       author_id=lesson_dict['author_id'], 
@@ -33,13 +33,12 @@ def create_lesson(lesson_dict):
     return new_lesson
 
 
-def create_comp(comp_type, yt_id, url = None, imgUrl = None, title = None, 
-                source = None, description = None, icon_img = None):
+def create_comp(c_type, url, imgUrl, text, title, source, yt_id, favicon, description):
     """Create and return a new component."""
 
-    new_component = Comp(comp_type=comp_type, yt_id=yt_id, url=url, imgUrl=imgUrl, 
-                        title=title, source=source, description=description,
-                        icon_img=icon_img)
+    new_component = Comp(comp_type=c_type, yt_id=yt_id, url=url, imgUrl=imgUrl, 
+                        text=text, title=title, source=source, favicon=favicon, 
+                        description=description)
     
     db.session.add(new_component)
     db.session.commit()
@@ -142,10 +141,11 @@ def get_lessons_by_term(term):
     """Basic: Get lessons by search term in title or description."""
 
     lessons = Lesson.query.filter((Lesson.title.like(f'%{term}%')) | 
-    (Lesson.description.like(f'%{term}%'))).all()
+    (Lesson.overview.like(f'%{term}%'))).all()
 
     matching_components = Comp.query.filter(
-        (Comp.name.like(f'%{term}%')) | 
+        (Comp.title.like(f'%{term}%')) | 
+        (Comp.description.like(f'%{term}%')) | 
         (Comp.text.like(f'%{term}%'))).all()
 
     for comp in matching_components:
@@ -179,6 +179,11 @@ def get_user_by_id(user_id):
     """Get user by ID."""
     
     return User.query.get(user_id)
+
+def get_user_by_username(handle):
+    """Get user by ID."""
+    
+    return User.query.filter(User.handle == handle).first() 
 
 
 def get_user_by_email(email):

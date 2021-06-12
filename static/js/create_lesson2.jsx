@@ -19,7 +19,7 @@ function NewLesson() {
         text={comp.text}
         title={comp.title}
         source={comp.source}
-        icon_img={comp.icon_img}
+        favicon={comp.favicon}
         description={comp.description}
       />
     );
@@ -78,28 +78,39 @@ function NewLesson() {
     <div className='create-lesson'>
       <section className="lesson-inputs">
         <h2>Create a Lesson</h2>
-        <form onSubmit={createLesson}
+        <form id="lesson-input-form" 
+          onSubmit={createLesson}
           action='/api/create_lesson' 
           method='POST' encType='multipart/form-data'>
-          <section id="primaryLesson">
+          <section className="lesson_inputs">
             <input 
               id = 'lesson-pic'
               type='file' name='lesson-pic' 
-            onChange={() => displayElement('placeholder')}/> 
+              onChange={() => displayElement('placeholder')}/> 
             <input 
-                className="lesson_inputs"
-                type="text" 
-                placeholder="First, give your lesson a compelling title..."
-                onChange={(e) => setTitle(e.target.value)}
-                value={title} 
-            />            <br/>
-            <input 
-                className="lesson_inputs"
-                type="text" 
-                placeholder="Then, add a catchy description!"
-                onChange={(e) => setOverview(e.target.value)}
-                value={overview} 
+              type="text" 
+              placeholder="First, give your lesson a compelling title..."
+              onChange={(e) => setTitle(e.target.value)}
+              value={title} 
             /><br/>
+            <input 
+              type="text" 
+              placeholder="Then, add a catchy description!"
+              onChange={(e) => setOverview(e.target.value)}
+              value={overview} 
+            /><br/>
+            <div id='tags'>
+              <p>
+                <input type="checkbox" name="grades" value="4th"/><label>4th</label>
+                <input type="checkbox" name="grades" value="5th"/><label>5th</label>
+                <input type="checkbox" name="grades" value="6th"/><label>6th</label>
+              </p>
+              <p>
+                <input type="checkbox" name="subjects" value="math"/><label>Math</label>
+                <input type="checkbox" name="subjects" value="science"/><label>Science</label>
+                <input type="checkbox" name="subjects" value="writing"/><label>Writing</label>
+              </p>
+            </div>
         </section>
         <ComponentInputCase comps={comps} setComps={setComps}/>
         <input type='submit' />
