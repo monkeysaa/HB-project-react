@@ -38,8 +38,14 @@ nav button {
 }
 
 /*######################################################################
-/*##                          Page-Wide Styling                       ##
+/*##                          Body Styling                       ##
 /*#####################################################################*/
+
+body {
+    background: white;
+    color: rgb(42 46 51);
+    font-family: 'Varela Round', sans-serif;
+}
 
 img {
     display: block;

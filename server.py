@@ -65,7 +65,8 @@ def display_lessons(lesson_id):
 
 
 # USER Routes
-# TODO: Delete? 
+
+# TODO: Is this necessary? If not, delete
 @app.route('/api/check-login-status')
 def check_login():
     """Check if user is logged in."""
@@ -79,9 +80,10 @@ def check_login():
         return jsonify('Error with check-login.json')
 
 
-# TODO: Is this necessary? 
+# TODO: Allow users to set lessons to "private" so they aren't displayed here
 @app.route('/api/users')
 def view_users():
+    """Display a directory of users and links to each of their lessons."""
 
     users = []
     for u in crud.get_users():
@@ -161,6 +163,7 @@ def login():
         return jsonify('No such user.')
 
 
+# TODO: For now, this redirects to login page. In future, direct to landing search page or user directory. 
 @app.route("/api/logout")
 def logout():
     """Log user out of session by clearing session cookies. """
@@ -170,7 +173,7 @@ def logout():
 
 
 # # LESSON ROUTES
-# # Later, limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
+# # TODO: limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
 @app.route("/api/lessons/<lesson_id>.json")
 def show_single_lesson_json(lesson_id):
     """Get lesson and return lesson data and components in JSON."""
@@ -212,6 +215,7 @@ def show_single_lesson_json(lesson_id):
     return {"lesson": lesson_data, "comps": comp_data}
 
 
+# TODO: Do I need this? Delete? 
 @app.route("/api/lessons.json")
 def get_lessons_json():
     """Return a JSON response with all cards in DB."""
@@ -281,19 +285,17 @@ def create_lesson():
         print('Except something done broke')
         return {'success': False}
 
-# COMPONENT ENDPOINTS
+
+# # COMPONENT ENDPOINTS
 @app.route('/api/get_comps/<lesson_id>')
 def get_comps(lesson_id):
-    """Retrieve all components for a given lesson id"""
+    """Return all components for a given lesson id"""
     comp_dict = {}
 
     lesson = crud.get_lesson_by_id(1)
     for comp in lesson.comps:
         comp_dict[comp.comp_id] = {}
         comp_dict[comp.comp_id]['id'] = comp.comp_id
-        comp_dict[comp.comp_id]['c_type'] = comp.comp_type
-        comp_dict[comp.comp_id]['url'] = comp.url
-        comp_dict[comp.comp_id]['imgUrl'] = comp.imgUrl
 
     return jsonify([comp_dict])
 

@@ -27,7 +27,7 @@ function Nav() {
       <nav>
         <Link to="/"><img src="/static/img/home.png" alt="Home"/></Link>
         <Link to="/profile"><i className="fa fa-user-circle" alt="Profile"></i> Profile</Link>
-        <Link to="/users">Users and Lessons</Link>
+        <Link to="/users">Lesson Directory</Link>
         {/* TODO: Hoist into above JS and replace with {searchbar} for readability */}
         <form>
           <input 
