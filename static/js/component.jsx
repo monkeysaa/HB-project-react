@@ -72,13 +72,18 @@ function ComponentInputCase({comps, setComps}) {
 
 // function CompAdded()
 
+// Have 3 children : UrlInput, ImgInput, TextInput. 
+// Logic for back-end communication should happen in parent. 
+// pass saveComp as a function that takes 2 inputs: type and text. 
+
 function CreateComp({comps, setComps}) {
   const [url, setUrl] = React.useState('');
   const [compType, setCompType] = React.useState('');
   const [text, setText] = React.useState('');
 
-  const saveComp = () => {
+  const saveComp = (compToSave, typeOfComp) => {
 
+    console.log(compToSave, typeOfComp);
     const requestBody = {};
     console.log("Hitting this line (83)");
 
@@ -124,7 +129,7 @@ function CreateComp({comps, setComps}) {
           onChange={(e) => { setUrl(e.target.value); setCompType('url') }}
           value={url} 
         />
-        <button type='button' onClick={ saveComp }>
+        <button type='button' onClick={() => {saveComp('sense', 'url') }}>
           <i className="fa fa-plus"/></button>
 {/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
         <p>
@@ -132,14 +137,14 @@ function CreateComp({comps, setComps}) {
           Upload an image
           <input id = 'comp_pic' type = 'file' name = 'comp_pic' 
            onChange={() => { setCompType('img') }}/>
-          <button id='comp-pic-btn' type='button' onClick={ saveComp }>
+          <button id='comp-pic-btn' type='button' onClick={() => {saveComp('non', 'img')} }>
             <i className="fa fa-plus"/></button>
         </p>
           <label id='comp_text' htmlFor='comp_text' name='comp_text'>Add Text:</label>
           <textarea id='comp_text' name='comp_text' rows='5' cols='33'
           placeholder='Add Text'  value={text} 
           onChange={(e) => {setText(e.target.value); setCompType('text')}}> </textarea>
-          <button id='comp-text-btn'  type='button' onClick={ saveComp }>Add Text </button>
+          <button id='comp-text-btn'  type='button' onClick={() => {saveComp('foo', 'text')}}>Add Text </button>
         <br></br>
         <br></br>
 
