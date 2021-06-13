@@ -78,8 +78,8 @@ function ComponentInputCase({comps, setComps}) {
 
 function CreateComp({comps, setComps}) {
   const [url, setUrl] = React.useState('');
-  const [compType, setCompType] = React.useState('');
   const [text, setText] = React.useState('');
+
 
   const saveComp = (compToSave, typeOfComp) => {
 
@@ -87,18 +87,21 @@ function CreateComp({comps, setComps}) {
     const requestBody = {};
     console.log("Hitting this line (83)");
 
-    if (compType === 'url') {
-      if (url === '') {
+    if (typeOfComp === 'url') {
+      if (compToSave === '') {
         alert('Update this field before adding.');
       }
-      requestBody.url = url;
+      requestBody.url = compToSave;
     } 
-    else if (compType === 'img') {
+    else if (typeOfComp === 'img') {
       const file = document.getElementById('comp-pic').files[0];
       requestBody.compPic = file;
     }
-    else if (compType === 'text') {
-      requestBody.text = text;
+    else if (typeOfComp === 'text') {
+      if (compToSave === '') {
+        alert('Update this field before adding.');
+      }
+      requestBody.text = compToSave;
     }
 
     fetch('/api/create_component/', {
@@ -120,34 +123,57 @@ function CreateComp({comps, setComps}) {
   return (
     <React.Fragment>
         <p>Add a New Lesson Component</p>
-        <label htmlFor="componentInput"></label>
-        <i className="fa fa-link"></i>
-        <input 
-          id = 'comp_url'
-          type="text" 
-          placeholder="Paste full website url here"
-          onChange={(e) => { setUrl(e.target.value); setCompType('url') }}
-          value={url} 
-        />
-        <button type='button' onClick={() => {saveComp('sense', 'url') }}>
-          <i className="fa fa-plus"/></button>
+ 
 {/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
         <p>
           <i className="fa fa-image"></i>
           Upload an image
-          <input id = 'comp_pic' type = 'file' name = 'comp_pic' 
-           onChange={() => { setCompType('img') }}/>
+          <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
+          {/* //  onChange={() => { setCompType('img') }}/>  */}
+           {/* change this function to take file and return a string using Fatima's solution*/}
           <button id='comp-pic-btn' type='button' onClick={() => {saveComp('non', 'img')} }>
             <i className="fa fa-plus"/></button>
         </p>
-          <label id='comp_text' htmlFor='comp_text' name='comp_text'>Add Text:</label>
-          <textarea id='comp_text' name='comp_text' rows='5' cols='33'
-          placeholder='Add Text'  value={text} 
-          onChange={(e) => {setText(e.target.value); setCompType('text')}}> </textarea>
-          <button id='comp-text-btn'  type='button' onClick={() => {saveComp('foo', 'text')}}>Add Text </button>
-        <br></br>
-        <br></br>
+        <UrlInput saveComp={saveComp}/>
+        <TextInput saveComp={saveComp}/>
 
+    </React.Fragment>
+  )
+}
+
+function TextInput({saveComp}) {
+  const [text, setText] = React.useState('');
+
+  return(
+    <React.Fragment>
+      <label id='comp_text' htmlFor='comp_text' name='comp_text'>Add Text:</label>
+      <textarea id='comp_text' name='comp_text' rows='5' cols='33'
+        placeholder='Add Text'  value={text} 
+        onChange={(e) => {setText(e.target.value)}}> </textarea>
+      <button id='comp-text-btn'  type='button' onClick={() => {saveComp(text, 'text')}}>Add Text </button>
+      <br></br><br></br>
+    </React.Fragment>
+    
+  )
+}
+
+function UrlInput({saveComp}) {
+  const [url, setUrl] = React.useState('');
+
+  return(
+    <React.Fragment>
+      <label htmlFor="componentInput"></label>
+      <i className="fa fa-link"></i>
+      <input 
+        id = 'comp_url'
+        type="text"  
+        placeholder="Paste full website url here"
+        onChange={(e) => { setUrl(e.target.value)}}
+        value={url} 
+      />
+      <button type='button' onClick={() => {saveComp(url, 'url') }}>
+        <i className="fa fa-plus"/>
+      </button>
     </React.Fragment>
   )
 }
