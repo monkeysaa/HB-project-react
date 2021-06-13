@@ -51,15 +51,17 @@ class Comp(db.Model):
     """A component within a lesson."""
 
     __tablename__ = 'comps'
-
+    # use an association table to map components to their lessons
     comp_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     comp_type = db.Column(db.String, nullable=False) # url, video, pdf, image, text
     text = db.Column(db.Text)
     url = db.Column(db.String)
     # After processing or scraping
+    # I also persist video metadata, so we don't have to reach out to YouTube every time we want that data. 
+    # "Persist" - Write to my database. The logic layer is the codebase. The persistance layer is the database. 
     title = db.Column(db.String)
     source = db.Column(db.String)
-    description = db.Column(db.Text) # website-provided description for video or site
+    description = db.Column(db.Text) # metadata for video or site
     favicon = db.Column(db.String)
     imgUrl = db.Column(db.String)
     yt_id = db.Column(db.String) # if YouTube video, YouTube's id for video rendering

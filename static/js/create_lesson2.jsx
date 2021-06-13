@@ -49,10 +49,10 @@ function NewLesson() {
     formData.append('overview', overview);
     formData.append('component-ids', comp_ids);
 
-    fetch('/api/create_lesson', {
+    fetch('/api/lessons', {
         method: 'POST',
         body: formData,
-        })
+    })
     .then(response => response.json())
     .then(res => {
       if (res.success === false) {
@@ -114,7 +114,7 @@ function NewLesson() {
               </p>
             </div>
         </section>
-        <ComponentInputCase comps={comps} setComps={setComps}/>
+        <ComponentInputContainer comps={comps} setComps={setComps}/>
         <input type='submit' />
 
       </form> 

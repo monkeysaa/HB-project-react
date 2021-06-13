@@ -12,7 +12,7 @@ function Profile() {
   const [lessons, setLessons] = React.useState([]);
 
   React.useEffect(() => {
-    fetch('/api/profile.json')
+    fetch('/api/users/user')
       .then((response) => response.json())
       .then((data) => {
         setUsername(data.user.username);
@@ -68,7 +68,7 @@ function MultiLessonDisplay({lessons}) {
 
 function LessonCard(props) {
   function showLesson()  {
-    window.location.href = `/api/lesson/${props.id}.json`;
+    history.push(`/api/lesson/${props.id}.json`);
   }
 
   return (

@@ -1,4 +1,5 @@
 "use strict";
+const history = ReactRouterDOM.useHistory();
 
 function EditLesson() {
 
@@ -55,7 +56,7 @@ function EditLesson() {
       formData.append('overview', overview);
       formData.append('lesson_id', lesson_id);
 
-      fetch('/api/update_lesson', {
+      fetch('/api/lessons/lesson', {
           method: 'POST',
           body: formData,
           })
@@ -63,7 +64,7 @@ function EditLesson() {
       .then(res => {
         if (res.success == true) {
           alert('Lesson updated successfully!');
-          window.location.href = `/lesson/${lesson_id}`;
+          history.push(`/lesson/${res.lesson_id}`);
         } else {
           alert('something done broke.'); 
         }
@@ -79,9 +80,7 @@ function EditLesson() {
         <img src={lessonPic}></img>
         <br/>
         <form 
-          onSubmit={updateLesson}
-          action='/api/lesson-pic' 
-          method='POST' encType='multipart/form-data'>
+          onSubmit={updateLesson}>
           <input 
             type="hidden"
             name="lesson_id"

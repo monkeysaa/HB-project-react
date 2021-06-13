@@ -33,11 +33,10 @@ function Controller() {
       <Nav/>
       <Switch>
         <Route path="/users">
-          <UserLessonList />
+          <Directory />
         </Route>
         <Route path="/lesson/:lesson_id/edit" children={<EditLesson/>}/>
         <Route path="/lesson/:lesson_id" children={<ShowSingleLesson />} />
-        <Route path="/lesson"><DisplayTestLesson /></Route>
         <Route path="/signup">
           <CreateNewUser />
         </Route>

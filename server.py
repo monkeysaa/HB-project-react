@@ -45,36 +45,9 @@ def display_react(path):
         return render_template('react.html', isLoggedIn=False)
 
 
-@app.route('/lesson/<lesson_id>')
-@app.route('/lesson/<lesson_id>/edit')
-def display_lessons(lesson_id):
-    """Defer to React code on all routes."""
-
-    try: 
-        if session['user_id']:
-            return render_template('react.html', isLoggedIn=True)
-    except:
-        return render_template('react.html', isLoggedIn=False)
-
-
 # USER Routes
-
-# TODO: Is this necessary? If not, delete
-@app.route('/api/check-login-status')
-def check_login():
-    """Check if user is logged in."""
-
-    try: 
-        if session['isLoggedIn'] == True:
-            return jsonify('Logged in')
-        elif session['isLoggedIn'] == False:
-            return jsonify('Not logged in')
-    except:
-        return jsonify('Error with check-login.json')
-
-
 # TODO: Allow users to set lessons to "private" so they aren't displayed here
-@app.route('/api/users')
+@app.route('/api/users.json')
 def view_users():
     """Display a directory of users and links to each of their lessons."""
 
@@ -82,6 +55,7 @@ def view_users():
     for u in crud.get_users():
         lessons = []
         for lesson in u.lessons:
+            # TODO: method in model.py for this
             lesson.__dict__.pop('_sa_instance_state', None)
             lessons.append(lesson.__dict__)
         u.__dict__.pop('_sa_instance_state', None)
@@ -91,7 +65,27 @@ def view_users():
     return jsonify(users)
 
 
-@app.route("/api/profile.json")
+@app.route("/api/users", methods=["POST"])
+def signup():
+
+    data = request.get_json()
+    handle = data['handle']
+    email = data['email']
+    password = data['password']
+
+    try:
+        user = crud.create_user(handle, email, password)
+    except:
+        flash('Email is already in use. Try again.')
+        return {'success': False}
+
+    session['user_id'] = user.user_id
+    session['isLoggedIn'] = True
+
+    return {'success': True}
+
+
+@app.route("/api/users/user")
 def display_profile():
     """Display user profile. """
 
@@ -112,27 +106,7 @@ def display_profile():
     return jsonify({'user': user_data})
 
 
-@app.route("/api/signup", methods=["POST"])
-def signup():
-
-    data = request.get_json()
-    handle = data['handle']
-    email = data['email']
-    password = data['password']
-
-    try:
-        user = crud.create_user(handle, email, password)
-    except:
-        flash('Email is already in use. Try again.')
-        return {'success': False}
-
-    session['user_id'] = user.user_id
-    session['isLoggedIn'] = True
-
-    return {'success': True}
-
-
-@app.route("/api/login", methods=["POST"])
+@app.route("/api/session", methods=["POST"])
 def login():
     """Check session for user, else redirect guest search. """
 
@@ -157,7 +131,7 @@ def login():
 
 
 # TODO: For now, this redirects to login page. In future, direct to landing search page or user directory. 
-@app.route("/api/logout")
+@app.route("/api/session")
 def logout():
     """Log user out of session by clearing session cookies. """
     
@@ -166,48 +140,6 @@ def logout():
 
 
 # # LESSON ROUTES
-# # TODO: limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
-@app.route("/api/lessons/<lesson_id>.json")
-def show_single_lesson_json(lesson_id):
-    """Get lesson and return lesson data and components in JSON."""
-    
-    lesson = crud.get_lesson_by_id(lesson_id)
-
-    if lesson.imgUrl == None:
-        lesson.imgUrl = '/static/img/unimpressed.jpg'
-    
-    lesson_data = []
-    comp_data = []
-
-    # Add lesson description, etc
-    lesson_data.append(
-        {
-            "lesson_id": lesson.lesson_id,
-            "title": lesson.title,
-            "author": lesson.author.email,
-            "imgUrl": lesson.imgUrl,
-            "overview": lesson.overview
-        }
-    )
-
-    for comp in lesson.comps:
-        comp_data.append(
-            {
-                "id": comp.comp_id,
-                "type": comp.comp_type,
-                "url": comp.url,
-                "img": comp.imgUrl,
-                "text": comp.text,
-                "title": comp.title,
-                "source": comp.source,
-                "favicon": comp.favicon,
-                "description": comp.description
-            }
-        )
-
-    return {"lesson": lesson_data, "comps": comp_data}
-
-
 # TODO: Do I need this? Delete? 
 @app.route("/api/lessons.json")
 def get_lessons_json():
@@ -230,9 +162,9 @@ def get_lessons_json():
         )
 
     return {"lessons": lessons_list}
-    
 
-@app.route('/api/create_lesson', methods=["POST"])
+
+@app.route('/api/lessons', methods=["POST"])
 def create_lesson():
     """Create new lesson and lesson-comp DB assocations."""
 
@@ -279,89 +211,50 @@ def create_lesson():
         return {'success': False}
 
 
-# # COMPONENT ENDPOINTS
-@app.route('/api/get_comps/<lesson_id>')
-def get_comps(lesson_id):
-    """Return all components for a given lesson id"""
-    comp_dict = {}
+# # TODO: limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
+@app.route("/api/lessons/<lesson_id>.json")
+def show_single_lesson_json(lesson_id):
+    """Get lesson and return lesson data and components in JSON."""
+    
+    lesson = crud.get_lesson_by_id(lesson_id)
 
-    lesson = crud.get_lesson_by_id(1)
+    if lesson.imgUrl == None:
+        lesson.imgUrl = '/static/img/unimpressed.jpg'
+    
+    lesson_data = []
+    comp_data = []
+
+    # Add lesson description, etc
+    lesson_data.append(
+        {
+            "lesson_id": lesson.lesson_id,
+            "title": lesson.title,
+            "author": lesson.author.email,
+            "imgUrl": lesson.imgUrl,
+            "overview": lesson.overview
+        }
+    )
+
     for comp in lesson.comps:
-        comp_dict[comp.comp_id] = {}
-        comp_dict[comp.comp_id]['id'] = comp.comp_id
+        comp_data.append(
+            {
+                "id": comp.comp_id,
+                "type": comp.comp_type,
+                "url": comp.url,
+                "img": comp.imgUrl,
+                "text": comp.text,
+                "title": comp.title,
+                "source": comp.source,
+                "favicon": comp.favicon,
+                "description": comp.description
+            }
+        )
 
-    return jsonify([comp_dict])
-
-@app.route('/api/create_component/', methods=["POST"])
-def create_component(): 
-    """Create new component and save to DB."""
-
-    url = request.json.get('url') # sets URL to none if it doesn't exist
-    img = request.json.get('img') # sets URL to none if it doesn't exist
-    text = request.json.get('text') # sets URL to none if it doesn't exist
-    print('Moment of truth: Does TEXT exit?')
-    print(text)
-    if url:
-        v_comp = handle_url(url) #Adds / Updates attributes if YouTube video
-        
-        # TODO: Data scraping algorithms need work
-        try:    
-            s_comp = scrape_data(url) 
-        except Exception as e: 
-            print('Data scraping failed, but research is underway!', e)
-            # TODO: Make empty dict & use .get on all 
-            s_comp = {'title': None, 'source': None, 'favicon': None, 'descr': None}
-        comp = {
-            'type': v_comp['type'],
-            'url': v_comp['url'],
-            'imgUrl': v_comp['imgUrl'],
-            'title': s_comp['title'],
-            'yt_id': v_comp['yt_id'],
-            'source': s_comp['source'],
-            'favicon': s_comp['favicon'],
-            'description': s_comp['descr'],
-        }
-
-    elif img:
-        img = request.files['comp-pic']
-        result = cloudinary.uploader.upload( my_file, api_key=CLOUD_KEY, 
-            api_secret=CLOUD_SECRET, cloud_name='hackbright' )
-
-        comp = {
-            'type': 'img',
-            'imgUrl': result['secure_url'],
-        }
+    return {"lesson": lesson_data, "comps": comp_data}
     
-    else: # text 
 
-        comp = {
-            'type': 'text',
-            'text': text,
-        }
-
-
-    # TODO: get shortcut for this
-    db_comp = crud.create_comp(
-        c_type = comp.get('type'), 
-        url = comp.get('url'), 
-        imgUrl = comp.get('imgUrl'), 
-        text = comp.get('text'), 
-        title = comp.get('title'), 
-        yt_id = comp.get('yt_id'), 
-        source = comp.get('source'), 
-        favicon = comp.get('favicon'), 
-        description = comp.get('description'))
-    
-    
-    print(db_comp.as_dict())
-    return {'success': True, 'comp': db_comp.as_dict()}
-
-
-# Endpoint to link Component to Lesson
-# def link_comp_to_lesson():
-
-@app.route('/api/update_lesson', methods=["POST"])
-def update_lesson():
+@app.route('/api/lessons/lesson', methods=["POST"])
+def update_lesson(lesson_id):
     """Update the database with fresh data."""
     
     lesson_id = request.form['lesson_id']
@@ -382,6 +275,90 @@ def update_lesson():
         crud.update_lesson_overview(lesson_id, request.form['overview'])
 
     return {'success': True}
+
+
+# # COMPONENT ENDPOINTS
+@app.route('/api/components/')
+def get_comps(lesson_id):
+    """Return all components for a given lesson id"""
+    comp_dict = {}
+
+    lesson = crud.get_lesson_by_id(1)
+    for comp in lesson.comps:
+        comp_dict[comp.comp_id] = {}
+        comp_dict[comp.comp_id]['id'] = comp.comp_id
+
+    return jsonify([comp_dict])
+
+
+@app.route('/api/components/', methods=["POST"])
+def create_component(): 
+    """Create new component and save to DB."""
+
+    data = request.get_json()
+
+    if data:
+        if 'url' in data:
+            url = data['url']
+
+            v_comp = handle_url(url) #Adds / Updates attributes if YouTube video
+            
+            # TODO: Data scraping algorithms need work
+            try:    
+                s_comp = scrape_data(url) 
+            except Exception as e: 
+                print('Data scraping failed, but research is underway!', e)
+                # TODO: Make empty dict & use .get on all 
+                s_comp = {'title': None, 'source': None, 'favicon': None, 'descr': None}
+            
+            comp = {
+                'type': v_comp['type'],
+                'url': v_comp['url'],
+                'imgUrl': v_comp['imgUrl'],
+                'title': s_comp['title'],
+                'yt_id': v_comp['yt_id'],
+                'source': s_comp['source'],
+                'favicon': s_comp['favicon'],
+                'description': s_comp['descr'],
+            }
+
+        else: # text
+            text = data['text']
+            comp = {
+                'type': 'text',
+                'text': text,
+            }
+
+    else: 
+        comp_pic = request.files['comp-pic']
+        # My server integrates Cloudinary's API
+        result = cloudinary.uploader.upload( comp_pic, api_key=CLOUD_KEY, 
+            api_secret=CLOUD_SECRET, cloud_name='hackbright' )
+
+        comp = {
+            'type': 'img',
+            'imgUrl': result['secure_url'],
+        }
+
+    # TODO: get shortcut for this
+    # Stored in a POSTGRES relational database. 
+    # Rather 
+    db_comp = crud.create_comp(
+        c_type = comp.get('type', None), 
+        url = comp.get('url', None), 
+        imgUrl = comp.get('imgUrl', None), 
+        text = comp.get('text', None), 
+        title = comp.get('title', None), 
+        yt_id = comp.get('yt_id', None), 
+        source = comp.get('source', None), 
+        favicon = comp.get('favicon', None), 
+        description = comp.get('description', None))
+    
+    
+    print(db_comp.as_dict())
+    # Return an HTTP 200 Okay response, with the data of the URL I created as the payload. 
+    return {'success': True, 'comp': db_comp.as_dict()}
+
 
 # # SEARCH ROUTES
 @app.route('/api/search/<searchstring>.json')

@@ -1,15 +1,16 @@
+const history = ReactRouterDOM.useHistory();
 
 function Nav() {
   const [searchstring, setSearchstring] = React.useState(""); 
 
   function processSearch() {
-    window.location.href = `/api/search/?=${searchstring}.json`;
-    // Later --> Route to Search page
+    window.location.href = `/api/search/${searchstring}.json`;
+    // TODO: --> Route to Search page
   }
 
   function processLogout() {
     console.log('processing Logout...')
-    fetch('/api/logout')
+    fetch('/api/session')
     .then(response => response.json())
     .then(data => {
       if (data.success == true) {

@@ -9,7 +9,7 @@ function Login(props) {
       evt.preventDefault();
   
       const data = {"email": email, "password": password}
-      fetch('/api/login', {
+      fetch('/api/session', {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {

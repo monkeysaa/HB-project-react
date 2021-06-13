@@ -12,8 +12,8 @@
 //   } 
 // }
 
-
-function ComponentInputCase({comps, setComps}) {
+// 
+function ComponentInputContainer({comps, setComps}) {
   const [inputComps, setInputComps] = React.useState([0]);
   const compsHTML = [];
 
@@ -24,7 +24,7 @@ function ComponentInputCase({comps, setComps}) {
     let param = key
     compsHTML.push(
       <div key={key}>
-        <CreateComp comps={comps} setComps={setComps}/>
+        <CreateComp setComps={setComps}/>
         {/* <button type="button" onClick{() => displayImageInput}> <i className="fa fa-image" /> </button> */}
         {/* <button type='button' onClick={() => removeComponent(param)}> <i className="fa fa-trash" /> </button> */}
       </div>
@@ -76,37 +76,20 @@ function ComponentInputCase({comps, setComps}) {
 // Logic for back-end communication should happen in parent. 
 // pass saveComp as a function that takes 2 inputs: type and text. 
 
-function CreateComp({comps, setComps}) {
-  const [url, setUrl] = React.useState('');
-  const [text, setText] = React.useState('');
+function CreateComp({setComps}) {
 
+  const saveComp = (compToSave, compType) => {
 
-  const saveComp = (compToSave, typeOfComp) => {
+    const compData = {};
 
-    console.log(compToSave, typeOfComp);
-    const requestBody = {};
-    console.log("Hitting this line (83)");
-
-    if (typeOfComp === 'url') {
-      if (compToSave === '') {
-        alert('Update this field before adding.');
-      }
-      requestBody.url = compToSave;
-    } 
-    else if (typeOfComp === 'img') {
-      const file = document.getElementById('comp-pic').files[0];
-      requestBody.compPic = file;
+    if (compToSave === '') {
+      alert('Update this field before adding.');
     }
-    else if (typeOfComp === 'text') {
-      if (compToSave === '') {
-        alert('Update this field before adding.');
-      }
-      requestBody.text = compToSave;
-    }
+    compType === 'url' ? compData.url=compToSave : compData.text=compToSave;
 
-    fetch('/api/create_component/', {
+    fetch('/api/components/', {
       method: 'POST',
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(compData),
       headers: {
         'Content-Type': 'application/json'
       },
@@ -115,9 +98,28 @@ function CreateComp({comps, setComps}) {
     .then(({comp}) => { // Destructures response and gives only value of 'comp' key
       console.log(comp);
       // Use ... whenever you update a state array. 
+      // Array of response objects
+      // Every time I get an HTTP response back, I parse out the HTTP response and check if it's HTTP 200 Okay
+      // If it's good, I take data and append it to a component objct. Then I append that to a growing array of all the components the user has added this session.  
       setComps(currentComps => [...currentComps, comp]); // give it a function and the argument is teh current value of the state
     })
 
+  };
+
+  const saveFile = (compToSave) => {
+
+    const formData = new FormData();
+    formData.append('comp-pic', compToSave);
+
+    fetch('/api/components/', { 
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(({comp}) => { // Destructures response. This becomes 'comp' variable
+      setComps(currentComps => [...currentComps, comp]); 
+    })
+  
   };
 
   return (
@@ -127,7 +129,7 @@ function CreateComp({comps, setComps}) {
 {/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
       <UrlInput saveComp={saveComp}/>
       <TextInput saveComp={saveComp}/>
-      <ImgInput saveComp={saveComp}/>
+      <ImgInput saveFile={saveFile}/>
 
     </React.Fragment>
   )
@@ -170,24 +172,26 @@ function UrlInput({saveComp}) {
   )
 }
 
-function ImgInput({saveComp}) {
+function ImgInput({saveFile}) {
+  const [file, setFile] = React.useState(null);
 
   return(
     <React.Fragment>
       <p>
       <i className="fa fa-image"></i>
       Upload an image
-      <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
+      <input id = 'comp_pic' type = 'file' name = 'comp_pic' 
+        onChange={(event) => setFile(event.target.files[0])}
+              />
 
       {/* TODO: change this function to take file and return a string using Fatima's solution*/}
-      <button id='comp-pic-btn' type='button' onClick={() => {saveComp('non', 'img')} }>
+      <button id='comp-pic-btn' type='button' 
+        onClick={() => {saveFile(file)} }>
         <i className="fa fa-plus"/></button>
       </p>
     </React.Fragment>
   )
 }
-
-
 
 
 // TO BE DEVELOPED: 
@@ -206,47 +210,18 @@ function ImgInput({saveComp}) {
 //   )
 // }
 
-  // CREATE COMP OUTTAKES
-  // const saveUrl = () => {
- 
-  //   if(url === "") {
-  //     alert('Update this field before adding.');
-  //   }
-
-  //   else {
-  //     const data = {'url': url, 'type': 'url'}
-
-  //     fetch(/api/create_component/", {
-  //       method: "POST",
-  //       body: JSON.stringify(data),
-  //       headers: {
-  //         "Content-Type": "application/json"
-  //       },
-  //     })
-  //     .then(response => response.json())
-  //     .then(res => {
-  //       console.log(res);
-  //       let fetchComps = [...comps];
-  //       fetchComps.push(res);
-  //       setComps(fetchComps);
-  //     })
-  //   }
-
-  // };
-  // const addText = () => {
-  //   setCompType('text');
-  //   const textHTML = [
-  //     <Text text={text} setText={setText}/>
-  //   ];
-  // }
 
 // #*#######################################################################*#
-// #*#                          DISPLAY NEW COMPONENT                      #*#
+// #*#                          Display Saved Components                   #*#
 // #*#######################################################################*#
+
 function CompContainer({comps}) {
-  // comps is data-container 
-  // compCards is temp display-container
-  // CompCard is the template for display
+  // comps is high-level data-container in <NewLesson>
+
+  // CompContainer is the display container Component in CreateLesson and SingleLesson
+  // compCards is display container array
+  // CompCard is the Card template for display
+  // CompCard is the card itself
   const compCards = [];
   console.log(comps);
 
@@ -258,7 +233,7 @@ function CompContainer({comps}) {
         id={comp.id}
         type={comp.type}
         url={comp.url} // e.g. link or embedded video link
-        img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
+        img={comp.img} // e.g. thumbnail or image link from Cloudinary
         text={comp.text}
         title={comp.title}
         source={comp.source}
@@ -279,22 +254,22 @@ function CompCard(props) {
 
   const video_id = `comp_video_${props.id}`;
   const img_id = `comp_img_${props.id}`;
-
+  console.log(props.img);
   return (
     <section className="component" id={props.id}>
-      <h3> <a href={`${props.url}`}> {props.title} </a> </h3>
 
       {/* will display either img OR iFrame, but not both */}
-
       {(props.type === 'video' || props.type === 'url') ?  
-        <IFrame props={props} video_id={video_id} img_id={img_id}/> :
-        <img id={img_id} src={props.img}/> 
+        (<div><h3> <a href={`${props.url}`}> {props.title} </a> </h3>
+        <IFrame props={props} video_id={video_id} img_id={img_id}/></div>) :
+        <img id={img_id} src={props.img} />
       }
       {(props.source && props.favicon) ? 
       (<p className='source'><img src={`${props.favicon}`}/> {props.source}</p> ) 
       : null}
-      {(props.description) ? <p> {props.description} </p> : null}
-      {(props.text) ? <div> {props.text} </div> : null}
+      {(props.description) && <p> {props.description} </p> }
+      {(props.text) && <div> {props.text} </div> }
+      { <img src= {props.img} />}
       <p className='comp-btns'> 
         <button 
           type='button' 
@@ -370,39 +345,5 @@ function IFrame({props, video_id, img_id}) {
 }
 
 
-// #*#######################################################################*#
-// #*#                          Display Saved Components                   #*#
-// #*#######################################################################*#
-function DisplaySavedComps(props, lessonID) {
-  const [dbComps, setDbComps] = React.useState([]);
-  const comps = [];
-
-  React.useEffect(() => {
-  fetch(`/api/get_comps/${props.lesson_id}`) 
-  // endpoint for retrieving all lesson components from DB, using lesson_id. 
-  .then((response) => response.json())
-  .then((data) => {
-    if (data) {
-      setDbComps(data[0]);
-      console.log(data[0]);
-    }
-    })
-  }, [])
-
-  for (const [comp, value] of Object.entries(dbComps)) {
-    comps.push(
-      <div>
-        <p>BOOOO, We are here :(</p>
-      <CompCard
-        key={value.comp_id}
-        // title={comp.component}
-        img={value.imgUrl}
-        url={value.url}
-      />
-      </div>
-
-    );
-  }
-}
 
 

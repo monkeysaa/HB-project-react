@@ -8,7 +8,7 @@ function CreateNewUser(props) {
       e.preventDefault();
 
       const user = {"handle": handle, "email": email, "password": pass}
-      fetch('/api/signup', {
+      fetch('/api/users', {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {

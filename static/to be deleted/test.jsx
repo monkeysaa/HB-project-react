@@ -352,3 +352,92 @@ ReactDOM.render(
 //     </div>
 //   );
 // }
+
+// # TODO: Is this necessary? If not, delete
+// @app.route('/api/check_login')
+// def check_login():
+//     """Check if user is logged in."""
+
+//     try: 
+//         if session['isLoggedIn'] == True:
+//             return jsonify('Logged in')
+//         elif session['isLoggedIn'] == False:
+//             return jsonify('Not logged in')
+//     except:
+//         return jsonify('Error with check-login.json')
+
+// @app.route('/lessons/<lesson_id>')
+// @app.route('/lessons/<lesson_id>/edit')
+// def display_lessons(lesson_id):
+//     """Defer to React code on all routes."""
+
+//     try: 
+//         if session['user_id']:
+//             return render_template('react.html', isLoggedIn=True)
+//     except:
+//         return render_template('react.html', isLoggedIn=False)
+
+// function DisplaySavedComps(props, lessonID) {
+//   const [dbComps, setDbComps] = React.useState([]);
+//   const comps = [];
+
+//   React.useEffect(() => {
+//   fetch(`/api/components/${props.lesson_id}`) 
+//   // endpoint for retrieving all lesson components from DB, using lesson_id. 
+//   .then((response) => response.json())
+//   .then((data) => {
+//     if (data) {
+//       setDbComps(data[0]);
+//       console.log(data[0]);
+//     }
+//     })
+//   }, [])
+
+//   for (const [comp, value] of Object.entries(dbComps)) {
+//     comps.push(
+//       <div>
+//         <p>BOOOO, We are here :(</p>
+//       <CompCard
+//         key={value.comp_id}
+//         // title={comp.component}
+//         img={value.imgUrl}
+//         url={value.url}
+//       />
+//       </div>
+
+//     );
+//   }
+// }
+  // CREATE COMP OUTTAKES
+  // const saveUrl = () => {
+ 
+  //   if(url === "") {
+  //     alert('Update this field before adding.');
+  //   }
+
+  //   else {
+  //     const data = {'url': url, 'type': 'url'}
+
+  //     fetch(/api/components/", {
+  //       method: "POST",
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         "Content-Type": "application/json"
+  //       },
+  //     })
+  //     .then(response => response.json())
+  //     .then(res => {
+  //       console.log(res);
+  //       let fetchComps = [...comps];
+  //       fetchComps.push(res);
+  //       setComps(fetchComps);
+  //     })
+  //   }
+
+  // };
+  // const addText = () => {
+  //   setCompType('text');
+  //   const textHTML = [
+  //     <Text text={text} setText={setText}/>
+  //   ];
+  // }
