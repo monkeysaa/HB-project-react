@@ -1,37 +1,36 @@
-// should this be a separate component or a function within the Lesson Object? Or Profile Page?
-
 function NewLesson() {
+  const history = ReactRouterDOM.useHistory();
+  // new URL: history.push
+
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
+
   // comps: An array of POJOs, each with data for a single lesson component. 
   const [comps, setComps] = React.useState([]); 
   
-  let compCards = [];   // an array of Lesson-Component cards to display
+  // let compCards = [];   // an array of Lesson-Component cards to display
 
-  for (const comp of comps) {
-    compCards.push(
-      <CompCard
-        key={comp.id}
-        id={comp.id}
-        type={comp.type}
-        url={comp.url}  // e.g. link or embedded video link
-        img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
-        text={comp.text}
-        title={comp.title}
-        source={comp.source}
-        favicon={comp.favicon}
-        description={comp.description}
-      />
-    );
-  }
+  // for (const comp of comps) {
+  //   compCards.push(
+  //     <CompCard
+  //       key={comp.id}
+  //       id={comp.id}
+  //       type={comp.type}
+  //       url={comp.url}  // e.g. link or embedded video link
+  //       img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
+  //       text={comp.text}
+  //       title={comp.title}
+  //       source={comp.source}
+  //       favicon={comp.favicon}
+  //       description={comp.description}
+  //     />
+  //   );
+  // }
 
-  React.useEffect(() => {
-    for (let comp of comps) {
-      console.log('Component Update!')
-      console.log(comp);
-    }
-    
-  }, [comps]);
+  // TODO: Remove before finalizing code
+
+  console.log('Component Update!');
+  console.log(comps);
 
   const createLesson = (evt) => {
     evt.preventDefault();
@@ -60,11 +59,12 @@ function NewLesson() {
           alert('something done broke.');
       } else if (res.success == true) {
           alert(`Lesson ${res.lesson_id} created successfully!`);
-          window.location.href = `/lesson/${res.lesson_id}`;
+          history.push(`/lesson/${res.lesson_id}`);
       }
     })
   }
   
+  // Handle this with React rather than JS
   const displayElement = (id) => {
     // remove hidden attribute on an element
     console.log(id);
@@ -79,12 +79,11 @@ function NewLesson() {
       <section className="lesson-inputs">
         <h2>Create a Lesson</h2>
         <form id="lesson-input-form" 
-          onSubmit={createLesson}
-          action='/api/create_lesson' 
-          method='POST' encType='multipart/form-data'>
+          onSubmit={createLesson}>
           <section className="lesson_inputs">
             <input 
               id = 'lesson-pic'
+              // TODO: May not need "name on line 90"
               type='file' name='lesson-pic' 
               onChange={() => displayElement('placeholder')}/> 
             <input 
@@ -125,7 +124,7 @@ function NewLesson() {
         <img id='placeholder' src='/static/img/placeholder.png' hidden/>
         <h3 className="new_lesson">{overview}</h3>
         <div id="comps">
-          {compCards}
+          <CompContainer comps={comps}/>
         </div>
       </section>
 

@@ -329,3 +329,26 @@ ReactDOM.render(
 //   Each node will have an ID, a type, the data of the component. 
 //       handling files: https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
 //
+
+// 
+// function TestCompCard(props) {
+//   const c_link = 'https://www.youtube.com/watch?v=X5EoUD-BIss';
+//   return (
+//     <div className="component">
+//       <p> {props.title} </p>
+//       <img src={props.img} />
+//       <a href={c_link}> Superconductors </a>
+//       <iframe 
+//           id={props.title} 
+//           width='560' 
+//           height='315' 
+//           src='https://www.youtube.com/embed/X5EoUD-BIss'
+//           // src={`${props.link}`} 
+//           title={props.title} 
+//           frameBorder='0' 
+//           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
+//           allowFullScreen 
+//         ></iframe>
+//     </div>
+//   );
+// }

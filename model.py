@@ -68,9 +68,23 @@ class Comp(db.Model):
     lessons = db.relationship('Lesson', secondary='lesson_comps', viewonly=True)
     tags = db.relationship('Tag', secondary='comp_tags', viewonly=True)
 
+    def as_dict(self):
+        return {
+            'id': self.comp_id, 
+            'type': self.comp_type,
+            'url': self.url,
+            'imgUrl': self.imgUrl,
+            'text': self.text,
+            'title': self.title,
+            'yt_id': self.yt_id,
+            'source': self.source,
+            'favicon': self.favicon,
+            'description': self.description
+        }
+
+
     def __repr__(self):
         return f'<Component type={self.comp_type} id={self.comp_id}>'
-
 
 class Lesson_Comp(db.Model):
     

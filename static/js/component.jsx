@@ -79,39 +79,87 @@ function CreateComp({comps, setComps}) {
 
   const saveComp = () => {
 
-    const formData  = new FormData();
-    formData.append('type', compType);
+    const requestBody = {};
 
-    switch (compType) {
-      case 'url':
-        if (url === '') {
-          alert('Update this field before adding.');
-        }
-        formData.append('url', url);
-        break;
-      case 'img':
-        const file = document.getElementById('comp-pic').files[0];
-        formData.append('comp-pic', file);
-        break;
-      case 'text':
-
+    if (compType === 'url') {
+      if (url === '') {
+        alert('Update this field before adding.');
+      }
+      requestBody.url = url;
+    } 
+    else if (compType === 'img') {
+      const file = document.getElementById('comp-pic').files[0];
+      requestBody.compPic = file;
     }
+    // TODO: add Text handling
 
-    fetch("/api/create_component", {
-        method: 'POST',
-        body: formData,
-        })
+    fetch('/api/create_component/', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
     .then(response => response.json())
-    .then(res => {
-      console.log(res);
-      let fetchComps = [...comps];
-      fetchComps.push(res);
-      setComps(fetchComps);
+    .then(({comp}) => { // Destructures response and gives only value of 'comp' key
+      console.log(comp);
+      // Use ... whenever you update a state array. 
+      setComps(currentComps => [...currentComps, comp]); // give it a function and the argument is teh current value of the state
     })
 
   };
 
-  // // Saves to Database
+  return (
+    <React.Fragment>
+        <p>Add a New Lesson Component</p>
+        <label htmlFor="componentInput"></label>
+        <i className="fa fa-link"></i>
+        <input 
+          id = 'comp_url'
+          type="text" 
+          placeholder="Paste full website url here"
+          onChange={(e) => { setUrl(e.target.value); setCompType('url') }}
+          value={url} 
+        />
+        <button type='button' onClick={ saveComp }>
+          <i className="fa fa-plus"/></button>
+{/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
+        <p>
+          <i className="fa fa-image"></i>
+          Upload an image
+          <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
+          <button type='button' onClick={() => { saveComp; setCompType('img') }}>
+            <i className="fa fa-plus"/></button>
+        </p>
+        {/* <form>
+          <label id='comp_text' htmlFor='comp_text' name='comp_text'>Add Text:</label>
+          <textarea id='comp_text' name='comp_text' rows='5' cols='33'
+          placeholder='Add Text' onChange={(text) => setText(text)}> </textarea>
+          <input type='submit' onClick={() => {saveComp; setCompType('text')}}/>
+        </form> */}
+
+    </React.Fragment>
+  )
+}
+
+
+// TO BE DEVELOPED: 
+// function Text({text, setText}) {
+//   const editor = useMemo(() => withReact(createEditor()), []);
+//   const [value, setValue] = useState([]);
+//   return (
+//     // Add the editable component inside the context.
+//     <Slate
+//       editor={editor}
+//       value={value}
+//       onChange={newValue => setValue(newValue)}
+//     >
+//       <Editable />
+//     </Slate>
+//   )
+// }
+
+  // CREATE COMP OUTTAKES
   // const saveUrl = () => {
  
   //   if(url === "") {
@@ -145,54 +193,6 @@ function CreateComp({comps, setComps}) {
   //   ];
   // }
 
-  return (
-    <React.Fragment>
-        <p>Add a New Lesson Component</p>
-        <label htmlFor="componentInput"></label>
-        <i className="fa fa-link"></i>
-        <input 
-          id = 'comp_url'
-          type="text" 
-          placeholder="Paste full website url here"
-          onChange={(e) => { setUrl(e.target.value); setCompType('url') }}
-          value={url} 
-        />
-        <button type='button' onClick={ saveComp }>
-          <i className="fa fa-plus"/></button>
-{/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
-        <p>
-          <i className="fa fa-image"></i>
-          Upload an image
-          <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
-          <button type='button' onClick={() => { saveComp; setCompType('img') }}>
-            <i className="fa fa-plus"/></button>
-        </p>
-        <form>
-          <label id='comp_text' for='comp_text' name='comp_text'>Add Text:</label>
-          <textarea id='comp_text' name='comp_text' rows='5' cols='33'
-          placeholder='Add Text' value={(text) => setText(text)}> </textarea>
-          <input type='submit' onClick={() => {saveComp; setCompType('text')}}/>
-        </form>
-
-    </React.Fragment>
-  )
-}
-
-// function Text({text, setText}) {
-//   const editor = useMemo(() => withReact(createEditor()), []);
-//   const [value, setValue] = useState([]);
-//   return (
-//     // Add the editable component inside the context.
-//     <Slate
-//       editor={editor}
-//       value={value}
-//       onChange={newValue => setValue(newValue)}
-//     >
-//       <Editable />
-//     </Slate>
-//   )
-// }
-
 // #*#######################################################################*#
 // #*#                          DISPLAY NEW COMPONENT                      #*#
 // #*#######################################################################*#
@@ -201,7 +201,8 @@ function CompContainer({comps}) {
   // compCards is temp display-container
   // CompCard is the template for display
   const compCards = [];
-  
+  console.log(comps);
+
   for (const comp of comps) {
     console.log(comp);
     compCards.push(
@@ -238,8 +239,10 @@ function CompCard(props) {
 
       {/* will display either img OR iFrame, but not both */}
 
-      <img id={img_id} src={props.img}/> 
-      <IFrame props={props} video_id={video_id} img_id={img_id}/>
+      {(props.type === 'video' || props.type === 'url') ?  
+        <IFrame props={props} video_id={video_id} img_id={img_id}/> :
+        <img id={img_id} src={props.img}/> 
+      }
       <p className='source'><img src={`${props.favicon}`}/> {props.source}</p>
       <p> {props.description} </p>
       <p className='comp-btns'> 
@@ -269,18 +272,21 @@ function CompCard(props) {
 function IFrame({props, video_id, img_id}) {
 
   React.useEffect(() => {
-    if ((props.type === 'video') | (!(props.id === 5) && !(props.id === 10) )){
+    // if ((props.type === 'video') | (!(props.id === 5) && !(props.id === 10) )){
 
-      document.getElementById(img_id).setAttribute("hidden", true);
-      // console.log('test1');
-    }
-    else {  // handles case of files, etc
-      document.getElementById(video_id).innerHTML = "";
-      // console.log('test2');
-    }
+    //   document.getElementById(img_id).setAttribute("hidden", true);
+    //   // console.log('test1');
+    // }
+    // else {  // handles case of files, etc
+    //   document.getElementById(video_id).innerHTML = "";
+    //   // console.log('test2');
+    // }
   });
 
   return (
+    <React.Fragment>
+      {/* Look up how to deal with broken links:  */}
+   <p>IFRAME</p>
     <iframe 
       id={video_id} 
       width='560' 
@@ -291,29 +297,25 @@ function IFrame({props, video_id, img_id}) {
       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
       allowFullScreen 
     ></iframe>
-  );
-}
-
-
-function TestCompCard(props) {
-  const c_link = 'https://www.youtube.com/watch?v=X5EoUD-BIss';
-  return (
-    <div className="component">
-      <p> {props.title} </p>
-      <img src={props.img} />
-      <a href={c_link}> Superconductors </a>
-      <iframe 
-          id={props.title} 
-          width='560' 
-          height='315' 
-          src='https://www.youtube.com/embed/X5EoUD-BIss'
-          // src={`${props.link}`} 
-          title={props.title} 
-          frameBorder='0' 
-          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
-          allowFullScreen 
-        ></iframe>
+    <p>EMBED</p>
+    <div style={{width: '560px', height: '315px', float: 'none', clear: 'both', margin: '2px auto'}}>
+      <embed
+        src={`${props.url}`}
+        wmode="transparent"
+        type="video/mp4"
+        width="100%" height="100%"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+        title={props.type}
+      />
+          <p>DIV</p>
     </div>
+        <object
+        style={{width: "820px", height: "461.25px", float: 'none', "clear": "both", margin: "2px auto"}}
+        data={props.url}>
+      </object>
+    </React.Fragment>
+ 
   );
 }
 

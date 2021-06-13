@@ -33,16 +33,9 @@ SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies',
 
 # Basic REACT Routing
 # TODO: catch-all to set this up as the default
-@app.route('/create_lesson')
-@app.route('/login')
-@app.route('/signup')
-@app.route('/search')
-@app.route('/users')
-@app.route('/profile')
-@app.route('/lesson')
-@app.route('/lessons')
-@app.route('/')
-def display_react():
+@app.route('/', defaults={'path': ""})
+@app.route('/<path:path>')
+def display_react(path):
     """Defer to React code on all routes."""
 
     try: 
@@ -272,7 +265,7 @@ def create_lesson():
 
     # TODO: For each component, create DB association.
     # Set up as [] as default...but perhaps it's a string? 
-    if request.form['component-ids'] != []:
+    if request.form['component-ids']:
         comp_data = request.form['component-ids'] # str e.g. '30,31,32'
         component_ids = comp_data.split(',')
         for comp_id in component_ids:
@@ -299,53 +292,59 @@ def get_comps(lesson_id):
 
     return jsonify([comp_dict])
 
-@app.route('/api/create_component/<type>', methods=["POST"])
-def create_component(type): 
+@app.route('/api/create_component/', methods=["POST"])
+def create_component(): 
     """Create new component and save to DB."""
 
-    filetype = request.files['type']
-    if filetype == 'url':
+    url = request.json.get('url') # sets URL to none if it doesn't exist
+    img = request.json.get('img') # sets URL to none if it doesn't exist
+    # text = request.json.get('text') # sets URL to none if it doesn't exist
 
-        url = request.files['url']
-        v_comp = handle_url(url)
+    if url:
+        v_comp = handle_url(url) #Adds / Updates attributes if YouTube video
         
         # TODO: Data scraping algorithms need work
         try:    
             s_comp = scrape_data(url) 
-        except: 
-            'Data scraping failed, but research is underway!'
-        
-        print('about to save component: ')
-        print(v_comp)
-        print(s_comp)
+        except Exception as e: 
+            print('Data scraping failed, but research is underway!', e)
+            # TODO: Make empty dict & use .get on all 
+            s_comp = {'title': None, 'source': None, 'favicon': None, 'descr': None}
         comp = {
             'type': v_comp['type'],
             'url': v_comp['url'],
             'imgUrl': v_comp['imgUrl'],
-            'text': None,
             'title': s_comp['title'],
             'yt_id': v_comp['yt_id'],
             'source': s_comp['source'],
             'favicon': s_comp['favicon'],
-            'description': s_comp['description'],
+            'description': s_comp['descr'],
         }
 
-    elif filetype == 'img':
-        comp['type'] = 'img'
+    elif img:
         img = request.files['comp-pic']
         result = cloudinary.uploader.upload( my_file, api_key=CLOUD_KEY, 
             api_secret=CLOUD_SECRET, cloud_name='hackbright' )
-        comp['imgUrl'] = result['secure_url']
 
-        print('about to save component: ')
-        print(comp)
+        comp = {
+            'type': 'img',
+            'imgUrl': result['secure_url'],
+        }
 
-        # TODO: get shortcut for this
-        db_comp = crud.create_comp(comp['type'], comp['yt_id'], comp['url'], 
-                        comp['imgUrl'], comp['text'], comp['title'], 
-                        comp['source'], comp['favicon'], comp['description'])
-
-    return {'success': True, 'comp': comp}
+    # TODO: get shortcut for this
+    db_comp = crud.create_comp(
+        c_type = comp.get('type'), 
+        url = comp.get('url'), 
+        imgUrl = comp.get('imgUrl'), 
+        text = comp.get('text'), 
+        title = comp.get('title'), 
+        yt_id = comp.get('yt_id'), 
+        source = comp.get('source'), 
+        favicon = comp.get('favicon'), 
+        description = comp.get('description'))
+    
+    print(db_comp.as_dict())
+    return {'success': True, 'comp': db_comp.as_dict()}
 
 
 # Endpoint to link Component to Lesson
