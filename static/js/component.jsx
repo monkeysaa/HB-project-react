@@ -125,17 +125,9 @@ function CreateComp({comps, setComps}) {
         <p>Add a New Lesson Component</p>
  
 {/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
-        <p>
-          <i className="fa fa-image"></i>
-          Upload an image
-          <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
-          {/* //  onChange={() => { setCompType('img') }}/>  */}
-           {/* change this function to take file and return a string using Fatima's solution*/}
-          <button id='comp-pic-btn' type='button' onClick={() => {saveComp('non', 'img')} }>
-            <i className="fa fa-plus"/></button>
-        </p>
-        <UrlInput saveComp={saveComp}/>
-        <TextInput saveComp={saveComp}/>
+      <UrlInput saveComp={saveComp}/>
+      <TextInput saveComp={saveComp}/>
+      <ImgInput saveComp={saveComp}/>
 
     </React.Fragment>
   )
@@ -177,6 +169,25 @@ function UrlInput({saveComp}) {
     </React.Fragment>
   )
 }
+
+function ImgInput({saveComp}) {
+
+  return(
+    <React.Fragment>
+      <p>
+      <i className="fa fa-image"></i>
+      Upload an image
+      <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
+
+      {/* TODO: change this function to take file and return a string using Fatima's solution*/}
+      <button id='comp-pic-btn' type='button' onClick={() => {saveComp('non', 'img')} }>
+        <i className="fa fa-plus"/></button>
+      </p>
+    </React.Fragment>
+  )
+}
+
+
 
 
 // TO BE DEVELOPED: 
@@ -279,8 +290,11 @@ function CompCard(props) {
         <IFrame props={props} video_id={video_id} img_id={img_id}/> :
         <img id={img_id} src={props.img}/> 
       }
-      <p className='source'><img src={`${props.favicon}`}/> {props.source}</p>
-      <p> {props.description} </p>
+      {(props.source && props.favicon) ? 
+      (<p className='source'><img src={`${props.favicon}`}/> {props.source}</p> ) 
+      : null}
+      {(props.description) ? <p> {props.description} </p> : null}
+      {(props.text) ? <div> {props.text} </div> : null}
       <p className='comp-btns'> 
         <button 
           type='button' 
