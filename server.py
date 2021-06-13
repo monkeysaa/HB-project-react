@@ -298,8 +298,9 @@ def create_component():
 
     url = request.json.get('url') # sets URL to none if it doesn't exist
     img = request.json.get('img') # sets URL to none if it doesn't exist
-    # text = request.json.get('text') # sets URL to none if it doesn't exist
-
+    text = request.json.get('text') # sets URL to none if it doesn't exist
+    print('Moment of truth: Does TEXT exit?')
+    print(text)
     if url:
         v_comp = handle_url(url) #Adds / Updates attributes if YouTube video
         
@@ -330,6 +331,14 @@ def create_component():
             'type': 'img',
             'imgUrl': result['secure_url'],
         }
+    
+    else: # text 
+
+        comp = {
+            'type': 'text',
+            'text': text,
+        }
+
 
     # TODO: get shortcut for this
     db_comp = crud.create_comp(
@@ -342,6 +351,7 @@ def create_component():
         source = comp.get('source'), 
         favicon = comp.get('favicon'), 
         description = comp.get('description'))
+    
     
     print(db_comp.as_dict())
     return {'success': True, 'comp': db_comp.as_dict()}

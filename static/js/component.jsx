@@ -80,6 +80,7 @@ function CreateComp({comps, setComps}) {
   const saveComp = () => {
 
     const requestBody = {};
+    console.log("Hitting this line (83)");
 
     if (compType === 'url') {
       if (url === '') {
@@ -91,7 +92,9 @@ function CreateComp({comps, setComps}) {
       const file = document.getElementById('comp-pic').files[0];
       requestBody.compPic = file;
     }
-    // TODO: add Text handling
+    else if (compType === 'text') {
+      requestBody.text = text;
+    }
 
     fetch('/api/create_component/', {
       method: 'POST',
@@ -127,16 +130,18 @@ function CreateComp({comps, setComps}) {
         <p>
           <i className="fa fa-image"></i>
           Upload an image
-          <input id = 'comp_pic' type = 'file' name = 'comp_pic' />
-          <button type='button' onClick={() => { saveComp; setCompType('img') }}>
+          <input id = 'comp_pic' type = 'file' name = 'comp_pic' 
+           onChange={() => { setCompType('img') }}/>
+          <button id='comp-pic-btn' type='button' onClick={ saveComp }>
             <i className="fa fa-plus"/></button>
         </p>
-        {/* <form>
           <label id='comp_text' htmlFor='comp_text' name='comp_text'>Add Text:</label>
           <textarea id='comp_text' name='comp_text' rows='5' cols='33'
-          placeholder='Add Text' onChange={(text) => setText(text)}> </textarea>
-          <input type='submit' onClick={() => {saveComp; setCompType('text')}}/>
-        </form> */}
+          placeholder='Add Text'  value={text} 
+          onChange={(e) => {setText(e.target.value); setCompType('text')}}> </textarea>
+          <button id='comp-text-btn'  type='button' onClick={ saveComp }>Add Text </button>
+        <br></br>
+        <br></br>
 
     </React.Fragment>
   )
@@ -297,7 +302,7 @@ function IFrame({props, video_id, img_id}) {
       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
       allowFullScreen 
     ></iframe>
-    <p>EMBED</p>
+    {/* <p>EMBED</p>
     <div style={{width: '560px', height: '315px', float: 'none', clear: 'both', margin: '2px auto'}}>
       <embed
         src={`${props.url}`}
@@ -313,7 +318,7 @@ function IFrame({props, video_id, img_id}) {
         <object
         style={{width: "820px", height: "461.25px", float: 'none', "clear": "both", margin: "2px auto"}}
         data={props.url}>
-      </object>
+      </object> */}
     </React.Fragment>
  
   );

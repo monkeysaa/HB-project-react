@@ -99,8 +99,11 @@ function NewLesson() {
               value={overview} 
             /><br/>
             <div id='tags'>
+
               <p>
-                <input type="checkbox" name="grades" value="4th"/><label>4th</label>
+                {/* <input type="checkbox" name="grades" value="4th" 
+                  onChange={handleToggle} checked={state[key]}/>
+                  <label>4th</label> */}
                 <input type="checkbox" name="grades" value="5th"/><label>5th</label>
                 <input type="checkbox" name="grades" value="6th"/><label>6th</label>
               </p>
