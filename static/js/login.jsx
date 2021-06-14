@@ -22,7 +22,8 @@ function Login(props) {
             setLoggedIn(true);
             document.getElementById('login_state').dataset.loggedin = true;
             console.log('User logged in. NOW redirect to profile')
-            window.location.href = '/profile';
+            history.push(`/profile`);
+            // window.location.href = '/profile';
           } else {
               alert(res);
               console.log(res);

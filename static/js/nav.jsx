@@ -1,5 +1,3 @@
-const history = ReactRouterDOM.useHistory();
-
 function Nav() {
   const [searchstring, setSearchstring] = React.useState(""); 
 
@@ -14,7 +12,8 @@ function Nav() {
     .then(response => response.json())
     .then(data => {
       if (data.success == true) {
-        window.location.href = '/';
+        history.push(`/`);
+        // window.location.href = '/';
       }
       else {
         alert('Server error. Did not process logout correctly.')

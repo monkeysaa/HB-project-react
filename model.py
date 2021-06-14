@@ -21,6 +21,19 @@ class User(db.Model):
   # lessons = a list of Lesson objects authored by user
   # faves = a list of Favorite objects identified by user
 
+    def as_dict(self):
+        lesson_ids = []
+        for l in self.lessons:
+            lesson_ids.append(l.lesson_id)
+
+        return {
+            'id': self.user_id, 
+            'handle': self.handle,
+            'email': self.email,
+            'password': self.password,
+            'lesson_ids': lesson_ids
+        }
+
     def __repr__(self):
         return f'<User id={self.user_id} email={self.email}>'
 
@@ -42,6 +55,26 @@ class Lesson(db.Model):
     tags = db.relationship('Tag', secondary='lesson_tags', viewonly=True)
 
     # faves = a list of Fave objects 
+
+    def as_dict(self):
+        comp_ids = []
+        for c in self.comps:
+            comp_ids.append(c.comp_id)
+        
+        tag_ids = []
+        for t in self.tags:
+            tag_ids.append(t.tag_id)
+
+        return {
+            'lesson_id': self.lesson_id, 
+            'title': self.title,
+            'overview': self.overview,
+            'public': self.public,
+            'author_id': self.author_id,
+            'imgUrl': self.imgUrl, 
+            'comp_ids': comp_ids,
+            'tag_ids': tag_ids
+        }
 
     def __repr__(self):
         return f'<Lesson id={self.lesson_id} title={self.title}>'

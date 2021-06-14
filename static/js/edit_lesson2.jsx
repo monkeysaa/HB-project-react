@@ -1,8 +1,8 @@
 "use strict";
-const history = ReactRouterDOM.useHistory();
 
 function EditLesson() {
-
+  
+    const history = ReactRouterDOM.useHistory();
     const { lesson_id } = useParams();
     console.log(lesson_id);
     const [title, setTitle] = React.useState('');

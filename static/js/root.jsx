@@ -4,14 +4,14 @@
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, 
         Prompt, Link, Route } = ReactRouterDOM;
-// const { Card, Button, ListGroup, ListGroupItem } = ReactBootstrap;
 
+// const { Card, Button, ListGroup, ListGroupItem } = ReactBootstrap;
 // import { createEditor } from 'slate';
 // import { Slate, Editable, withReact } from 'slate-react'
-
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
+  const history = ReactRouterDOM.useHistory();
   const loggedIn = document.getElementById('login_state')
 
   // Create a Slate editor object that won't change across renders. 

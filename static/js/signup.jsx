@@ -21,7 +21,8 @@ function CreateNewUser(props) {
             alert('Email is already in use. Try again.');
         } else if (data.success === true) {
             alert('User created successfully!');
-            window.location.href = '/profile';
+            history.push(`/profile`);
+            // window.location.href = '/profile';
         } else {
             alert('Something done broke');
         }

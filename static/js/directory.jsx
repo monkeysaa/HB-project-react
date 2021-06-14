@@ -22,18 +22,23 @@ function Lesson(props) {
     const [allUserList, setAllUserList] = React.useState([])
   
     React.useEffect(() => {
-      fetch('/api/users')
+      fetch('/api/users.json')
       .then(response => response.json())
       .then(data => {
-        const userList = [];
-        for (const u of data) {
-          const lessons = [];
-          for (const l of u.lessons) {
-            lessons.push(<Lesson key={l.lesson_id} title={l.title} lesson_id={l.lesson_id}/>);
-          }
+        const UserList = [];
+        for (const u of data.users){
           userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
+
         }
-        setAllUserList(userList);
+        // const userList = [];
+        // for (const u of data) {
+        //   // const lessons = [];
+        //   // for (const l of u.lessons) {
+        //   //   lessons.push(<Lesson key={l.lesson_id} title={l.title} lesson_id={l.lesson_id}/>);
+        //   // }
+        //   userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
+        // }
+        // setAllUserList(userList);
       })
     }, [])
   

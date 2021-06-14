@@ -47,22 +47,19 @@ def display_react(path):
 
 # USER Routes
 # TODO: Allow users to set lessons to "private" so they aren't displayed here
+# TODO: method in model.py for this
 @app.route('/api/users.json')
 def view_users():
     """Display a directory of users and links to each of their lessons."""
 
     users = []
-    for u in crud.get_users():
+    for user in crud.get_users():
         lessons = []
-        for lesson in u.lessons:
-            # TODO: method in model.py for this
-            lesson.__dict__.pop('_sa_instance_state', None)
-            lessons.append(lesson.__dict__)
-        u.__dict__.pop('_sa_instance_state', None)
-        u.__dict__['lessons'] = lessons
-        users.append(u.__dict__)
-
-    return jsonify(users)
+        for lesson in user.lessons:
+            lessons.append(lesson.as_dict())
+        user.as_dict()['lessons'] = lessons
+        users.append(user.as_dict())
+    return {'users': users}
 
 
 @app.route("/api/users", methods=["POST"])
@@ -74,7 +71,7 @@ def signup():
     password = data['password']
 
     try:
-        user = crud.create_user(handle, email, password)
+        db_user = crud.create_user(handle, email, password)
     except:
         flash('Email is already in use. Try again.')
         return {'success': False}
@@ -355,7 +352,6 @@ def create_component():
         description = comp.get('description', None))
     
     
-    print(db_comp.as_dict())
     # Return an HTTP 200 Okay response, with the data of the URL I created as the payload. 
     return {'success': True, 'comp': db_comp.as_dict()}
 

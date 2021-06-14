@@ -28,7 +28,8 @@ function NewLesson() {
         else if (data.success === true) {
             console.log(data.lesson_id);
             alert('Lesson created successfully!');
-            window.location.href = `/lesson/${data.lesson_id}`;
+            // window.location.href = `/lesson/${data.lesson_id}`;
+            history.push(`/lesson/${data.lesson_id}`);
         } 
         else {
             alert('Something done broke');

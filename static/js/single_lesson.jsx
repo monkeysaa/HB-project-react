@@ -1,6 +1,6 @@
 "use strict";
 
-function ShowSingleLesson() {
+function SingleLesson() {
   const [title, setTitle] = React.useState('');
   const [comps, setComps] = React.useState([]);
   const [lessonPic, setLessonPic] = React.useState('');
@@ -25,7 +25,8 @@ function ShowSingleLesson() {
   }, []); 
 
   function editLesson() {
-    window.location.href = `/lesson/${lesson_id}/edit`;
+    history.push(`/lessons/${lesson_id}/edit`);
+    // window.location.href = `/lesson/${lesson_id}/edit`;
   }
 
   return (
