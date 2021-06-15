@@ -269,7 +269,7 @@ function CompCard(props) {
       : null}
       {(props.description) && <p> {props.description} </p> }
       {(props.text) && <div> {props.text} </div> }
-      { <img src= {props.img} />}
+      {/* { <img src= {props.img} />} */}
       <p className='comp-btns'> 
         <button 
           type='button' 
@@ -296,17 +296,17 @@ function CompCard(props) {
       // else... 
 function IFrame({props, video_id, img_id}) {
 
-  React.useEffect(() => {
-    // if ((props.type === 'video') | (!(props.id === 5) && !(props.id === 10) )){
+  // React.useEffect(() => {
+  //   // if ((props.type === 'video') | (!(props.id === 5) && !(props.id === 10) )){
 
-    //   document.getElementById(img_id).setAttribute("hidden", true);
-    //   // console.log('test1');
-    // }
-    // else {  // handles case of files, etc
-    //   document.getElementById(video_id).innerHTML = "";
-    //   // console.log('test2');
-    // }
-  });
+  //   //   document.getElementById(img_id).setAttribute("hidden", true);
+  //   //   // console.log('test1');
+  //   // }
+  //   // else {  // handles case of files, etc
+  //   //   document.getElementById(video_id).innerHTML = "";
+  //   //   // console.log('test2');
+  //   // }
+  // });
 
   return (
     <React.Fragment>

@@ -196,12 +196,16 @@ def create_lesson():
 
     ### CREATE DB ASSOCIATION BETWEEN TAGS AND LESSON ###
     tags = request.form['tags'].split(',') # eg. '6th,science'
+    # Right now, setting up new tag with id of "tag"
+    print()
+    print()
+    print(tags)
     for tag in tags:
         if tag in SUBJECTS: 
-            db_tag = crud.create_tag(tag, 'subject')
+            db_tag = crud.get_tag_by_name(tag)
         elif tag in GRADES: 
-            db_tag = crud.create_tag(tag, 'grade')
-        crud.assign_tag_to_lesson(db_tag, )
+            db_tag = crud.get_tag_by_name(tag)
+        crud.assign_tag_to_lesson(db_tag, db_lesson)
 
     ### CREATE DB ASSOCIATION BETWEEN COMPONENTS AND LESSON ###
     if request.form['component-ids']:

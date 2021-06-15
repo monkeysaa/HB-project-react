@@ -149,9 +149,9 @@ function NewLesson() {
                 <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
               </p>
               <p>
-                <input type="checkbox" className="tags" name="subjects" value="math"/><label>Math</label>
-                <input type="checkbox" className="tags" name="subjects" value="science"/><label>Science</label>
-                <input type="checkbox" className="tags" name="subjects" value="writing"/><label>Writing</label>
+                <input type="checkbox" className="tags" name="subjects" value="Math"/><label>Math</label>
+                <input type="checkbox" className="tags" name="subjects" value="Science"/><label>Science</label>
+                <input type="checkbox" className="tags" name="subjects" value="Writing"/><label>Writing</label>
               </p>
             </div>
         </section>
