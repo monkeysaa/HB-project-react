@@ -344,13 +344,18 @@ def create_component():
 
 
 # # SEARCH ROUTES
-@app.route('/api/search/<searchstring>.json')
-def run_search(searchstring):
+@app.route('/api/search/<search_params>', methods=["POST"])
+def run_search(search_params):
     """Search for lesson by term."""
 
     print('WE HAVE ARRIVED HERE')
     
-    print(searchstring)
+    data = request.get_json()
+    param = data['param']
+    searchtype = data['type']
+    
+    print(searchtype, param)
+
     lesson_matches = set() # a set of Lesson objects
     lesson_data = []
 
@@ -367,9 +372,10 @@ def run_search(searchstring):
     # for category in search_terms:
     #     if category:
     #         lessons = crud.process_lesson_search(terms[category], category)
-    lessons = crud.get_lessons_by_term(searchstring)
-    if lessons == []:
-        user_queried = crud.get_user_by_username(searchstring)
+    if searchtype == 'searchstring': 
+        lessons = crud.get_lessons_by_term(param)
+    elif searchtype == 'usersearch':
+        user_queried = crud.get_user_by_username(param)
         lessons = crud.get_lessons_by_user(user_queried.user_id)
     for lesson in lessons:
         lesson_matches.add(lesson)

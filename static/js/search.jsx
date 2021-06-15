@@ -25,20 +25,37 @@ function Search() {
   const [searchstring, setSearchstring] = React.useState('');
   const [usersearch, setUsersearch] = React.useState('');
   const [matches, setMatches] = React.useState([]); // array of db_data for matching lessons
+  const [searchtype, setSearchtype] = React.useState('');
 
   const processSearch = () => {
     console.log(`processing Search for: ${searchstring}`);
-    fetch(`/api/search/${searchstring}.json`)
+    const search = {'param': searchstring, 'type': searchtype}
+
+    fetch(`/api/search/${searchstring}`, {
+      method: 'POST',
+      body: JSON.stringify(search),
+      headers: {
+          'Content-Type': 'application/json'
+        },
+    })
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      setMatches(data);
+      setMatches(data.lesson_data);
     })
   };
 
   const processUserSearch = () => {
     console.log(`processing Search for: ${usersearch}`);
-    fetch(`/api/search/${usersearch}.json`)
+    const search = {'param': usersearch, 'type': searchtype}
+
+    fetch(`/api/search/${usersearch}`, {
+      method: 'POST',
+      body: JSON.stringify(search),
+      headers: {
+          'Content-Type': 'application/json'
+        },
+    })
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -59,7 +76,7 @@ function Search() {
               type = 'text'
               name = 'query'
               placeholder = 'i.e. Multiplying Fractions'
-              onChange={(e) => setSearchstring(e.target.value)}
+              onChange={(e) => {setSearchstring(e.target.value); setSearchtype(e.target.id)}}
               value={searchstring}
             />
             <button 
@@ -74,7 +91,7 @@ function Search() {
               type = 'text'
               name = 'query'
               placeholder = 'i.e. alic'
-              onChange={(e) => setUsersearch(e.target.value)}
+              onChange={(e) => {setUsersearch(e.target.value); setSearchtype(e.target.id)}}
               value={usersearch}
             />
             <button 
@@ -90,7 +107,7 @@ function Search() {
       {/* RESULTS */}
       <section className='results-display'>
         <p>Results: {matches.length} lessons </p>
-        {/* <MultiLessonDisplay lessons={matches} /> */}
+        {/* <MultiLessonDisplay lessons={matches} />  */}
       </section>
     </React.Fragment>
   );
