@@ -1,4 +1,6 @@
-// const { checkPropTypes } = require("prop-types");
+// COMPONENT.JSX PROVIDES REACT COMPONENTS RELATED TO THE "COMPONENTS" 
+// (PARTS OF A LESSON).
+
 
 // TODO: Nice to have: Create cards for Components to drag them around. 
 // TODO: If website's X-Frames set to DENY, do not render iFrame. 

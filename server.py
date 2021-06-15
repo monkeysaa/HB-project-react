@@ -94,8 +94,7 @@ def display_profile():
     lessons_data = []
 
     for lesson in u.lessons:
-        lesson.__dict__.pop('_sa_instance_state', None)
-        lessons_data.append(lesson.__dict__)
+        lessons_data.append(lesson.as_dict())
 
     user_data = {
             "user_id": u.user_id,

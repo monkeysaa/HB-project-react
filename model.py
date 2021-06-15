@@ -57,13 +57,16 @@ class Lesson(db.Model):
     # faves = a list of Fave objects 
 
     def as_dict(self):
-        # comp_ids = []
-        # for c in self.comps:
-        #     comp_ids.append(c.comp_id)
-        
-        # tag_ids = []
-        # for t in self.tags:
-        #     tag_ids.append(t.tag_id)
+
+        tag_data = []
+
+        for tag in self.tags: 
+            tag_dict = {
+                'id': tag.tag_id, 
+                'name': tag.name,
+                'category': tag.category
+            }
+            tag_data.append(tag_dict)
 
         return {
             'lesson_id': self.lesson_id, 
@@ -72,8 +75,8 @@ class Lesson(db.Model):
             'public': self.public,
             'author': self.author.handle,
             'imgUrl': self.imgUrl, 
+            'tags': tag_data
             # 'comp_ids': comp_ids,
-            # 'tag_ids': tag_ids
         }
 
     def __repr__(self):
@@ -151,6 +154,20 @@ class Tag(db.Model):
 
     lessons = db.relationship('Lesson', secondary='lesson_tags', viewonly=True)
     comps = db.relationship('Comp', secondary='comp_tags', viewonly=True)
+
+
+
+
+    # def as_lesson_tags_dict(self):
+        
+    #     lesson_ids = []
+    #     for lesson in self.lessons:
+    #         lesson_ids.append(lesson.lesson_id)
+
+    
+    # return {
+    #     'lessons': lesson_ids
+    # }
 
     def __repr__(self):
         return f'<Tag {self.category} {self.name}>'
