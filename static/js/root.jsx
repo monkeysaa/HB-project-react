@@ -36,7 +36,7 @@ function Controller() {
           <Directory />
         </Route>
         <Route path="/lesson/:lesson_id/edit" children={<EditLesson/>}/>
-        <Route path="/lesson/:lesson_id" children={<ShowSingleLesson />} />
+        <Route path="/lesson/:lesson_id" children={<SingleLesson />} />
         <Route path="/signup">
           <CreateNewUser />
         </Route>

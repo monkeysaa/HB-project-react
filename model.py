@@ -31,7 +31,7 @@ class User(db.Model):
             'handle': self.handle,
             'email': self.email,
             'password': self.password,
-            'lesson_ids': lesson_ids
+            'lessons': lesson_ids
         }
 
     def __repr__(self):
@@ -57,13 +57,13 @@ class Lesson(db.Model):
     # faves = a list of Fave objects 
 
     def as_dict(self):
-        comp_ids = []
-        for c in self.comps:
-            comp_ids.append(c.comp_id)
+        # comp_ids = []
+        # for c in self.comps:
+        #     comp_ids.append(c.comp_id)
         
-        tag_ids = []
-        for t in self.tags:
-            tag_ids.append(t.tag_id)
+        # tag_ids = []
+        # for t in self.tags:
+        #     tag_ids.append(t.tag_id)
 
         return {
             'lesson_id': self.lesson_id, 
@@ -72,8 +72,8 @@ class Lesson(db.Model):
             'public': self.public,
             'author_id': self.author_id,
             'imgUrl': self.imgUrl, 
-            'comp_ids': comp_ids,
-            'tag_ids': tag_ids
+            # 'comp_ids': comp_ids,
+            # 'tag_ids': tag_ids
         }
 
     def __repr__(self):

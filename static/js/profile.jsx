@@ -7,6 +7,7 @@
     // TODO: Display favorite lessons
 
 function Profile() {
+  const history = ReactRouterDOM.useHistory();
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [lessons, setLessons] = React.useState([]);

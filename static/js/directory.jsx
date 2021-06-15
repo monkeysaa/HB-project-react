@@ -19,26 +19,31 @@ function Lesson(props) {
   }
   
   function Directory(props) {
-    const [allUserList, setAllUserList] = React.useState([])
+    const [allUserList, setAllUserList] = React.useState([]);
+    const [allLessonList, setAllLessonList] = React.useState([]);
   
     React.useEffect(() => {
-      fetch('/api/users.json')
+      fetch('/api/users')
       .then(response => response.json())
       .then(data => {
-        const UserList = [];
-        for (const u of data.users){
-          userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
-
-        }
+        console.log(data);
         // const userList = [];
-        // for (const u of data) {
-        //   // const lessons = [];
-        //   // for (const l of u.lessons) {
-        //   //   lessons.push(<Lesson key={l.lesson_id} title={l.title} lesson_id={l.lesson_id}/>);
-        //   // }
-        //   userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
+        // for (const u of data.users){
+        //   userList.push(<User key={u.id} handle={u.handle} email={u.email} lessons={u.lessons}/>);
         // }
         // setAllUserList(userList);
+        const userList = [];
+        for (const u of data) {
+          const lessons = [];
+            // takes props: id, title, description, img, author)
+
+          for (const l of u.lessons) {
+            lessons.push(<MultiLessonDisplay key={l.lesson_id} title={l.title} lesson_id={l.lesson_id}/>);
+          }
+          userList.push(<User key={u.user_id} handle={u.handle} email={u.email} lessons={lessons}/>);
+        }
+        setAllUserList(userList); 
+
       })
     }, [])
   

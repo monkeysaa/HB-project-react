@@ -28,6 +28,9 @@ function MultiLessonDisplay({lessons}) {
 
 
 function LessonCard(props) {
+  const history = ReactRouterDOM.useHistory();
+
+  // takes props: id, title, description, img, author)
   function showLesson()  {
     history.push(`/api/lesson/${props.id}.json`);
   }
@@ -44,40 +47,22 @@ function LessonCard(props) {
     </article>
   );
 }
+
+
 function NewLesson() {
 
   const history = ReactRouterDOM.useHistory();
-  // new URL: history.push
-
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
+  const [lessonPic, setLessonPic] = React.useState(null);
 
   // comps: An array of POJOs, each with data for a single lesson component. 
   const [comps, setComps] = React.useState([]); 
   
-  // let compCards = [];   // an array of Lesson-Component cards to display
-
-  // for (const comp of comps) {
-  //   compCards.push(
-  //     <CompCard
-  //       key={comp.id}
-  //       id={comp.id}
-  //       type={comp.type}
-  //       url={comp.url}  // e.g. link or embedded video link
-  //       img={comp.imgUrl} // e.g. thumbnail or image link from Cloudinary
-  //       text={comp.text}
-  //       title={comp.title}
-  //       source={comp.source}
-  //       favicon={comp.favicon}
-  //       description={comp.description}
-  //     />
-  //   );
-  // }
-
-  // TODO: Remove before finalizing code
-
-  console.log('Component Update!');
-  console.log(comps);
+  const GRADE_TAGS = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th',
+  '9th', '10th', '11th', '12th'];
+  const SUBJ_TAGS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies', 
+  'Arts/Music', 'Foreign Lang.'];
 
   const createLesson = (evt) => {
     evt.preventDefault();
@@ -91,10 +76,17 @@ function NewLesson() {
     const formData  = new FormData();
     const file = document.getElementById('lesson-pic').files[0];
 
+    const tagsArray = []
+    const tagEls = document.querySelectorAll('input[type="checkbox"]:checked')
+    for (const tag of tagEls) {
+      tagsArray.push(tag.value);
+    } 
+
     formData.append('lesson-pic', file);
     formData.append('title', title);
     formData.append('overview', overview);
     formData.append('component-ids', comp_ids);
+    formData.append('tags', tagsArray);
 
     fetch('/api/lessons', {
         method: 'POST',
@@ -119,7 +111,7 @@ function NewLesson() {
       document.getElementById(id).removeAttribute("hidden");
     } 
 
-  }
+  };
 
   return (
     <div className='create-lesson'>
@@ -148,17 +140,19 @@ function NewLesson() {
             <div id='tags'>
 
               <p>
-                <input type="checkbox" className="grades" value="4th" 
-                checked={is{value}}
+              
+
+                {/* <input type="checkbox" className="grades" value="4th" 
                   onChange={handleToggle} checked={state[key]}/>
-                  <label>4th</label>
-                <input type="checkbox" name="grades" value="5th"/><label>5th</label>
-                <input type="checkbox" name="grades" value="6th"/><label>6th</label>
+                  <label>4th</label> */}
+                  
+                <input type="checkbox" className="tags" name="grades" value="5th"/><label>5th</label>
+                <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
               </p>
               <p>
-                <input type="checkbox" name="subjects" value="math"/><label>Math</label>
-                <input type="checkbox" name="subjects" value="science"/><label>Science</label>
-                <input type="checkbox" name="subjects" value="writing"/><label>Writing</label>
+                <input type="checkbox" className="tags" name="subjects" value="math"/><label>Math</label>
+                <input type="checkbox" className="tags" name="subjects" value="science"/><label>Science</label>
+                <input type="checkbox" className="tags" name="subjects" value="writing"/><label>Writing</label>
               </p>
             </div>
         </section>

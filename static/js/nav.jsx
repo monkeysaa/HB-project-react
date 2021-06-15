@@ -1,4 +1,5 @@
 function Nav() {
+  const history = ReactRouterDOM.useHistory();
   const [searchstring, setSearchstring] = React.useState(""); 
 
   function processSearch() {

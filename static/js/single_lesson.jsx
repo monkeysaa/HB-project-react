@@ -1,6 +1,7 @@
 "use strict";
 
 function SingleLesson() {
+  const history = ReactRouterDOM.useHistory();
   const [title, setTitle] = React.useState('');
   const [comps, setComps] = React.useState([]);
   const [lessonPic, setLessonPic] = React.useState('');
@@ -11,7 +12,7 @@ function SingleLesson() {
 
   React.useEffect(() => {
 
-    fetch(`/api/lessons/${lesson_id}.json`)
+    fetch(`/api/lessons/${lesson_id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

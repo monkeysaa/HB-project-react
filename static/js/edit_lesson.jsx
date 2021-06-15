@@ -11,7 +11,7 @@ function EditLesson() {
     const [lessonPic, setLessonPic] = React.useState('');
     
     React.useEffect(() => {
-      fetch(`/api/lessons/${lesson_id}.json`)
+      fetch(`/api/lessons/${lesson_id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data.lesson[0]);
@@ -56,7 +56,7 @@ function EditLesson() {
       formData.append('overview', overview);
       formData.append('lesson_id', lesson_id);
 
-      fetch('/api/lessons/lesson', {
+      fetch(`/api/lessons/${lesson_id}`, {
           method: 'POST',
           body: formData,
           })

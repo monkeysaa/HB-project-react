@@ -48,7 +48,7 @@ def display_react(path):
 # USER Routes
 # TODO: Allow users to set lessons to "private" so they aren't displayed here
 # TODO: method in model.py for this
-@app.route('/api/users.json')
+@app.route('/api/users')
 def view_users():
     """Display a directory of users and links to each of their lessons."""
 
@@ -56,9 +56,10 @@ def view_users():
     for user in crud.get_users():
         lessons = []
         for lesson in user.lessons:
-            lessons.append(lesson.as_dict())
-        user.as_dict()['lessons'] = lessons
-        users.append(user.as_dict())
+            lessons.append(lesson.as_dict()) # lessons = dictionary of each lesson
+        user_lessons = user.as_dict()
+        user_lessons['lessons'] = lessons
+        users.append(user_lessons)
     return {'users': users}
 
 
@@ -138,7 +139,7 @@ def logout():
 
 # # LESSON ROUTES
 # TODO: Do I need this? Delete? 
-@app.route("/api/lessons.json")
+@app.route("/api/lessons")
 def get_lessons_json():
     """Return a JSON response with all cards in DB."""
 
@@ -171,7 +172,8 @@ def create_lesson():
             'author_id': session['user_id'],
             'overview': '', 
             'imgUrl': None,
-            'public': False
+            'public': False,
+            'tags': []
     }
 
     # If photo, upload to CLoudinary and save link to lesson_data
@@ -184,12 +186,20 @@ def create_lesson():
                                         cloud_name='hackbright')
         lesson_data['imgUrl'] = result['secure_url']
     
-    # if title and overview, save them to lesson_data
-    if request.form['title'] != '':
-        lesson_data['title'] = request.form['title']
-    if request.form['overview'] != '':
-        lesson_data['overview'] = request.form['overview']
+    # Save lesson data 
+    lesson_data['title'] = request.form['title']
+    lesson_data['overview'] = request.form['overview']
+    lesson_data['tags'] = request.form['tags']
 
+    print(lesson_data)
+
+    # if request.form['title'] != '':
+    #     lesson_data['title'] = request.form['title']
+    # if request.form['overview'] != '':
+    #     lesson_data['overview'] = request.form['overview']
+    # if request.form['tags'] != []:
+    #     lesson_data['tags'] = request.form['tags']
+ 
     db_lesson = crud.create_lesson(lesson_data)
 
     # TODO: For each component, create DB association.
@@ -209,7 +219,7 @@ def create_lesson():
 
 
 # # TODO: limit route access to public lessons or author. Else redirect (to all public lessons? to search?)
-@app.route("/api/lessons/<lesson_id>.json")
+@app.route("/api/lessons/<lesson_id>")
 def show_single_lesson_json(lesson_id):
     """Get lesson and return lesson data and components in JSON."""
     
@@ -249,8 +259,9 @@ def show_single_lesson_json(lesson_id):
 
     return {"lesson": lesson_data, "comps": comp_data}
     
-
-@app.route('/api/lessons/lesson', methods=["POST"])
+# TODO: Hash IDs
+# For now, /lessons/lesson_id
+@app.route('/api/lessons/<lesson_id>', methods=["POST"])
 def update_lesson(lesson_id):
     """Update the database with fresh data."""
     
