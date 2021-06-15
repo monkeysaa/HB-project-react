@@ -54,12 +54,14 @@ def view_users():
 
     users = []
     for user in crud.get_users():
+        print(user.user_id)
         lessons = []
         for lesson in user.lessons:
             lessons.append(lesson.as_dict()) # lessons = dictionary of each lesson
         user_lessons = user.as_dict()
         user_lessons['lessons'] = lessons
         users.append(user_lessons)
+    print(f'{users} from server.py /api/users endpoint')
     return {'users': users}
 
 
@@ -77,7 +79,7 @@ def signup():
         flash('Email is already in use. Try again.')
         return {'success': False}
 
-    session['user_id'] = user.user_id
+    session['user_id'] = db_user.user_id
     session['isLoggedIn'] = True
 
     return {'success': True}
@@ -87,7 +89,8 @@ def signup():
 def display_profile():
     """Display user profile. """
 
-    u = crud.get_user_by_id(session['user_id'])
+    user_id = session['user_id']
+    u = crud.get_user_by_id(user_id)
     lessons_data = []
 
     for lesson in u.lessons:
@@ -166,17 +169,17 @@ def get_lessons_json():
 def create_lesson():
     """Create new lesson and lesson-comp DB assocations."""
 
-    # Default lesson data, in case users don't include all info
+    ### SAVE LESSON TO DATABASE ###
+    # Set up default lesson data dict
     lesson_data = {
             'title': 'Untitled', 
             'author_id': session['user_id'],
             'overview': '', 
             'imgUrl': None,
             'public': False,
-            'tags': []
     }
 
-    # If photo, upload to CLoudinary and save link to lesson_data
+    ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
     if 'lesson-pic' not in request.files:
         lesson_data['imgUrl'] = "/static/img/placeholder.png"
     else: 
@@ -186,27 +189,23 @@ def create_lesson():
                                         cloud_name='hackbright')
         lesson_data['imgUrl'] = result['secure_url']
     
-    # Save lesson data 
+    ### SAVE LESSON TO DATABASE ###
     lesson_data['title'] = request.form['title']
     lesson_data['overview'] = request.form['overview']
-    lesson_data['tags'] = request.form['tags']
-
-    print(lesson_data)
-
-    # if request.form['title'] != '':
-    #     lesson_data['title'] = request.form['title']
-    # if request.form['overview'] != '':
-    #     lesson_data['overview'] = request.form['overview']
-    # if request.form['tags'] != []:
-    #     lesson_data['tags'] = request.form['tags']
- 
     db_lesson = crud.create_lesson(lesson_data)
 
-    # TODO: For each component, create DB association.
-    # Set up as [] as default...but perhaps it's a string? 
+    ### CREATE DB ASSOCIATION BETWEEN TAGS AND LESSON ###
+    tags = request.form['tags'].split(',') # eg. '6th,science'
+    for tag in tags:
+        if tag in SUBJECTS: 
+            db_tag = crud.create_tag(tag, 'subject')
+        elif tag in GRADES: 
+            db_tag = crud.create_tag(tag, 'grade')
+        crud.assign_tag_to_lesson(db_tag, )
+
+    ### CREATE DB ASSOCIATION BETWEEN COMPONENTS AND LESSON ###
     if request.form['component-ids']:
-        comp_data = request.form['component-ids'] # str e.g. '30,31,32'
-        component_ids = comp_data.split(',')
+        component_ids = request.form['component-ids'].split(',') # e.g. '30,31'
         for comp_id in component_ids:
             db_comp = crud.get_comp_by_id(int(comp_id))
             crud.assign_comp(db_comp, db_lesson)

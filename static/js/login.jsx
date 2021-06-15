@@ -25,9 +25,8 @@ function Login(props) {
           if (res === 'success') {
             setLoggedIn(true);
             document.getElementById('login_state').dataset.loggedin = true;
-            console.log('User logged in. NOW redirect to profile')
-            history.push(`/profile`);
-            // window.location.href = '/profile';
+            history.push('/profile');
+
           } else {
               alert(res);
               console.log(res);

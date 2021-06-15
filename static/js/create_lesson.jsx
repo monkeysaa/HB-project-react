@@ -16,7 +16,7 @@ function MultiLessonDisplay({lessons}) {
         title={lesson.title}
         author={lesson.author}
         img={lesson.imgUrl}
-        description = {lesson.description}
+        overview = {lesson.overview}
       />
     );
   }
@@ -30,7 +30,7 @@ function MultiLessonDisplay({lessons}) {
 function LessonCard(props) {
   const history = ReactRouterDOM.useHistory();
 
-  // takes props: id, title, description, img, author)
+  // takes props: id, title, overview, img, author)
   function showLesson()  {
     history.push(`/api/lesson/${props.id}.json`);
   }
@@ -39,7 +39,7 @@ function LessonCard(props) {
     <article className="lesson-card">
       {/* TODO: Decide which header level (<h2> <h3> etc */}
       <h2><a href={`/lesson/${props.id}`}> {props.title} </a> </h2> 
-      <p> {props.description} </p>
+      <p> {props.overview} </p>
       <a href={`/lesson/${props.id}`}><img src={props.img}/></a>
       <p> {props.author}</p>
       {/* <p> {props.tags} </p> */}
@@ -66,8 +66,7 @@ function NewLesson() {
 
   const createLesson = (evt) => {
     evt.preventDefault();
-
-    // push all lesson component ids into an array
+    
     let comp_ids = [];
     for (let comp of comps) {
       comp_ids.push(comp.id);

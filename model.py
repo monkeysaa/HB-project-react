@@ -70,7 +70,7 @@ class Lesson(db.Model):
             'title': self.title,
             'overview': self.overview,
             'public': self.public,
-            'author_id': self.author_id,
+            'author': self.author.handle,
             'imgUrl': self.imgUrl, 
             # 'comp_ids': comp_ids,
             # 'tag_ids': tag_ids
