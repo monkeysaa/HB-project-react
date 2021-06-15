@@ -40,7 +40,7 @@ function Search() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
+      console.log(data.lesson_data);
       setMatches(data.lesson_data);
     })
   };
@@ -58,8 +58,8 @@ function Search() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      setMatches(data);
+      console.log(data.lesson_data);
+      setMatches(data.lesson_data);
     })
   };
 
@@ -107,7 +107,7 @@ function Search() {
       {/* RESULTS */}
       <section className='results-display'>
         <p>Results: {matches.length} lessons </p>
-        {/* <MultiLessonDisplay lessons={matches} />  */}
+        <MultiLessonDisplay lessons={matches} /> 
       </section>
     </React.Fragment>
   );

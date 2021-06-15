@@ -356,12 +356,9 @@ def run_search(search_params):
     
     print(searchtype, param)
 
-    lesson_matches = set() # a set of Lesson objects
-    lesson_data = []
 
     # data = request.get_json()
     # term = data['searchString']
-    # print(term)
     # grade = data['grade']
     # subject = data['subject']
     # user_handle = data['user'] # search for lessons by userhandle
@@ -372,6 +369,8 @@ def run_search(search_params):
     # for category in search_terms:
     #     if category:
     #         lessons = crud.process_lesson_search(terms[category], category)
+    lesson_matches = set() # a set of Lesson objects
+
     if searchtype == 'searchstring': 
         lessons = crud.get_lessons_by_term(param)
     elif searchtype == 'usersearch':
@@ -380,14 +379,11 @@ def run_search(search_params):
     for lesson in lessons:
         lesson_matches.add(lesson)
 
+    lesson_data = []
     for lesson in lesson_matches: 
-        lesson_data.append({
-            'id': lesson.lesson_id,
-            'title': lesson.title,
-            'author': lesson.author.handle,
-            # 'tags': lesson.tags,
-            'imgUrl': lesson.imgUrl
-        })
+        lesson_data.append(lesson.as_dict())
+    
+    print(lesson_data)
     return {'success': True, 'lesson_data': lesson_data}
     # return {'search_terms': search_terms, 'lesson_data': lesson_data}
 

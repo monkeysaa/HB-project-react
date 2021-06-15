@@ -1,7 +1,6 @@
 function MultiLessonDisplay({lessons}) {
     // const lessons = matches; 
     // console.log(lessons);
-  
     const lessonCards = [];
     
     for (const lesson of lessons) {
