@@ -7,6 +7,7 @@ function SingleLesson() {
   const [lessonPic, setLessonPic] = React.useState('');
   const [overview, setOverview] = React.useState('');
   const [author, setAuthor] = React.useState('');
+  const [tags, setTags] = React.useState([]);
 
   let { lesson_id } = useParams();
 
@@ -15,19 +16,31 @@ function SingleLesson() {
     fetch(`/api/lessons/${lesson_id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setAuthor(data.lesson[0].author);
-        setTitle(data.lesson[0].title);
-        setLessonPic(data.lesson[0].imgUrl);
-        setOverview(data.lesson[0].overview);
+        console.log(data.lesson.tags);
+        setAuthor(data.lesson.author);
+        setTitle(data.lesson.title);
+        setLessonPic(data.lesson.imgUrl);
+        setOverview(data.lesson.overview);
+        setTags(data.lesson.tags);
         setComps(data.comps);
       }
     )
   }, []); 
 
+  const subjectTags = [];
+  const gradeTags = [];
+
+  for (const tag of tags) {
+      if (tag.category === 'subjects') {
+          subjectTags.push(tag.name)
+      }
+      else {
+          gradeTags.push(tag.name)
+      }
+  }
+
   function editLesson() {
     history.push(`/lessons/${lesson_id}/edit`);
-    // window.location.href = `/lesson/${lesson_id}/edit`;
   }
 
   return (
@@ -39,6 +52,8 @@ function SingleLesson() {
       <img src={lessonPic}></img>
       <h2>{`${title} by ${author}`}</h2>
       <h3>{overview}</h3>
+      {(subjectTags.length != 0) && <p>Subjects: {subjectTags.join(', ')} </p>}
+      {(gradeTags.length != 0) && <p>Grades: {gradeTags.join(', ')} </p>}
       <CompContainer comps={comps}/>
     </section>
   );

@@ -16,7 +16,6 @@ function Profile() {
     fetch('/api/users/user')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.user.lessons.tags);
         setUsername(data.user.username);
         setEmail(data.user.email);
         setLessons(data.user.lessons);

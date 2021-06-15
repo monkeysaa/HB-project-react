@@ -223,40 +223,17 @@ def show_single_lesson_json(lesson_id):
     """Get lesson and return lesson data and components in JSON."""
     
     lesson = crud.get_lesson_by_id(lesson_id)
+    lesson_dict = lesson.as_dict()
 
-    if lesson.imgUrl == None:
-        lesson.imgUrl = '/static/img/unimpressed.jpg'
+    if not lesson_dict.get('imgUrl'):
+        lesson_dict['imgUrl'] = '/static/img/unimpressed.jpg'
     
-    lesson_data = []
     comp_data = []
 
-    # Add lesson description, etc
-    lesson_data.append(
-        {
-            "lesson_id": lesson.lesson_id,
-            "title": lesson.title,
-            "author": lesson.author.email,
-            "imgUrl": lesson.imgUrl,
-            "overview": lesson.overview
-        }
-    )
-
     for comp in lesson.comps:
-        comp_data.append(
-            {
-                "id": comp.comp_id,
-                "type": comp.comp_type,
-                "url": comp.url,
-                "img": comp.imgUrl,
-                "text": comp.text,
-                "title": comp.title,
-                "source": comp.source,
-                "favicon": comp.favicon,
-                "description": comp.description
-            }
-        )
+        comp_data.append(comp.as_dict())
 
-    return {"lesson": lesson_data, "comps": comp_data}
+    return {"lesson": lesson_dict, "comps": comp_data}
     
 # TODO: Hash IDs
 # For now, /lessons/lesson_id

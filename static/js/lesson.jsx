@@ -58,8 +58,8 @@ function MultiLessonDisplay({lessons}) {
         <p> {props.overview} </p>
         <a href={`/lesson/${props.id}`}><img src={props.img}/></a>
         <p> {props.author}</p>
-        <p>Subjects: {subjectTags.join(', ')} </p>
-        <p>Grades: {gradeTags.join(', ')} </p>
+        {subjectTags && <p>Subjects: {subjectTags.join(', ')} </p>}
+        {gradeTags && <p>Grades: {gradeTags.join(', ')} </p>}
         <button className="card_btn" onSubmit={showLesson}>View Lesson</button>
       </article>
     );
