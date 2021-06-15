@@ -197,9 +197,6 @@ def create_lesson():
     ### CREATE DB ASSOCIATION BETWEEN TAGS AND LESSON ###
     tags = request.form['tags'].split(',') # eg. '6th,science'
     # Right now, setting up new tag with id of "tag"
-    print()
-    print()
-    print(tags)
     for tag in tags:
         if tag in SUBJECTS: 
             db_tag = crud.get_tag_by_name(tag)
