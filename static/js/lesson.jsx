@@ -53,8 +53,9 @@ function MultiLessonDisplay({lessons}) {
     return (
       <article className="lesson-card">
         {/* TODO: Decide which header level (<h2> <h3> etc */}
+        <p className="favorite-pin">♡</p>
         <h2><a href={`/lesson/${props.id}`}> {props.title} </a> </h2> 
-        <p> {props.overview} </p>
+        <p> {props.overview} </p> 
         <a href={`/lesson/${props.id}`}><img src={props.img}/></a>
         <p> {props.author}</p>
         {subjectTags && <p>Subjects: {subjectTags.join(', ')} </p>}

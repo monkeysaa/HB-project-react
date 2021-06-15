@@ -26,6 +26,9 @@ function Search() {
   const [usersearch, setUsersearch] = React.useState('');
   const [matches, setMatches] = React.useState([]); // array of db_data for matching lessons
   const [searchtype, setSearchtype] = React.useState('');
+  const [param, setParam] = React.useState('');
+  const [userParam, setUserParam] = React.useState('');
+
 
   const processSearch = () => {
     console.log(`processing Search for: ${searchstring}`);
@@ -41,6 +44,7 @@ function Search() {
     .then(response => response.json())
     .then(data => {
       console.log(data.lesson_data);
+      setParam(data.search);
       setMatches(data.lesson_data);
     })
   };
@@ -58,13 +62,21 @@ function Search() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data.lesson_data);
+      setUserParam(data.search);
       setMatches(data.lesson_data);
     })
   };
 
   return (
     <React.Fragment>
+      <section className='existing-parameters'>
+        {param && <button id='searchstr-btn' type='button'>{searchstring}</button>}
+        {userParam && <button id='usersearch-btn' type='button'>{usersearch}</button>}
+        {/* TODO: for (tag of tags) => build button for tag */}
+        {/* {grades && <button id='grades-btn' type='button'>{grades}</button>}
+        {subjects && <button id='subjects-btn' type='button'>{subjects}</button>} */}
+
+      </section>
       {/* FILTERS */}
       <section className='search-filter-section'>
         <h1>Lesson Search</h1>
@@ -102,6 +114,35 @@ function Search() {
           </p>
           {/* <ShowFilters tags={tags} setTags={setTags}/> */}
         </form>
+        </section>
+
+        <section id='search-filters'>
+      <article id='grades'>
+        <p>Filter by grade</p>
+        {/* {Object.keys(grades).map(key => (
+          <input 
+            type="checkbox" 
+            key={key}
+            name={key} 
+            onChange={handleToggle}
+            checked={grades[key]}
+          />
+        ))} */}
+        <form >
+          <input type="checkbox" name="grades" value="4th"/><label>4th</label>
+          <input type="checkbox" name="grades" value="5th"/><label>5th</label>
+          <input type="checkbox" name="grades" value="6th"/><label>6th</label>
+        </form>
+      </article>
+      <article id='subjects'>
+        <p>Filter by subject</p>
+        <form>
+          <input type="checkbox" name="subjects" value="math"/><label>Math</label>
+          <input type="checkbox" name="subjects" value="science"/><label>Science</label>
+          <input type="checkbox" name="subjects" value="writing"/><label>Writing</label>
+        </form>
+      </article>
+
       </section>
 
       {/* RESULTS */}

@@ -384,7 +384,7 @@ def run_search(search_params):
         lesson_data.append(lesson.as_dict())
     
     print(lesson_data)
-    return {'success': True, 'lesson_data': lesson_data}
+    return {'success': True, 'lesson_data': lesson_data, 'search': param}
     # return {'search_terms': search_terms, 'lesson_data': lesson_data}
 
 

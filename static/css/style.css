@@ -111,6 +111,23 @@ main {
     flex: 1 */
     /* can assign as auto, number, as #: ___ and then it will allocate the rest automatically */
 
+.lesson-card {
+    border-radius: 3px;
+	border: 3px solid black;
+	width: 20em;
+	height: 15em;
+	margin: 2em;
+	padding: 1em;
+	display: inline-block;
+}
+
+.lesson-card img{
+    height: 7em;
+}
+
+.favorite-pin {
+    align-content: right;
+}
 /*######################################################################
 /*##                          Component Styling                       ##
 /*#####################################################################*/
@@ -152,6 +169,7 @@ img.comp-img {
     width: 550px; 
     height: 350px;
 }
+
 
 
 
