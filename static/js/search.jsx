@@ -50,16 +50,18 @@ function Search() {
     .then(data => {
       console.log(data.lesson_data);
       setParam(data.search);
-      let taggedLessons = [];
-      for (const lesson of data.lesson_data) {
-        for (tag of lesson.tags) {
-
-        }
-        taggedLessons.push(lesson.tags);
-      }
-      setTags(tempTags);
-      console.log(tempTags);
-      console.log(tags);
+      setMatches(data.lesson_data);
+      debugger;
+      // let taggedLessons = [];
+      // for (const lesson of data.lesson_data) 
+      //   for (tag of lesson.tags[0]) {
+      //     console.log(tag);
+      //     taggedLessons.push(tag);
+      //   }
+      // }
+      // setTags(taggedLessons);
+      // console.log(taggedLessons);
+      // console.log(tags);
     })
   };
 

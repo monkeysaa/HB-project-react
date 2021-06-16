@@ -1,30 +1,30 @@
 function MultiLessonDisplay({lessons}) {
     // const lessons = matches; 
-    // console.log(lessons);
+    console.log(lessons);
     const lessonCards = [];
     
-    for (const lesson of lessons) {
-      if (lesson.imgUrl == null) {
-          lesson.imgUrl = "/static/img/placeholder.png"
-      }
-      console.log(`${lesson.tags} from MultiLessonDisplay`)
-      lessonCards.push(
-        <LessonCard
-          key={lesson.lesson_id}
-          id={lesson.lesson_id}
-          title={lesson.title}
-          author={lesson.author}
-          img={lesson.imgUrl}
-          overview = {lesson.overview}
-          tags={lesson.tags}
-        />
-      );
+  for (const lesson of lessons) {
+    if (lesson.imgUrl == null) {
+        lesson.imgUrl = "/static/img/placeholder.png"
     }
-    
-    return (
-      <section>{lessonCards}</section>
+    console.log(`${lesson.tags} from MultiLessonDisplay`)
+    lessonCards.push(
+      <LessonCard
+        key={lesson.lesson_id}
+        id={lesson.lesson_id}
+        title={lesson.title}
+        author={lesson.author}
+        img={lesson.imgUrl}
+        overview = {lesson.overview}
+        tags={lesson.tags}
+      />
     );
   }
+    
+  return (
+    <section>{lessonCards}</section>
+  );
+}
   
   
   function LessonCard(props) {
