@@ -5,7 +5,7 @@ and share digital content. This web app was written as the final project
 for Hackbright Academy's full-stack software bootcamp program. 
 
 Originally envisioned as a tool for teachers to organize digital resources as 
-they adapted to remote teaching, DESK refers to user collections as "Lessons".  
+they adapted to remote teaching, DESK refers to user collections as "Lessons".
 However, DESK's simple, fluid design provides an easy way to consolidate links, 
 text from email, photographs, and notes. Users can weave visual tapestries to
 tell digital stories, or simply copy and paste to cut out the clutter.  
@@ -43,23 +43,19 @@ Finally (Whew!) start the server with the call:
 
 
 
-• Begin by creating an account. Login/Logout features can always be accessed
+• Begin by creating an account. Login/Logout features can always be accessed 
+via the Nav bar. 
 
-  via the Nav bar. 
-
-• Once logged in, you'll be directed to your profile page, where you can create
-
-  lessons or flip through previous lessons you've created.
+• Once logged in, you'll be directed to your profile page, where you can create 
+lessons or flip through previous lessons you've created.
 
 • Using the Nav bar, click on Directory to check out other users' lessons.  
 
-• Each title links to its own display page, where you can see lessons
-
-  and watch videos. 
+• Each title links to its own display page, where you can see lessons and watch 
+videos. 
 
 • The Nav bar can take you back to own profile, where you can update your 
-
-  profile picture.  
+profile picture.  
 
 
 
