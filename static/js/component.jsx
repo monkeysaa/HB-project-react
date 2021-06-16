@@ -261,11 +261,11 @@ function CompCard(props) {
     <section className="component" id={props.id}>
 
       {/* will display either img OR iFrame, but not both */}
-      {(props.type === 'video' || props.type === 'url') ?  
+      {(props.type === 'video' || props.type === 'url') &&  
         (<div><h3> <a href={`${props.url}`}> {props.title} </a> </h3>
-        <IFrame props={props} video_id={video_id} img_id={img_id}/></div>) :
-        <img id={img_id} src={props.img} />
+        <IFrame props={props} video_id={video_id} img_id={img_id}/></div>)
       }
+      {(props.type === 'img') && <img id={img_id} src={props.img}/>}
       {(props.source && props.favicon) ? 
       (<p className='source'><img src={`${props.favicon}`}/> {props.source}</p> ) 
       : null}

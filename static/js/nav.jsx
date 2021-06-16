@@ -3,7 +3,9 @@ function Nav() {
   const [searchstring, setSearchstring] = React.useState(""); 
 
   function processSearch() {
-    window.location.href = `/api/search/${searchstring}.json`;
+    console.log(searchstring.value);
+    history.push(`/search/${searchstring}`);
+    // window.location.href = `/api/search/${searchstring}.json`;
     // TODO: --> Route to Search page
   }
 
@@ -34,7 +36,7 @@ function Nav() {
         <form>
           <input 
             type="text" 
-            id="search" 
+            id="searchstring" 
             onChange={(e) => setSearchstring(e.target.value)}
             value={searchstring} 
             placeholder="Search here..."/>

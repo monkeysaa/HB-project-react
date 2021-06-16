@@ -1,24 +1,28 @@
 "use strict";
 
+// const { cloneElement } = require("react");
+
 function EditLesson() {
   
     const history = ReactRouterDOM.useHistory();
     const { lesson_id } = useParams();
-    console.log(lesson_id);
+    // console.log(lesson_id);
     const [title, setTitle] = React.useState('');
     const [author, setAuthor] = React.useState('');
     const [overview, setOverview] = React.useState('');
     const [lessonPic, setLessonPic] = React.useState('');
+    const [comps, setComps] = React.useState([]);
     
     React.useEffect(() => {
       fetch(`/api/lessons/${lesson_id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.lesson[0]);
-        setTitle(data.lesson[0].title);
-        setAuthor(data.lesson[0].author);
-        setLessonPic(data.lesson[0].imgUrl);
-        setOverview(data.lesson[0].overview);
+        console.log(data.lesson);
+        setTitle(data.lesson.title);
+        setAuthor(data.lesson.author);
+        setLessonPic(data.lesson.imgUrl);
+        setOverview(data.lesson.overview);
+        setComps(data.comps);
       })
     }, []);
 
@@ -64,7 +68,7 @@ function EditLesson() {
       .then(res => {
         if (res.success == true) {
           alert('Lesson updated successfully!');
-          history.push(`/lesson/${res.lesson_id}`);
+          history.push(`/lessons/${res.lesson_id}`);
         } else {
           alert('something done broke.'); 
         }
@@ -113,6 +117,7 @@ function EditLesson() {
             type='submit' 
           />
         </form> 
+        <CompContainer comps={comps}/>
 
       </section>
     );

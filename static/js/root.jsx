@@ -35,8 +35,8 @@ function Controller() {
         <Route path="/users">
           <Directory />
         </Route>
-        <Route path="/lesson/:lesson_id/edit" children={<EditLesson/>}/>
-        <Route path="/lesson/:lesson_id" children={<SingleLesson />} />
+        <Route path="/lessons/:lesson_id/edit" children={<EditLesson/>}/>
+        <Route path="/lessons/:lesson_id" children={<SingleLesson />} />
         <Route path="/signup">
           <CreateNewUser />
         </Route>
@@ -49,6 +49,7 @@ function Controller() {
         <Route path="/profile">
           <Profile />
         </Route>
+        <Route path="/search/:params" children={<Search/>} />
         <Route path="/search">
           <Search />
         </Route>

@@ -47,7 +47,7 @@ function NewLesson() {
           alert('something done broke.');
       } else if (res.success == true) {
           alert(`Lesson ${res.lesson_id} created successfully!`);
-          history.push(`/lesson/${res.lesson_id}`);
+          history.push(`/lessons/${res.lesson_id}`);
       }
     })
   }

@@ -119,6 +119,7 @@ function Search() {
         <section id='search-filters'>
       <article id='grades'>
         <p>Filter by grade</p>
+        {/* <CheckboxContainer />  */}
         {/* {Object.keys(grades).map(key => (
           <input 
             type="checkbox" 
@@ -128,8 +129,11 @@ function Search() {
             checked={grades[key]}
           />
         ))} */}
-        <form >
-          <input type="checkbox" name="grades" value="4th"/><label>4th</label>
+        {/* <form >
+          <input 
+            type="checkbox" name="grades" value="4th" checked={isChecked}
+            onChange={onCheckboxChange}/>
+            <label>4th</label>
           <input type="checkbox" name="grades" value="5th"/><label>5th</label>
           <input type="checkbox" name="grades" value="6th"/><label>6th</label>
         </form>
@@ -140,7 +144,7 @@ function Search() {
           <input type="checkbox" name="subjects" value="math"/><label>Math</label>
           <input type="checkbox" name="subjects" value="science"/><label>Science</label>
           <input type="checkbox" name="subjects" value="writing"/><label>Writing</label>
-        </form>
+        </form> */}
       </article>
 
       </section>
@@ -153,6 +157,8 @@ function Search() {
     </React.Fragment>
   );
 }
+
+
 
 function ShowFilters({tags, setTags}){
   const [grades, setGrades] = React.useState([]);
