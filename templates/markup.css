@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,500;0,700;1,300;1,500&display=swap');
+
+/* Resets */
+
+html, body { 
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Typography */
+
+html {
+    font-family: Ubuntu, sans-serif;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5 {
+    line-height: 1;
+}
+
+:link, :visited {
+    color: navy;
+}
+
+/* HEADER */
+/* Try to avoid underscores in ids, because users might be typing them */
+/* Nav */
+header {
+    background-color: #D79922;
+    color: white;
+    padding: 0.5rem 2rem;
+}
+
+main {
+    max-width: 75%;
+    margin-inline: auto;
+}
+/* SEARCH */
+
+/* LESSON TILES */
+
+#lesson-samples {
+    display: flex;
+    overflow: auto;
+    /* by default, flex-flow is "row"  Each cards will lay out horizontally*/
+}
+
+#lesson-samples > article {
+    flex: 1 0 auto;
+    width: calc(33% - 0.4em);
+    max-width: 20em;
+    min-width: 10em;
+
+    display: flex;  /* this makes it a flex CONTAINER vs. flex ITEM */
+    flex-flow: column;
+}
+
+.lesson-card {
+    overflow: hidden;
+    border-radius: 1em;
+    margin: 0 .2em;
+    background: grey;
+    color: white;
+}
+
+.lesson-card a[href] {
+    text-decoration: none;
+    color: #D79922;
+    text-shadow: 2px 2px 2px #0008;
+    position: relative;
+}
+
+.lesson-card a[href]:active {
+    top: 2px;
+    left: 2px;
+    text-shadow: 1px 1px 2px #0008;
+}
+
+.lesson-card > * {
+    margin: 0;
+    padding-inline: 2rem;
+    overflow: hidden;
+}
+
+.lesson-card h3 {
+    font-size: 150%;
+    margin-bottom: auto;
+    height: 2em;
+    overflow: hidden;
+}
+
+.lesson-card img {
+    max-width: 100%;
+} 
+
+.lesson-card .lesson-banner {
+    max-width: 100%;
+    padding: 0;
+    order: -1;
+    /* default order for unordered element is 0, so this pulls it up */
+} 
+
+.lesson-card .subjects {
+    height: 3em;
+    overflow: hidden;
+}
+
+.lesson-card .favorite-pin {
+    font-size: 1.5em;
+    display: block;
+    margin-left: auto;
+    background: none;
+    border: none;
+    /* auto margins take up all the extra space, so if you want pin on RIGHT, auto on LEFT */
+}
+
+/* SIGN UP */
+
+#signup-greeting {
+    display: flex;
+    margin-top: 5em;
+    margin-bottom: 3em;
+
+}
+
+#signup-greeting > h2 {
+    flex: 2;
+    align-self: center;
+    /* align-self works in the CROSS axis when in a flex-box (e.g. default horiz, so vert */
+    /* outside flex, it's always vertical */
+    padding-right: 1em;
+}
+
+#signup > h2 {
+    color: white;
+}
+
+#signup {
+    flex: 1;
+    min-width: max-content;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color:#D79922;;  
+}
+
+#signup input {
+    width: 100%;
+    display: block;
+}
+
+#signup-btn {
+    background-color: black;
+    color: white;
+}
