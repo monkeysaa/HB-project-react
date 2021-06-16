@@ -26,6 +26,9 @@ function Login(props) {
             setLoggedIn(true);
             document.getElementById('login_state').dataset.loggedin = true;
             history.push('/profile');
+            // debugger;
+            // window.location.href = '/profile';
+
 
           } else {
               alert(res);

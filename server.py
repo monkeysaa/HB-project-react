@@ -122,6 +122,8 @@ def login():
             session['user_id'] = user.user_id
             session['isLoggedIn'] = True
             user_lessons = crud.get_lessons_by_user(user.user_id)
+            print(user.user_id)
+            print(session['user_id'])
             return jsonify('success')
             # later return JSON that includes both user and lesson info
         else: 

@@ -15,7 +15,7 @@ function Nav() {
     .then(response => response.json())
     .then(data => {
       if (data.success == true) {
-        history.push(`/`);
+        history.push(`/login`);
         // window.location.href = '/';
       }
       else {
