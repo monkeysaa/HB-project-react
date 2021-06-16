@@ -3,8 +3,9 @@ function Nav() {
   const [searchstring, setSearchstring] = React.useState(""); 
 
   function processSearch() {
-    console.log(searchstring.value);
-    history.push(`/search/${searchstring}`);
+    const search = searchstring
+    setSearchstring("");
+    history.push(`/search/${search}`);
     // window.location.href = `/api/search/${searchstring}.json`;
     // TODO: --> Route to Search page
   }
