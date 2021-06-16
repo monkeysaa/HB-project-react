@@ -13,26 +13,31 @@
         // Code for MultiLessonDisplay --> LessonsCards in profile.jsx
 
 
-// TODO: Make it works from Nav
+// TODO: Make it work from Nav
         // Show search tags applied
         // Remove filters
         // Filter Display
           // Subject tags
           // Grades tags
 
+
 function Search() {
+  let { params } = useParams();
   const [tags, setTags] = React.useState([]);
-  const [searchstring, setSearchstring] = React.useState('');
-  const [usersearch, setUsersearch] = React.useState('');
   const [matches, setMatches] = React.useState([]); // array of db_data for matching lessons
-  const [searchtype, setSearchtype] = React.useState('');
+  // const [taggedLessons, setTaggedLessons] = React.useState([matches]);
+  const [searchstring, setSearchstring] = React.useState(params);
+  const [usersearch, setUsersearch] = React.useState('');
+  const [searchtype, setSearchtype] = React.useState('searchstring');
   const [param, setParam] = React.useState('');
   const [userParam, setUserParam] = React.useState('');
 
 
+  console.log(`This is line 33: ${searchstring}`);
+
   const processSearch = () => {
     console.log(`processing Search for: ${searchstring}`);
-    const search = {'param': searchstring, 'type': searchtype}
+    const search = {'param': params, 'type': searchtype}
 
     fetch(`/api/search/${searchstring}`, {
       method: 'POST',
@@ -45,9 +50,25 @@ function Search() {
     .then(data => {
       console.log(data.lesson_data);
       setParam(data.search);
-      setMatches(data.lesson_data);
+      let taggedLessons = [];
+      for (const lesson of data.lesson_data) {
+        for (tag of lesson.tags) {
+
+        }
+        taggedLessons.push(lesson.tags);
+      }
+      setTags(tempTags);
+      console.log(tempTags);
+      console.log(tags);
     })
   };
+
+  React.useEffect(() => {
+    console.log(`This is line 57: ${searchstring}`);
+    processSearch();
+  }, []);
+
+
 
   const processUserSearch = () => {
     console.log(`processing Search for: ${usersearch}`);
