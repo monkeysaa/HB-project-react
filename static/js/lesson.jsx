@@ -22,7 +22,9 @@ function MultiLessonDisplay({lessons}) {
   }
     
   return (
-    <section>{lessonCards}</section>
+    <React.Fragment>
+      {lessonCards}
+    </React.Fragment>
   );
 }
   

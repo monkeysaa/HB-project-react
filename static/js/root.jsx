@@ -30,35 +30,40 @@ function Controller() {
   // Once logged in, here's the Nav, then body send to Profile
   return (
     <React.Fragment>
-      <Nav/>
       <Switch>
-        <Route path="/users">
-          <Directory />
-        </Route>
-        <Route path="/lessons/:lesson_id/edit" children={<EditLesson/>}/>
-        <Route path="/lessons/:lesson_id" children={<SingleLesson />} />
-        <Route path="/signup">
-          <CreateNewUser />
-        </Route>
-        <Route path="/create_lesson">
-          <NewLesson />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/search/:params" children={<Search/>} />
-        <Route path="/search">
-          <Search />
-        </Route>
-        <Route exact={true} path="/">
-          <Home />
-          {/* <img src="/static/img/high5.jpg"/> */}
-        </Route> 
-
+        <Route exact={true} path="/"></Route>
+        <Route><Nav/></Route>
       </Switch>
+      <main>
+        <Switch>
+          <Route path="/users">
+            <Directory />
+          </Route>
+          <Route path="/lessons/:lesson_id/edit" children={<EditLesson/>}/>
+          <Route path="/lessons/:lesson_id" children={<SingleLesson />} />
+          <Route path="/signup">
+            <CreateNewUser />
+          </Route>
+          <Route path="/create_lesson">
+            <NewLesson />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/search/:params" children={<Search/>} />
+          <Route path="/search">
+            <Search />
+          </Route>
+          <Route exact={true} path="/">
+            <Home />
+            {/* <img src="/static/img/high5.jpg"/> */}
+          </Route> 
+
+        </Switch>
+      </main>
     </React.Fragment>
   );
 }

@@ -23,7 +23,7 @@ function Home() {
   
   return (
     <React.Fragment>
-      <nav><h1>DESK!</h1></nav>
+      <header><h1>DESK!</h1></header>
 
       <div id='landing-search-div'>
         <h2>Explore Lessons!</h2>
