@@ -51,16 +51,25 @@ function MultiLessonDisplay({lessons}) {
 
   
     return (
-      <article className="lesson-card">
-        {/* TODO: Decide which header level (<h2> <h3> etc */}
-        <p className="favorite-pin">♡</p>
-        <h2><a href={`/lessons/${props.id}`}> {props.title} </a> </h2> 
-        <p> {props.overview} </p> 
-        <a href={`/lessons/${props.id}`}><img src={props.img}/></a>
-        <p> {props.author}</p>
-        {subjectTags && <p>Subjects: {subjectTags.join(', ')} </p>}
+      // <article className="lesson-card">
+      //   {/* TODO: Decide which header level (<h2> <h3> etc */}
+      //   <p className="favorite-pin">♡</p>
+      //   <h2><a href={`/lessons/${props.id}`}> {props.title} </a> </h2> 
+      //   <p> {props.overview} </p> 
+      //   <a href={`/lessons/${props.id}`}><img src={props.img}/></a>
+      //   <p> {props.author}</p>
+      //   {subjectTags && <p>Subjects: {subjectTags.join(', ')} </p>}
+      //   {gradeTags && <p>Grades: {gradeTags.join(', ')} </p>}
+      //   <button className="card_btn" onSubmit={showLesson}>View Lesson</button>
+      // </article>
+
+      <article className="lesson-card brief">
+        <h3><a href={`/lessons/${props.id}`} > {props.title}  </a> </h3> 
+        <a className="lesson-banner" href={`/lessons/${props.id}`}>
+          <img src={props.img}/></a>
         {gradeTags && <p>Grades: {gradeTags.join(', ')} </p>}
-        <button className="card_btn" onSubmit={showLesson}>View Lesson</button>
+        {subjectTags && <p className='subjects'>Subjects: {subjectTags.join(', ')} </p>}
+        <button className="favorite-pin">♡</button>
       </article>
     );
   }

@@ -155,12 +155,7 @@ def get_lessons_json():
             lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
 
         lessons_list.append(
-            {
-                "lesson_id": lesson.lesson_id,
-                "title": lesson.title,
-                "author": lesson.author.email,
-                "imgUrl": lesson.imgUrl,
-            }
+            lesson.as_dict()
         )
 
     return {"lessons": lessons_list}

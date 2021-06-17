@@ -54,7 +54,8 @@ function Controller() {
           <Search />
         </Route>
         <Route exact={true} path="/">
-          <img src="/static/img/high5.jpg"/>
+          <Home />
+          {/* <img src="/static/img/high5.jpg"/> */}
         </Route> 
 
       </Switch>
