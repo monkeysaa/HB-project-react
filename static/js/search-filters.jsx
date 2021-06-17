@@ -3,6 +3,20 @@
 const SUBJECTS = ['Writing', 'Math', 'Science'];
 const GRADES = ['4th', '5th', '6th'];
 
+// Tag checkboxes
+[
+  '4th', 
+  '5th', 
+  '6th',
+].map((name) => (
+  <p> {name} </p>
+));
+
+SUBJECTS.map((name) => (
+  <p> {name} </p>
+));
+
+
 // function Checkboxes ({ tag, isChecked, onCheckboxChange }) {
 //   <div className="checkboxes-form">
 //     <label>

@@ -7,7 +7,7 @@ function CreateNewUser(props) {
   const [email, setEmail] = React.useState('');
   const [pass, setPass] = React.useState('');
   
-  const makeUser = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
 
     const user = {"handle": handle, "email": email, "password": pass};
@@ -31,29 +31,39 @@ function CreateNewUser(props) {
       }
     })
   }
+
+  function handleLogin() {
+    history.push(`/login`);
+  }
   
   return (
-    <form> 
-      Username: 
-      <input 
-        type="text" 
-        onChange={(e) => setHandle(e.target.value)}
-        value={handle} 
-      />
-      Email: 
-      <input 
-        type="text" 
-        onChange={(e) => setEmail(e.target.value)}
-        value={email} 
-      />
-      Password:
-      <input 
-        type="text" 
-        onChange={(e) => setPass(e.target.value)}
-        value={pass} 
-      />
-      <button onClick={makeUser}> Sign Up </button>
-    </form>
-  )
+      <section id='greeting signup'>
+        <h2>Sign up to create or save your next lesson!</h2>
+        <form id='signup'>
+          <h2>Welcome to DESK!</h2>
+          <input 
+            type="text" 
+            placeholder='Username'
+            onChange={(e) => setHandle(e.target.value)}
+            value={handle} 
+          />
+          <input 
+            type="text" 
+            placeholder='Email'
+            onChange={(e) => setEmail(e.target.value)}
+            value={email} 
+          />
+          <input 
+            type="text" 
+            placeholder='Password'
+            onChange={(e) => setPass(e.target.value)}
+            value={pass} 
+          />
+          <p id='welcome-footnote'>Already a user?</p>
+          <button type='button' id='signin-btn' onClick={handleLogin}>Sign In</button>
+          <button type='button' id='signup-btn' onClick={handleSignup}>Sign Up</button>
+        </form>
+      </section>
+  );
 }
   

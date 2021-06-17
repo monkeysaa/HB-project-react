@@ -46,6 +46,9 @@ function NewLesson() {
       if (res.success === false) {
           alert('something done broke.');
       } else if (res.success == true) {
+          <Alert key='successful-lesson' variant='success'>
+            Lesson {res.lesson_id} created successfully!
+          </Alert>
           alert(`Lesson ${res.lesson_id} created successfully!`);
           history.push(`/lessons/${res.lesson_id}`);
       }

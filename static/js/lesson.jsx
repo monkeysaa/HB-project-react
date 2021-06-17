@@ -1,3 +1,7 @@
+const Img = ReactBootstrap.Image;
+const {Container, Button, ButtonGroup, Navbar, Form, NavDropdown, Nav, Media, 
+Row, Col, Modal, Alert, Toast, Card, Spinner, LinkButton} = ReactBootstrap;
+
 function MultiLessonDisplay({lessons}) {
     // const lessons = matches; 
     console.log(lessons);
@@ -9,7 +13,7 @@ function MultiLessonDisplay({lessons}) {
     }
     console.log(`${lesson.tags} from MultiLessonDisplay`)
     lessonCards.push(
-      <LessonCard
+      <BootstrapCard
         key={lesson.lesson_id}
         id={lesson.lesson_id}
         title={lesson.title}
@@ -53,6 +57,8 @@ function MultiLessonDisplay({lessons}) {
 
   
     return (
+      // NO CSS STYLING
+
       // <article className="lesson-card">
       //   {/* TODO: Decide which header level (<h2> <h3> etc */}
       //   <p className="favorite-pin">♡</p>
@@ -65,6 +71,7 @@ function MultiLessonDisplay({lessons}) {
       //   <button className="card_btn" onSubmit={showLesson}>View Lesson</button>
       // </article>
 
+      // CSS STYLING
       <article className="lesson-card brief">
         <h3><a href={`/lessons/${props.id}`} > {props.title}  </a> </h3> 
         <a className="lesson-banner" href={`/lessons/${props.id}`}>
@@ -75,3 +82,55 @@ function MultiLessonDisplay({lessons}) {
       </article>
     );
   }
+
+function BootstrapCard(props) {
+  const history = ReactRouterDOM.useHistory();
+
+  console.log(`${props.tags} from LessonCard`)
+
+  // takes props: id, title, overview, img, author)
+  function showLesson()  {
+    history.push(`/api/lesson/${props.id}.json`);
+  }
+
+  const subjectTags = [];
+  const gradeTags = [];
+  console.log(props.tags)
+  for (const tag of props.tags) {
+      if (tag.category === 'subjects') {
+          subjectTags.push(tag.name)
+      }
+      else {
+          gradeTags.push(tag.name)
+      }
+  }
+
+
+  return (
+    // <article className="lesson-card brief">
+    //   <h3><a href={`/lessons/${props.id}`} > {props.title}  </a> </h3> 
+    //   <a className="lesson-banner" href={`/lessons/${props.id}`}>
+    //     <img src={props.img}/></a>
+    //   {gradeTags && <p>Grades: {gradeTags.join(', ')} </p>}
+    //   {subjectTags && <p className='subjects'>Subjects: {subjectTags.join(', ')} </p>}
+    //   <button className="favorite-pin">♡</button>
+    // </article>
+
+    <Card className='bootstrap-lesson-card' style={{ width: '18rem' }}>
+      <div className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+        <Card.Img variant="top" src={props.img} className="img-fluid"/>
+        <Card.Body>
+          <a href={`/lessons/${props.id}`} ><Card.Title>{props.title}</Card.Title></a>
+          <Card.Text>
+            { gradeTags !=[] && (`Grades: ${gradeTags.join(', ')}` )} 
+            {subjectTags !=[] && (`Subjects: ${subjectTags.join(', ')}` )}
+            { !(gradeTags !=[] || subjectTags !=[] ) && props.overview }
+          </Card.Text>
+          <Button variant="primary" className="favorite-pin">♡</Button>
+        </Card.Body>
+      </div>
+    </Card>
+
+
+  );
+}

@@ -86,6 +86,9 @@ function CreateComp({setComps}) {
     const compData = {};
 
     if (compToSave === '') {
+      <Alert key='empty-component-url' variant='warning'>
+        Update this field before adding.
+      </Alert>
       alert('Update this field before adding.');
     }
     compType === 'url' ? compData.url=compToSave : compData.text=compToSave;
