@@ -31,7 +31,12 @@ function Controller() {
   return (
     <React.Fragment>
       <Switch>
-        <Route exact={true} path="/"></Route>
+        <Route exact={true} path="/">
+          <header>
+            <img src='/static/img/desk-trans.png/'/>
+            <h1>DESK</h1>
+          </header>
+        </Route>
         <Route><Nav/></Route>
       </Switch>
       <main>

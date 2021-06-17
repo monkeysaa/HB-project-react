@@ -47,7 +47,6 @@ function Home() {
 
   return (
     <React.Fragment>
-      <header><h2>DESK</h2></header>
       <div id='landing-search-div'>
         <h2>Explore Lessons!</h2>
         <Searchbar />
@@ -57,14 +56,17 @@ function Home() {
       </section>
       <section id='signup-greeting'>
         <h2>Sign up to create or save your next lesson!</h2>
-        <form id='signup'>
+        <form id='landing-signup'>
           <h2>Welcome to DESK!</h2>
           <input id='email' placeholder='Email' />
           <input id='handle' placeholder='Username' />
           <input id='password' placeholder='Password' type='password' />
-          <p id='welcome-footnote'>Already a user?</p>
-          <button type='button' id='signin-btn'>Sign In</button>
-          <button type='button' id='signup-btn'>Sign Up</button>
+          <p id='welcome-footnote'>
+            Already a user?</p>
+          <div className='greeting-btns'>
+            <button type='button' id='signin-btn'>Sign In</button>
+            <button type='button' id='signup-btn '>Sign Up</button>
+          </div>
         </form>
       </section>
     </React.Fragment>

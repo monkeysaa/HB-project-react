@@ -19,7 +19,7 @@ function Nav() {
   return (
     <React.Fragment>
       <nav>
-        <Link to="/"><i className="fa fa-home"/><img src="/static/img/home.png" alt="Home"/></Link>
+        <Link to="/"><i className="fa fa-home"/> </Link>
         {/* TODO: This link doesn't push page properly. INVESTIGATE. */}
         <Link to="/profile"><i className="fa fa-user-circle" alt="Profile"></i> Profile</Link>
         <Link to="/users">Lesson Directory</Link>
@@ -32,3 +32,4 @@ function Nav() {
     </React.Fragment>
   );
 }
+

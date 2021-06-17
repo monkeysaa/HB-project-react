@@ -45,7 +45,7 @@ function Login(props) {
     return (
       <React.Fragment>
         {/* {errorMessage ? <ErrorMessage errorMessage={errorMessage} />: null} */}
-        <h2>Login</h2>
+        {/* <h2>Login</h2>
         <form> 
           Email: 
           <input 
@@ -62,7 +62,7 @@ function Login(props) {
           <button onClick={handleLogin}> Log In </button>
         </form>
         <h2>Or Sign Up</h2>
-        <CreateNewUser />
+        <CreateNewUser /> */}
 
         <section id='greeting login'>
           <form id='login-form'>
@@ -79,11 +79,14 @@ function Login(props) {
               placeholder='Password'
               value={password} 
             />
-            <p id='welcome-footnote'>Already a user?</p>
-            <button type='button' id='signup-btn'  onClick={handleSignup}>Sign In</button>
-            <button type='button' id='login-btn' onClick={handleLogin}>Sign Up</button>
+            <p id='welcome-footnote'>Need an account?</p>
+            <div className='greeting-btns'>
+              <button type='button' id='secondary-btn' onClick={handleSignup}>Sign Up</button>
+              <button id='primary-btn' onClick={handleLogin}> Log In </button>
+            </div>
           </form>
         </section>
+
       </React.Fragment>
     );
   }

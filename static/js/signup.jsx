@@ -38,9 +38,8 @@ function CreateNewUser(props) {
   
   return (
       <section id='greeting signup'>
-        <h2>Sign up to create or save your next lesson!</h2>
         <form id='signup'>
-          <h2>Welcome to DESK!</h2>
+          <h2>Sign up to create or save your next lesson!</h2>
           <input 
             type="text" 
             placeholder='Username'
@@ -60,8 +59,10 @@ function CreateNewUser(props) {
             value={pass} 
           />
           <p id='welcome-footnote'>Already a user?</p>
-          <button type='button' id='signin-btn' onClick={handleLogin}>Sign In</button>
-          <button type='button' id='signup-btn' onClick={handleSignup}>Sign Up</button>
+          <div className='greeting-btns'>
+            <button type='button' id='secondary-btn' onClick={handleLogin}>Sign In</button>
+            <button type='button' id='primary-btn' onClick={handleSignup}>Sign Up</button>
+          </div>
         </form>
       </section>
   );
