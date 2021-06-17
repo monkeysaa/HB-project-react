@@ -41,9 +41,14 @@ function Controller() {
       </Switch>
       <main>
         <Switch>
-          <Route path="/users">
+          <Route path="/users/user">
+            <Profile />
+          </Route>   
+          <Route exact={true} path="/users">
             <Directory />
           </Route>
+          {/* Does this route go to profile? Will users ever see this?  */}
+      
           <Route path="/lessons/:lesson_id/edit" children={<EditLesson/>}/>
           <Route path="/lessons/:lesson_id" children={<SingleLesson />} />
           <Route path="/signup">

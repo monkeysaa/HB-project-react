@@ -88,25 +88,20 @@ def signup():
     return {'success': True}
 
 
-@app.route("/api/users/user")
+@app.route("/api/users/user/")
 def display_profile():
     """Display user profile. """
 
     user_id = session['user_id']
     u = crud.get_user_by_id(user_id)
-    lessons_data = []
 
+    lesson_data = []
     for lesson in u.lessons:
-        lessons_data.append(lesson.as_dict())
+        lesson_data.append(lesson.as_dict())
 
-    user_data = {
-            "user_id": u.user_id,
-            "username": u.handle,
-            "email": u.email,
-            "lessons": lessons_data
-    }
+    user_data = u.as_dict()
 
-    return jsonify({'user': user_data})
+    return jsonify({'user': user_data, 'lessons': lesson_data})
 
 
 @app.route("/api/users/user", methods=["POST"])
@@ -118,6 +113,7 @@ def update_profile_info():
 
     ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
     if 'profile-pic' in request.files:
+        print('profile pic on back end')
         my_file = request.files['profile-pic']
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
@@ -138,7 +134,7 @@ def update_profile_info():
 
     # save to database
     try:
-        response = crud.update_profile_pic(user_id, email, password) 
+        response = crud.update_profile_pic(user_id, profile_pic) 
         if response == 'Success!':
             return {'success': True, user: user.as_dict()}
         # TODO: Later crud function(s) to update all/other user data
@@ -158,6 +154,9 @@ def login():
     data = request.get_json()
     email = data['email']
     password = data['password']
+
+    print('Hit the back end')
+    print(email, password)
 
     user = crud.get_user_by_email(email)
     try:

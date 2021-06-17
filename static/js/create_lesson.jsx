@@ -4,7 +4,7 @@ function NewLesson() {
   const history = ReactRouterDOM.useHistory();
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
-  const [lessonPic, setLessonPic] = React.useState(null);
+  // const [lessonPic, setLessonPic] = React.useState(null);
 
   // comps: An array of POJOs, each with data for a single lesson component. 
   const [comps, setComps] = React.useState([]); 

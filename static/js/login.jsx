@@ -9,10 +9,10 @@ function Login(props) {
     const [password, setPassword] = React.useState('')
     const [loggedIn, setLoggedIn] = React.useState(false)
   
-    const handleLogin = (evt) => {
-      evt.preventDefault();
+    const handleLogin = () => {
   
       const data = {"email": email, "password": password}
+      console.log(`Line 15 of login.jsx, about to send ${data}`);
       fetch('/api/session', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -23,8 +23,10 @@ function Login(props) {
       .then(response => response.json())
       .then(res => {
         if (res === 'success') {
+          console.log(res);
           setLoggedIn(true);
           document.getElementById('login_state').dataset.loggedin = true;
+          console.log(`Line 29 of login.jsx`);
           history.push('/profile');
           // debugger;
           // window.location.href = '/profile';
@@ -44,6 +46,34 @@ function Login(props) {
         
     return (
       <React.Fragment>
+        <section id='greeting login'>
+          <form id='login-form'>
+            <h2>Log in to create or save your next lesson!</h2>
+            <input 
+              type="text" 
+              placeholder='Email'
+              onChange={(e) => setEmail(e.target.value)}
+              value={email} 
+            />
+            <input 
+              type="text" 
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder='Password'
+              value={password} 
+            />
+            <p id='welcome-footnote'>Need an account?</p>
+            <div className='greeting-btns'>
+              <button type='button' id='secondary-btn' onClick={handleSignup}>Sign Up</button>
+              <button type='button' id='primary-btn' onClick={handleLogin}> Log In </button>
+            </div>
+          </form>
+        </section>
+      </React.Fragment>
+    );
+  }
+
+
+  
         {/* {errorMessage ? <ErrorMessage errorMessage={errorMessage} />: null} */}
         {/* <h2>Login</h2>
         <form> 
@@ -63,33 +93,3 @@ function Login(props) {
         </form>
         <h2>Or Sign Up</h2>
         <CreateNewUser /> */}
-
-        <section id='greeting login'>
-          <form id='login-form'>
-            <h2>Log in to create or save your next lesson!</h2>
-            <input 
-              type="text" 
-              placeholder='Email'
-              onChange={(e) => setEmail(e.target.value)}
-              value={email} 
-            />
-            <input 
-              type="text" 
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder='Password'
-              value={password} 
-            />
-            <p id='welcome-footnote'>Need an account?</p>
-            <div className='greeting-btns'>
-              <button type='button' id='secondary-btn' onClick={handleSignup}>Sign Up</button>
-              <button id='primary-btn' onClick={handleLogin}> Log In </button>
-            </div>
-          </form>
-        </section>
-
-      </React.Fragment>
-    );
-  }
-
-
-  

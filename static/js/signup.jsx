@@ -1,4 +1,4 @@
-function CreateNewUser(props) {
+function CreateNewUser() {
   
   const history = ReactRouterDOM.useHistory();
 
@@ -6,7 +6,7 @@ function CreateNewUser(props) {
   const [handle, setHandle] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [pass, setPass] = React.useState('');
-  
+
   const handleSignup = (e) => {
     e.preventDefault();
 
@@ -37,6 +37,7 @@ function CreateNewUser(props) {
   }
   
   return (
+    <React.Fragment>
       <section id='greeting signup'>
         <form id='signup'>
           <h2>Sign up to create or save your next lesson!</h2>
@@ -65,6 +66,7 @@ function CreateNewUser(props) {
           </div>
         </form>
       </section>
+    </React.Fragment>
   );
 }
   
