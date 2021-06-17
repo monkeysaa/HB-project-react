@@ -196,14 +196,16 @@ def create_lesson():
     db_lesson = crud.create_lesson(lesson_data)
 
     ### CREATE DB ASSOCIATION BETWEEN TAGS AND LESSON ###
-    tags = request.form['tags'].split(',') # eg. '6th,science'
-    # Right now, setting up new tag with id of "tag"
-    for tag in tags:
-        if tag in SUBJECTS: 
-            db_tag = crud.get_tag_by_name(tag)
-        elif tag in GRADES: 
-            db_tag = crud.get_tag_by_name(tag)
-        crud.assign_tag_to_lesson(db_tag, db_lesson)
+    if 'tags' in request.form:
+        tags = request.form['tags'].split(',') # eg. '6th,science'
+        # Set up new tag
+        for tag in tags:
+            print(tag)
+            if tag in SUBJECTS: 
+                db_tag = crud.get_tag_by_name(tag)
+            elif tag in GRADES: 
+                db_tag = crud.get_tag_by_name(tag)
+            crud.assign_tag_to_lesson(db_tag, db_lesson)
 
     ### CREATE DB ASSOCIATION BETWEEN COMPONENTS AND LESSON ###
     if request.form['component-ids']:
@@ -376,7 +378,9 @@ def run_search(search_params):
     if searchtype == 'searchstring': 
         lessons = crud.get_lessons_by_term(param)
     elif searchtype == 'usersearch':
+        print(param)
         user_queried = crud.get_user_by_username(param)
+        print(user_queried)
         lessons = crud.get_lessons_by_user(user_queried.user_id)
     for lesson in lessons:
         lesson_matches.add(lesson)

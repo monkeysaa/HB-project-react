@@ -22,22 +22,21 @@
 
 
 function Search() {
-  let { params } = useParams();
-  const [tags, setTags] = React.useState([]);
+  let { params = ' '} = useParams(); // search keyword from Nav-> URL
+  // const [tags, setTags] = React.useState([]);
   const [matches, setMatches] = React.useState([]); // array of db_data for matching lessons
   // const [taggedLessons, setTaggedLessons] = React.useState([matches]);
   const [searchstring, setSearchstring] = React.useState(params);
   const [usersearch, setUsersearch] = React.useState('');
   const [searchtype, setSearchtype] = React.useState('searchstring');
-  const [param, setParam] = React.useState('');
-  const [userParam, setUserParam] = React.useState('');
+  const [keyword, setKeyword] = React.useState(params); // search keyword for displayed results
 
 
   console.log(`This is line 33: ${searchstring}`);
 
   const processSearch = () => {
     console.log(`processing Search for: ${searchstring}`);
-    const search = {'param': params, 'type': searchtype}
+    const search = {'param': searchstring, 'type': searchtype}
 
     fetch(`/api/search/${searchstring}`, {
       method: 'POST',
@@ -48,8 +47,9 @@ function Search() {
     })
     .then(response => response.json())
     .then(data => {
+      setSearchstring('');
       console.log(data.lesson_data);
-      setParam(data.search);
+      setKeyword(data.search);
       setMatches(data.lesson_data);
       //let taggedLessons = [];
       //for (const lesson of data.lesson_data) {
@@ -82,7 +82,8 @@ function Search() {
     })
     .then(response => response.json())
     .then(data => {
-      setUserParam(data.search);
+      setUsersearch('');
+      setKeyword(data.search);
       setMatches(data.lesson_data);
     })
   };
@@ -92,11 +93,10 @@ function Search() {
       {/* FILTERS */}
       <h1>Lesson Search</h1>
       <section className='verification'>
-        {param &&
+        {keyword &&
           <div> Current Search Parameters:
             <section className='existing-parameters'>
-            {param && <button id='searchstr-btn' type='button'>{param}</button>}
-            {userParam && <button id='usersearch-btn' type='button'>{param}</button>}
+            {keyword && <button id='keyword-display' type='button'>{keyword}</button>}
             {/* TODO: for (tag of tags) => build button for tag */}
             {/* {grades && <button id='grades-btn' type='button'>{grades}</button>}
             {subjects && <button id='subjects-btn' type='button'>{subjects}</button>} */}
@@ -226,5 +226,4 @@ function ShowFilters({tags, setTags}){
       </article>
     </section>
   )
-
 }

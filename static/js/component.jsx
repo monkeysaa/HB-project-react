@@ -225,7 +225,7 @@ function CompContainer({comps}) {
   // CompCard is the Card template for display
   // CompCard is the card itself
   const compCards = [];
-  console.log(comps);
+  // console.log(comps);
 
   for (const comp of comps) {
     console.log(comp);
