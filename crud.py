@@ -4,10 +4,10 @@ from model import *
 from flask import session
 
 # Creation functions
-def create_user(handle, email, pwd):
+def create_user(handle, email, pwd, pic):
     """Create and return a new user."""
 
-    new_user = User(handle=handle, email=email, password=pwd)
+    new_user = User(handle=handle, email=email, password=pwd, profile_pic=pic)
 
     db.session.add(new_user)
     db.session.commit()
@@ -203,6 +203,13 @@ def get_user_by_email(email):
 #     return Fave_Lessons.query.filter(Fave_Lessons.liker_id == user_id).all()
 
 # UPDATE FUNCTIONS
+def update_profile_pic(user_id, new_profile_pic_url):
+    """Get user by id and update profile pic."""
+
+    User.query.get(user_id).profile_pic = new_profile_pic_url
+    db.session.commit()
+    return 'Success!'
+
 def update_lesson_title(lesson_id, new_title):
     """Get lesson by id and update title."""
 
@@ -217,7 +224,6 @@ def update_lesson_pic(lesson_id, new_imgUrl):
     Lesson.query.get(lesson_id).imgUrl = new_imgUrl
     db.session.commit()
     return 'Success!'
-
 
 def assign_lesson_img(imgUrl, lesson_id):
     lesson = get_lesson_by_id(lesson_id)

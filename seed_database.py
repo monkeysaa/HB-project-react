@@ -25,13 +25,21 @@ with open('static/data/lessons.json') as f:
 
 
 # Create users, store them in list so we can assign fake lessons to them
+PROFILE_PICS = ['https://t3.ftcdn.net/jpg/02/43/30/32/360_F_243303237_jRLK4CIIwClVcAET3OXB5BSNQRA1QZ0z.jpg',
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQknVbr55-ORSi-V0btHeyH8PMMXu1LeRmRjJ6cwGrawmjWm3jWWglL9tAK4jiT1coUh7E&usqp=CAU',
+                # https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE9aCijGWP8QsXdFVnLVOmYTLlTsU13Ij44g&usqp=CAU',
+                # https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj_Z8ZjtiXW4QVMxjMXnTfdC-A0X2jaDqkaN2NA0gT6SIe5lhJWE2wthsFygYgxBfRRnU&usqp=CAU',
+                'https://cdn2.vectorstock.com/i/thumb-large/95/61/default-placeholder-businesswoman-half-length-por-vector-20889561.jpg'
+                ]
 users_in_db = []
 for n in range(3):
     handle = f'User{n}'
     email = f'user{n}@test.com'  # Voila! A unique email!
     password = 'test'
+    profile_pic = PROFILE_PICS[n]
+
     # create a user here
-    user = crud.create_user(handle, email, password)
+    user = crud.create_user(handle, email, password, profile_pic)
     users_in_db.append(user)
 
 

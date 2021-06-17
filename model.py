@@ -32,7 +32,7 @@ class User(db.Model):
             'handle': self.handle,
             'email': self.email,
             'password': self.password,
-            'profile_pic': self.profile_pic
+            'profile_pic': self.profile_pic,
             'lessons': lesson_ids
         }
 

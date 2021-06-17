@@ -65,6 +65,7 @@ def view_users():
     return {'users': users}
 
 
+# TODO: Add password hashing for security
 @app.route("/api/users", methods=["POST"])
 def signup():
 
@@ -72,9 +73,11 @@ def signup():
     handle = data['handle']
     email = data['email']
     password = data['password']
+    # TODO: UPDATE TO USER PROFILE DEFAULT
+    profile_pic = 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
 
     try:
-        db_user = crud.create_user(handle, email, password)
+        db_user = crud.create_user(handle, email, password, profile_pic)
     except:
         flash('Email is already in use. Try again.')
         return {'success': False}
@@ -109,46 +112,41 @@ def display_profile():
 @app.route("/api/users/user", methods=["POST"])
 def update_profile_info():
 
-    # get userID from session data 
+    # Get user based on session data 
     user_id = session['user_id']
-    # Get userdata using request.form for strings and request.files for image
-    # If data exists, save to variable
+    user = crud.get_user_by_id(user_id)
 
     ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
-    if 'lesson-pic' not in request.files:
-        lesson_data['imgUrl'] = "/static/img/placeholder.png"
-    else: 
-        my_file = request.files['lesson-pic']
+    if 'profile-pic' in request.files:
+        my_file = request.files['profile-pic']
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright')
-        lesson_data['imgUrl'] = result['secure_url']
-    # If image exists, get Cloudinary link
-    # else save blank user image
-    if user.profile_pic == None:
-            lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
-
-    # check to make sure no other users have this email or username
-    # save to database
-    # return user info as_dict, with Cloudinary link. 
-
-    if "username" in request.form:
-        # update user
+        profile_pic = result['secure_url']
     
-    if 
+    ### UPDATE OTHER USER DATA ###
 
-    # data = request.get_json()
-    # handle = data['handle']
-    # email = data['email']
-    # password = data['password']
+    # TODO: Check to make sure no other users have this email or username
+    # TODO: Password verification system on front end and hashing/security
+    # if request.form['username'] != '':
+    #     user.handle = request.form['username']
+    # if request.form['email'] != '':
+    #     user.email = request.form['email']   
+    # if request.form['password'] != '':
+    #     user.handle = request.form['password']    
 
+
+    # save to database
     try:
-        db_user = crud.create_user(handle, email, password)
-    except:
-        flash('Email or username already in use. Try again.')
-        return {'success': False}
+        response = crud.update_profile_pic(user_id, email, password) 
+        if response == 'Success!':
+            return {'success': True, user: user.as_dict()}
+        # TODO: Later crud function(s) to update all/other user data
 
-    return {'success': True}
+    except:
+            flash('Error in database processing. Try again.')
+            return {'success': False}
+
 
 
 @app.route("/api/session", methods=["POST"])

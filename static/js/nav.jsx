@@ -25,7 +25,7 @@ function Nav() {
         <Link to="/users">Lesson Directory</Link>
         {/* TODO: Hoist into above JS and replace with {searchbar} for readability */}
         <Searchbar />
-        <Link to="/login"><i className="fa fa-user-circle"></i> Login</Link>
+        {/* <Link to="/login"><i className="fa fa-user-circle"></i> Login</Link> */}
         <Link to="/create_lesson">Create Lesson</Link>
         <Link to="/logout" onClick={processLogout}>Log Out</Link>
       </nav>
