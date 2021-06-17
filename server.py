@@ -106,6 +106,51 @@ def display_profile():
     return jsonify({'user': user_data})
 
 
+@app.route("/api/users/user", methods=["POST"])
+def update_profile_info():
+
+    # get userID from session data 
+    user_id = session['user_id']
+    # Get userdata using request.form for strings and request.files for image
+    # If data exists, save to variable
+
+    ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
+    if 'lesson-pic' not in request.files:
+        lesson_data['imgUrl'] = "/static/img/placeholder.png"
+    else: 
+        my_file = request.files['lesson-pic']
+        result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
+                                        api_secret=CLOUD_SECRET,
+                                        cloud_name='hackbright')
+        lesson_data['imgUrl'] = result['secure_url']
+    # If image exists, get Cloudinary link
+    # else save blank user image
+    if user.profile_pic == None:
+            lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
+
+    # check to make sure no other users have this email or username
+    # save to database
+    # return user info as_dict, with Cloudinary link. 
+
+    if "username" in request.form:
+        # update user
+    
+    if 
+
+    # data = request.get_json()
+    # handle = data['handle']
+    # email = data['email']
+    # password = data['password']
+
+    try:
+        db_user = crud.create_user(handle, email, password)
+    except:
+        flash('Email or username already in use. Try again.')
+        return {'success': False}
+
+    return {'success': True}
+
+
 @app.route("/api/session", methods=["POST"])
 def login():
     """Check session for user, else redirect guest search. """

@@ -17,6 +17,7 @@ class User(db.Model):
     handle = db.Column(db.String, unique=True, nullable=False)                 
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
+    profile_pic = db.Column(db.String)
 
   # lessons = a list of Lesson objects authored by user
   # faves = a list of Favorite objects identified by user
@@ -31,6 +32,7 @@ class User(db.Model):
             'handle': self.handle,
             'email': self.email,
             'password': self.password,
+            'profile_pic': self.profile_pic
             'lessons': lesson_ids
         }
 

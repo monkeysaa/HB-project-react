@@ -6,8 +6,7 @@ function Searchbar(){
     const search = searchstring
     setSearchstring("");
     history.push(`/search/${search}`);
-    // window.location.href = `/api/search/${searchstring}.json`;
-    // TODO: --> Route to Search page
+
   }
 
   return (
@@ -19,8 +18,8 @@ function Searchbar(){
         value={searchstring} 
         placeholder="Search here..."/>
       <button 
-        type="submit" 
-        onClick={(e) => {e.preventDefault; processSearch}}>
+        type="button" 
+        onClick={processSearch}>
         <i className="fa fa-search"></i>
       </button>
     </form>
