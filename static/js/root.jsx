@@ -20,8 +20,8 @@ function Controller() {
   if (loggedIn.dataset.loggedin === 'False') {
     return (
       <React.Fragment>
-        <Nav/>
-        <Login />
+        <NavHome/>
+        <Home/>
       </React.Fragment>
     );
   } 
@@ -32,10 +32,7 @@ function Controller() {
     <React.Fragment>
       <Switch>
         <Route exact={true} path="/">
-          <header>
-            <img src='/static/img/desk-trans.png/'/>
-            <h1>DESK</h1>
-          </header>
+
         </Route>
         <Route><Nav/></Route>
       </Switch>
@@ -68,6 +65,7 @@ function Controller() {
             <Search />
           </Route>
           <Route exact={true} path="/">
+            <NavHome />
             <Home />
             {/* <img src="/static/img/high5.jpg"/> */}
           </Route> 

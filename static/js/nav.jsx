@@ -1,4 +1,13 @@
 
+function NavHome() {
+  return(
+    <header>
+      <img src='/static/img/desk-trans.png/'/>
+      <h1>DESK</h1>
+   </header>
+  );
+}
+
 function Nav() {
   const history = ReactRouterDOM.useHistory();
 

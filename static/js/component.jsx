@@ -328,23 +328,7 @@ function IFrame({props, video_id, img_id}) {
       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' 
       allowFullScreen 
     ></iframe>
-    {/* <p>EMBED</p>
-    <div style={{width: '560px', height: '315px', float: 'none', clear: 'both', margin: '2px auto'}}>
-      <embed
-        src={`${props.url}`}
-        wmode="transparent"
-        type="video/mp4"
-        width="100%" height="100%"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowFullScreen
-        title={props.type}
-      />
-          <p>DIV</p>
-    </div>
-        <object
-        style={{width: "820px", height: "461.25px", float: 'none', "clear": "both", margin: "2px auto"}}
-        data={props.url}>
-      </object> */}
+
     </React.Fragment>
  
   );

@@ -2,12 +2,14 @@ function Searchbar(){
   const history = ReactRouterDOM.useHistory();
   const [searchstring, setSearchstring] = React.useState(""); 
 
-  function processSearch() {
+  const processSearch = (e) => {
+    e.preventDefault()
+    
     const search = searchstring
     setSearchstring("");
     history.push(`/search/${search}`);
 
-  }
+  };
 
   return (
     <form className='searchbar'>

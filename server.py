@@ -112,6 +112,9 @@ def update_profile_info():
     user = crud.get_user_by_id(user_id)
 
     ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
+    print()
+    print()
+    print('LINE 11 of SERVER')
     if 'profile-pic' in request.files:
         print('profile pic on back end')
         my_file = request.files['profile-pic']
@@ -136,7 +139,7 @@ def update_profile_info():
     try:
         response = crud.update_profile_pic(user_id, profile_pic) 
         if response == 'Success!':
-            return {'success': True, user: user.as_dict()}
+            return {'success': True, 'user': user.as_dict()}
         # TODO: Later crud function(s) to update all/other user data
 
     except:
@@ -280,10 +283,11 @@ def show_single_lesson_json(lesson_id):
 # For now, /lessons/lesson_id
 @app.route('/api/lessons/<lesson_id>', methods=["POST"])
 def update_lesson(lesson_id):
-    """Update the database with fresh data."""
+    """Store lesson revisions to the database."""
     
     lesson_id = request.form['lesson_id']
     lesson = crud.get_lesson_by_id(lesson_id)
+    print(f'290, {lesson_id}, {lesson}')
 
     # If photo, upload to CLoudinary and save to imgUrl
     if 'my-file' in request.files:
@@ -292,13 +296,15 @@ def update_lesson(lesson_id):
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright') 
         imgUrl = crud.assign_lesson_img(result['secure_url'], lesson_id)
-
+    print(f'299, {imgUrl}')
     # update database with other info 
+
     if 'title' in request.form: 
         crud.update_lesson_title(lesson_id, request.form['title'])
     if 'overview' in request.form:
         crud.update_lesson_overview(lesson_id, request.form['overview'])
-
+    
+    print(f'307, {lesson.as_dict()}')
     return {'success': True}
 
 

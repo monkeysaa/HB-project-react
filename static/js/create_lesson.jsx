@@ -67,54 +67,59 @@ function NewLesson() {
 
   return (
     <div className='create-lesson'>
-      <section className="lesson-inputs">
+      <section className="lesson-inputs" id='lesson-inputs-complete'>
         <h2>Create a Lesson</h2>
         <form id="lesson-input-form" 
           onSubmit={createLesson}>
-          <section className="lesson_inputs">
-            <input 
-              id = 'lesson-pic'
-              // TODO: May not need "name on line 90"
-              type='file' name='lesson-pic' 
-              onChange={() => displayElement('placeholder')}/> 
-            <input 
-              type="text" 
-              placeholder="First, give your lesson a compelling title..."
-              onChange={(e) => setTitle(e.target.value)}
-              value={title} 
-            /><br/>
-            <input 
-              type="text" 
-              placeholder="Then, add a catchy description!"
-              onChange={(e) => setOverview(e.target.value)}
-              value={overview} 
-            /><br/>
-            <div id='tags'>
+          <section className='lesson-inputs' id='lesson-inputs-wrapper'>
+            
+            <section className="lesson_inputs" id='lesson-inputs-lesson-pic'>
+              <input 
+                id = 'lesson-pic'
+                // TODO: May not need "name on line 90"
+                type='file' name='lesson-pic' 
+                onChange={() => displayElement('placeholder')}/> 
+            </section>
 
-              <p>
-              
+            <section className="lesson_inputs" id='lesson-inputs-general'>
+              <input 
+                type="text" 
+                placeholder="First, give your lesson a compelling title..."
+                onChange={(e) => setTitle(e.target.value)}
+                value={title} 
+              /><br/>
 
-                {/* <input type="checkbox" className="grades" value="4th" 
-                  onChange={handleToggle} checked={state[key]}/>
-                  <label>4th</label> */}
-                  
-                <input type="checkbox" className="tags" name="grades" value="5th"/><label>5th</label>
-                <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
-              </p>
-              <p>
-                <input type="checkbox" className="tags" name="subjects" value="Math"/><label>Math</label>
-                <input type="checkbox" className="tags" name="subjects" value="Science"/><label>Science</label>
-                <input type="checkbox" className="tags" name="subjects" value="Writing"/><label>Writing</label>
-              </p>
-            </div>
-        </section>
+              <input 
+                type="text" 
+                placeholder="Then, add a catchy description!"
+                onChange={(e) => setOverview(e.target.value)}
+                value={overview} 
+              /><br/>
+            </section>
+
+            <section className='lesson-inputs' id='lesson-inputs-grades'>
+              {/* <input type="checkbox" className="grades" value="4th" 
+                onChange={handleToggle} checked={state[key]}/>
+                <label>4th</label> */}
+
+              {/* TODO:  for loop to generate a unique checkbox for each item in GRADE_TAGS */}
+
+              <input type="checkbox" className="tags" name="grades" value="5th"/><label>5th</label>
+              <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
+            </section>
+
+            <section className='lesson-inputs' id='lesson-inputs-subjects'>
+              {/* TODO:  for loop to generate a unique checkbox for each item in SUBJ_TAGS */}
+              <input type="checkbox" className="tags" name="subjects" value="Math"/><label>Math</label>
+              <input type="checkbox" className="tags" name="subjects" value="Science"/><label>Science</label>
+              <input type="checkbox" className="tags" name="subjects" value="Writing"/><label>Writing</label>
+            </section>
+          </section>
+        </form> 
         <ComponentInputContainer comps={comps} setComps={setComps}/>
-        <input type='submit' />
-
-      </form> 
+      </section>
       {/* Add a plus --> when clicked,adds a component */}
       {/* Show a minus */}
-      </section>
       <section className="lesson-display">
         <p hidden>Display a Lesson</p>
         <h2 className="new_lesson">{title}</h2>
@@ -124,7 +129,6 @@ function NewLesson() {
           <CompContainer comps={comps}/>
         </div>
       </section>
-
     </div>
 
   )

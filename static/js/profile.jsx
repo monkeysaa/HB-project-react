@@ -6,6 +6,28 @@
         // LessonTemplate: Template for each lesson card
     // TODO: Display favorite lessons
 
+  
+function ProfilePic({profilePic, addPic}) {
+  const [file, setFile] = React.useState(null);
+
+  return(
+    <React.Fragment>
+      <img id="profile-img" src={profilePic}/>
+      <p> Add or change your profile pic: 
+        <input 
+          id = 'profile-pic' 
+          type='file' 
+          name='profile-pic' 
+          onChange={(event) => setFile(event.target.files[0])}/>
+        <button id='add-profile-pic' type='button' 
+            onClick={() => {addPic(file)} }>
+            <i className="fa fa-plus"/>
+        </button>
+      </p>
+    </React.Fragment>
+  );
+}
+
 function Profile() {
   const history = ReactRouterDOM.useHistory();
   const [username, setUsername] = React.useState("");
@@ -20,8 +42,6 @@ function Profile() {
     .then((response) => response.json())
     .then((data) => {
       // should display user and lesson data from serverside display_profile()
-      console.log(data); 
-      debugger;
       setUsername(data.user.handle);
       setEmail(data.user.email);
       // TODO: Make sure /api/users/user' returns user.profile_pic w/ other data
@@ -40,7 +60,7 @@ function Profile() {
 
   // Later, update this to updateProfile with functionality for changing all user settings.
 
-  const updateProfile = (file) => {
+  const addPic = (file) => {
     console.log(file);
     const formData  = new FormData();
     const pic = document.getElementById('profile-pic').files[0];
@@ -49,36 +69,36 @@ function Profile() {
     // formData.append('email', email);
     // formData.append('password', password);
     formData.append('profile-pic', pic);
-    fetch('/api/users/user'), {
+    
+    fetch('/api/users/user', {
       method: 'POST',
       body: formData,
-    }
+    })
     .then(response => response.json())
     .then(res => {
-      if (res.success === false) {
-        alert('something done broke.');
-      } else if (res.success === true) {
-        console.log(res);
-        setUsername(res.user.username);
-        setEmail(res.user.email);
-        // TODO: Make sure /api/users/user' returns user.profile_pic w/ other data
-        // TODO Make sure it returns the kind of data we need. 
-        setProfilePic(res.user.profile_pic);
-        setLessons(res.user.lessons);
-        <Alert key='successful-lesson' variant='success'>
-          Profile updated successfully!
-        </Alert>
-      }
+      // if (res.success === false) {
+      //   alert('something done broke.');
+      // } else if (res.success === true) {
+      console.log(res);
+      setUsername(res.user.username);
+      setEmail(res.user.email);
+      // TODO: Make sure /api/users/user' returns user.profile_pic w/ other data
+      // TODO Make sure it returns the kind of data we need. 
+      setProfilePic(res.user.profile_pic);
+      setLessons(res.user.lessons);
+      // <Alert key='successful-lesson' variant='success'>
+      //   Profile updated successfully!
+      // </Alert>
     })
   };
   
  
   
   return (
-    <React.Fragment>
+    <div className='Profile'>
       <section className='user-info'>
         <h2>{`${username} at ${email}`}</h2>
-        <ProfilePic addPic={updateProfile} profilePicURL={profilePic} />
+        <ProfilePic addPic={addPic} profilePic={profilePic} />
       </section>
       <section className='lesson-display'>
         <h2> Your Lessons </h2>
@@ -86,27 +106,6 @@ function Profile() {
 
         <MultiLessonDisplay lessons={lessons}/> 
       </section>
-    </React.Fragment>
-  );
-}
-
-function ProfilePic(props, {addPic}) {
-  const [file, setFile] = React.useState(null);
-
-  return(
-    <React.Fragment>
-      <img src={props.profilePicURL}/>
-      <p> Add or change your profile pic: 
-        <input 
-          id = 'profile-pic' 
-          type='file' 
-          name='profile-pic' 
-          onChange={(event) => setFile(event.target.files[0])}/>
-        {/* <button id='add-profile-pic' type='button' 
-            onClick={() => {addPic(file)} }>
-            <i className="fa fa-plus"/>
-        </button> */}
-      </p>
-    </React.Fragment>
+    </div>
   );
 }

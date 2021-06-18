@@ -43,6 +43,10 @@ function Home() {
           alert('Something done broke');
       }
     })
+  }; 
+
+  function handleLogin() {
+    history.push(`/login`);
   }
 
   return (
@@ -55,20 +59,40 @@ function Home() {
         <MultiLessonDisplay lessons={lessons} />
       </section>
       <section id='signup-greeting'>
+        <h2>Welcome to DESK!</h2>
+        <CreateNewUser />
+      </section>
+      
+      {/* <section id='signup-greeting'>
         <h2>Sign up to create or save your next lesson!</h2>
         <form id='landing-signup'>
           <h2>Welcome to DESK!</h2>
-          <input id='email' placeholder='Email' />
-          <input id='handle' placeholder='Username' />
-          <input id='password' placeholder='Password' type='password' />
+          <input 
+            type="text" 
+            placeholder='Username'
+            onChange={(e) => setHandle(e.target.value)}
+            value={handle} 
+          />
+          <input 
+            type="text" 
+            placeholder='Email'
+            onChange={(e) => setEmail(e.target.value)}
+            value={email} 
+          />
+          <input 
+            type="text" 
+            placeholder='Password'
+            onChange={(e) => setPass(e.target.value)}
+            value={pass} 
+          />
           <p id='welcome-footnote'>
             Already a user?</p>
           <div className='greeting-btns'>
-            <button type='button' id='signin-btn'>Sign In</button>
-            <button type='button' id='signup-btn '>Sign Up</button>
+          <button type='button' id='secondary-btn' onClick={handleLogin}>Sign In</button>
+            <button type='button' id='primary-btn' onClick={handleSignup}>Sign Up</button>
           </div>
         </form>
-      </section>
+      </section> */}
     </React.Fragment>
   );
 }

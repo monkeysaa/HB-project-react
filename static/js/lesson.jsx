@@ -2,7 +2,7 @@ const Img = ReactBootstrap.Image;
 const {Container, Button, ButtonGroup, Navbar, Form, NavDropdown, Nav, Media, 
 Row, Col, Modal, Alert, Toast, Card, Spinner, LinkButton} = ReactBootstrap;
 
-function MultiLessonDisplay({lessons}) {
+function MultiLessonDisplay({lessons, spec='wide', userPic=null}) {
     // const lessons = matches; 
     console.log(lessons);
     const lessonCards = [];
@@ -13,7 +13,7 @@ function MultiLessonDisplay({lessons}) {
     }
     console.log(`${lesson.tags} from MultiLessonDisplay`)
     lessonCards.push(
-      <BootstrapCard
+      <LessonCard
         key={lesson.lesson_id}
         id={lesson.lesson_id}
         title={lesson.title}
@@ -21,6 +21,7 @@ function MultiLessonDisplay({lessons}) {
         img={lesson.imgUrl}
         overview = {lesson.overview}
         tags={lesson.tags}
+        spec={spec}
       />
     );
   }
@@ -72,16 +73,20 @@ function MultiLessonDisplay({lessons}) {
       // </article>
 
       // CSS STYLING
-      <article className="lesson-card brief">
+      <article className={`lesson-card ${props.spec}`}>
         <h3><a href={`/lessons/${props.id}`} > {props.title}  </a> </h3> 
         <a className="lesson-banner" href={`/lessons/${props.id}`}>
           <img src={props.img}/></a>
-        {gradeTags && <p>Grades: {gradeTags.join(', ')} </p>}
+        {(props.author && props.spec === 'wide') && <p className='author'>{props.author}</p>}
+        {(props.overview && props.spec === 'wide') && 
+          <p className='overview'> {props.overview} </p>}
+        {gradeTags && <p className='grades'>Grades: {gradeTags.join(', ')} </p>}
         {subjectTags && <p className='subjects'>Subjects: {subjectTags.join(', ')} </p>}
         <button className="favorite-pin">♡</button>
       </article>
     );
   }
+
 
 function BootstrapCard(props) {
   const history = ReactRouterDOM.useHistory();

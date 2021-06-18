@@ -1,7 +1,7 @@
 // fully controlled login form
 
 
-function Login(props) {
+function Login() {
     const history = ReactRouterDOM.useHistory();
     
     // const [errorMessage, setErrorMessage] = React.useState(null);
@@ -28,9 +28,6 @@ function Login(props) {
           document.getElementById('login_state').dataset.loggedin = true;
           console.log(`Line 29 of login.jsx`);
           history.push('/profile');
-          // debugger;
-          // window.location.href = '/profile';
-
 
         } else {
           alert(res);
