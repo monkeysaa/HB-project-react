@@ -120,7 +120,7 @@ function NewLesson() {
       </section>
       {/* Add a plus --> when clicked,adds a component */}
       {/* Show a minus */}
-      <section className="lesson-display">
+      <section className="new-lesson-display">
         <p hidden>Display a Lesson</p>
         <h2 className="new_lesson">{title}</h2>
         <img id='placeholder' src='/static/img/placeholder.png' hidden/>

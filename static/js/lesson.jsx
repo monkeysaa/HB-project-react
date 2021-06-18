@@ -2,7 +2,9 @@ const Img = ReactBootstrap.Image;
 const {Container, Button, ButtonGroup, Navbar, Form, NavDropdown, Nav, Media, 
 Row, Col, Modal, Alert, Toast, Card, Spinner, LinkButton} = ReactBootstrap;
 
-function MultiLessonDisplay({lessons, spec='wide', userPic=null}) {
+// TODO: add userImg. Initialize as null in line 6
+
+function MultiLessonDisplay({lessons, spec=''}) {
     // const lessons = matches; 
     console.log(lessons);
     const lessonCards = [];

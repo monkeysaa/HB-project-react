@@ -17,30 +17,31 @@ function Controller() {
   // Create a Slate editor object that won't change across renders. 
   // const editor = useMemo(() => withReact(createEditor()), [])
   // // if not logged in, send to Search
-  if (loggedIn.dataset.loggedin === 'False') {
-    return (
-      <React.Fragment>
-        <NavHome/>
-        <Home/>
-      </React.Fragment>
-    );
-  } 
+
+
 
   // No Nav while not logged in... except maybe an option to Search and sign up?
   // Once logged in, here's the Nav, then body send to Profile
   return (
     <React.Fragment>
-      <Switch>
-        <Route exact={true} path="/">
-
-        </Route>
-        <Route><Nav/></Route>
-      </Switch>
-      <main>
+      <Nav/>
+      <main>  
         <Switch>
-          <Route path="/users/user">
-            <Profile />
-          </Route>   
+          {/* Pre-signup Routes */}
+          <Route exact={true} path="/">
+            <Home />
+          </Route> 
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/signup">
+            <CreateNewUser greeting="Sign up to create or save your next lesson!"/>
+          </Route>
+
+          {/* Pre-signup Routes */}
+          <Route path="/profile">
+              <Profile />
+          </Route>
           <Route exact={true} path="/users">
             <Directory />
           </Route>
@@ -48,28 +49,15 @@ function Controller() {
       
           <Route path="/lessons/:lesson_id/edit" children={<EditLesson/>}/>
           <Route path="/lessons/:lesson_id" children={<SingleLesson />} />
-          <Route path="/signup">
-            <CreateNewUser />
-          </Route>
           <Route path="/create_lesson">
             <NewLesson />
           </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          <Route path="/search/:params" children={<Search/>} />
+
+
+          <Route exact={true} path="/search/:params" children={<Search/>} />
           <Route path="/search">
             <Search />
           </Route>
-          <Route exact={true} path="/">
-            <NavHome />
-            <Home />
-            {/* <img src="/static/img/high5.jpg"/> */}
-          </Route> 
-
         </Switch>
       </main>
     </React.Fragment>

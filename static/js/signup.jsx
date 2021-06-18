@@ -1,4 +1,4 @@
-function CreateNewUser() {
+function CreateNewUser({greeting}) {
   
   const history = ReactRouterDOM.useHistory();
 
@@ -24,6 +24,7 @@ function CreateNewUser() {
           alert('Email is already in use. Try again.');
       } else if (data.success === true) {
           alert('User created successfully!');
+
           history.push(`/profile`);
           // window.location.href = '/profile';
       } else {
@@ -38,9 +39,8 @@ function CreateNewUser() {
   
   return (
     <React.Fragment>
-      <section id='greeting signup'>
         <form id='signup'>
-          <h2>Sign up to create or save your next lesson!</h2>
+          <h2>{greeting}</h2>
           <input 
             type="text" 
             placeholder='Username'
@@ -65,7 +65,6 @@ function CreateNewUser() {
             <button type='button' id='primary-btn' onClick={handleSignup}>Sign Up</button>
           </div>
         </form>
-      </section>
     </React.Fragment>
   );
 }

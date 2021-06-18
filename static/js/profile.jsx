@@ -8,7 +8,13 @@
 
   
 function ProfilePic({profilePic, addPic}) {
+  const history = ReactRouterDOM.useHistory();
   const [file, setFile] = React.useState(null);
+  const loggedIn = document.getElementById('login_state')
+
+  if (loggedIn.data-loggedin === false) {
+    history.push(`/login`);
+  }
 
   return(
     <React.Fragment>
@@ -100,7 +106,7 @@ function Profile() {
         <h2>{`${username} at ${email}`}</h2>
         <ProfilePic addPic={addPic} profilePic={profilePic} />
       </section>
-      <section className='lesson-display'>
+      <section id='user-profile-lessons' className='lesson-samples'>
         <h2> Your Lessons </h2>
         <button onClick={createLesson}> Create New Lesson </button>
 

@@ -23,10 +23,8 @@ function Login() {
       .then(response => response.json())
       .then(res => {
         if (res === 'success') {
-          console.log(res);
           setLoggedIn(true);
-          document.getElementById('login_state').dataset.loggedin = true;
-          console.log(`Line 29 of login.jsx`);
+          document.getElementById('login_state').setAttribute('data-loggedin', true);
           history.push('/profile');
 
         } else {

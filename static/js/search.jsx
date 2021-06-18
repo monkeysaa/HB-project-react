@@ -59,7 +59,7 @@ function ShowFilters({setGrades, setSubjs}){
   const GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', 
                   '7th', '8th', '9th', '10th', '11th', '12th']
   const SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies', 
-                    'Arts/Music', 'Foreign Lang.']
+                    'Arts/Music', 'Languages', 'Critical Thinking']
 
   React.useEffect(() => {
     setGrades('not yet implemented'); 
@@ -82,11 +82,11 @@ function ShowFilters({setGrades, setSubjs}){
     <React.Fragment>
       <section id='grade-filters'>
         <p>Filter by grade</p>
-        <ul>  { gradeTagsHTML } </ul>
+        <ul id='grade-tags'>  { gradeTagsHTML } </ul>
       </section>
       <section id='subject-filters'>
         <p>Filter by subject</p>
-        <ul> { subjectTagsHTML } </ul>
+        <ul id='subject-tags'> { subjectTagsHTML } </ul>
       </section>
     </React.Fragment>
 
@@ -94,7 +94,7 @@ function ShowFilters({setGrades, setSubjs}){
 }
 
 function Search() {
-  let { params = ' '} = useParams(); // search keyword from Nav-> URL
+  let { params = ''} = useParams(); // search keyword from Nav-> URL
   // const [tags, setTags] = React.useState([]);
   const [matches, setMatches] = React.useState([]); // array of db_data for matching lessons
   // const [taggedLessons, setTaggedLessons] = React.useState([matches]);
@@ -169,7 +169,7 @@ function Search() {
       <h1>Lesson Search</h1>
       <section className='parameter-buttons'>
           <p> Current Search Parameters: </p>
-          <ul>
+          <ul className='search-keywords'>
             <li>
               {keyword && <button id='keyword-display' type='button'>{keyword}</button>}
             </li>
@@ -184,36 +184,35 @@ function Search() {
       <section className='search-filter-section'>
         <form className='search-form'>
           <label className='label'>Filter Lessons</label>
-          <p>Enter a search term: 
+            <p> Search by term: </p>
             <input 
               id = 'searchstring'
               type = 'text'
               name = 'query'
-              placeholder = 'i.e. Multiplying Fractions'
+              placeholder = 'by subject, i.e. fractions'
               onChange={(e) => {setSearchstring(e.target.value); setSearchtype(e.target.id)}}
               value={searchstring}
             />
-            <button 
+            <button className='search-btn'
               type="button" 
               onClick={processSearch}>
               <i className="fa fa-search"></i>
             </button>
-          </p>
-          <p>Enter a username: 
+            <p> Search by user: </p>
             <input 
               id = 'usersearch'
               type = 'text'
               name = 'query'
-              placeholder = 'i.e. alic'
+              placeholder = 'by user, i.e. user0'
               onChange={(e) => {setUsersearch(e.target.value); setSearchtype(e.target.id)}}
               value={usersearch}
             />
-            <button 
+            <button className='search-btn'
               type="button" 
               onClick={processUserSearch}>
               <i className="fa fa-search"></i>
             </button>
-          </p>
+
           <ShowFilters setGrades={setGrades} setSubjs={setSubjects}/>
         </form>
       </section>

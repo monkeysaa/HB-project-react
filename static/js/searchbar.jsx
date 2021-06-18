@@ -19,10 +19,9 @@ function Searchbar(){
         onChange={(e) => setSearchstring(e.target.value)}
         value={searchstring} 
         placeholder="Search here..."/>
-      <button 
+      <button className='search-btn'
         type="button" 
-        onClick={processSearch}>
-        <i className="fa fa-search"></i>
+        onClick={processSearch}><i className="fa fa-search"></i>
       </button>
     </form>
   );

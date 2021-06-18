@@ -58,11 +58,16 @@ function Home() {
       <section id='lesson-samples'>
         <MultiLessonDisplay lessons={lessons} />
       </section>
-      <section id='signup-greeting'>
-        <h2>Welcome to DESK!</h2>
-        <CreateNewUser />
+      <section id='landing-signup'>
+        <h2>Sign up to create or save your next lesson!</h2>
+        <CreateNewUser greeting='Welcome to DESK!'/>
       </section>
-      
+    </React.Fragment>
+  );
+}
+
+
+
       {/* <section id='signup-greeting'>
         <h2>Sign up to create or save your next lesson!</h2>
         <form id='landing-signup'>
@@ -93,11 +98,4 @@ function Home() {
           </div>
         </form>
       </section> */}
-    </React.Fragment>
-  );
-}
-
-
-
-
 

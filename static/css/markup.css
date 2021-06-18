@@ -80,7 +80,7 @@ nav img {
     vertical-align: -.1em;
 }
 
-nav button, nav input {
+nav input, .search-btn {
     background-color: rgb(250, 247, 253);
     color: rgb(51 51 51);
     border: none;
@@ -89,8 +89,34 @@ nav button, nav input {
 }
 
 nav input {
+    width: 200px;
+    size: 500;
+}
+
+nav input[type=text] {
+    border: 2px solid silver; 
     border-radius: 4px 0 0 4px;
 }
+
+input, .search-btn {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 8px 0;
+    box-sizing: border-box; 
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+  }
+
 nav button {
     border-radius: 0 4px 4px 0;
 }
@@ -139,6 +165,10 @@ img {
      display: flex;
  }
 
+ .search-keywords {
+     list-style-type: none; /* Remove bullets */
+ }
+
  .search-parameters {
      flex: 1;
 
@@ -172,6 +202,10 @@ img {
     columns: 8em;
 }
 
+#grade-tags, #subject-tags * {
+    list-style-type: none; /* Remove bullets */
+    column-count: 2;
+}
 
 
 
@@ -194,6 +228,10 @@ img {
 
     display: flex;  /* this makes it a flex CONTAINER vs. flex ITEM */
     flex-flow: column;
+}
+
+.profile-carousel > article {
+    flex: 2;
 }
 
 .lesson-card {
@@ -278,16 +316,20 @@ img {
 
 #landing-search-div h2 {
     flex: 1;
+    white-space: nowrap;
+    margin-right: 2em;
 }
 
 #landing-search-div form {
     flex: 2;
 }
 
-.searchbar input {
-    width: "200px";
-    size: 500;
+.searchbar {
     justify-content: flex-end;
+    color: rgb(51 51 51);
+    border: grey;
+    display: inline-block; 
+    box-sizing: border-box;
 }
 
 #greeting {
@@ -300,7 +342,7 @@ img {
 }
 
 #signup-greeting {
-    flex: 1
+    flex: 1;
     display: flex;
     margin-top: 5em;
     margin-bottom: 3em;
@@ -333,26 +375,11 @@ img {
     color: white;
 }
 
+/* Holds h2 and form on HOME */
 #landing-signup {
-    flex: 1;
-    padding: 1 rem;
-    border-radius: 1 rem;
-    background-image: linear-gradient(to bottom right,#fd7e14, #EABE8D, #fd7e14);
-
     display: flex;
-    flex-direction: column;
-}
-
-#landing-signup > h2 {
-    flex: 1;
-}
-
-#landing-signup > input {
-    width: 100%;
-    display: block;
-    margin-right: 1em;
-    border-radius: 0.25em;
-    justify-content:
+    margin-top: 5em;
+    margin-bottom: 3em;
 }
 
 #signup, #login-form {
@@ -362,13 +389,35 @@ img {
     /* min-width: max-content; */
     padding: 1rem;
     border-radius: 1rem;
-    background-image: linear-gradient(to bottom right,#fd7e14, #EABE8D, #fd7e14);
+    background-image: linear-gradient(to bottom right,#fd7e14, #f0ab5c, #fd7e14);
     box-shadow: 0 0 2px black;
     max-width: 50%;
     align-content: center;
 
     display: flex;
     flex-direction: column;
+}
+
+/* Override for landing page */
+#landing-signup > #signup {
+    margin: 0;
+    flex: 1;
+    min-width: max-content;
+    box-shadow: 0 0 2px black;
+    max-width: 50%;
+    align-content: center;
+    padding: 1 rem;
+    border-radius: 1 rem;
+    background-image: linear-gradient(to bottom right,#fd7e14, #EABE8D, #fd7e14);
+
+    /* flex-direction: column; */
+}
+
+#landing-signup > h2 {
+    flex: 2;
+    align-self: center;
+    padding-right: 1em;
+    color: black;
 }
 
 #signup > input, #login-form > input {
@@ -398,6 +447,12 @@ img {
     border-radius: 4px;
     border: transparent;
     padding: 0.25em;
+    white-space: nowrap;
+    
+}
+
+.greeting-btns > button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 #primary-btn {
@@ -412,11 +467,11 @@ img {
 
 .user-info {
     flex: auto;
-
-    display: flex;
 }
 
+
 #profile-img {
+    flex: 1;
     height: 200px;
     width: 200px;
     object-fit: cover;
@@ -429,7 +484,4 @@ img {
     display: flex;
 }
 
-.lesson-display {
-    flex: 2;
 
-}

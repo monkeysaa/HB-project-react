@@ -12,6 +12,7 @@ function User(props) {
     <ul>
       <li>
         {props.handle}: <br/>
+        {/* Decide whether to display narrow or wide */}
         <MultiLessonDisplay lessons={props.lessons}/>
       </li>
     </ul>
