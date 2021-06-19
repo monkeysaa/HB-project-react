@@ -237,7 +237,7 @@ img {
     white-space: nowrap;
     font-size: .8em;
     padding: 0;
-    column-count: 2;
+    column-width: 6em;
 }
 
 
@@ -580,20 +580,56 @@ img {
 /*##                          Create a Lesson                          ##
 /*#####################################################################*/
 
-.lesson-mockup {
+.lesson_inputs {
     border: solid blue;
 }
 
+#lesson-input-form {
+}
+
 #lesson-inputs-wrapper {
-    border: solid orange;
+    border: solid #3333;
+    display: grid;
+    grid: "I H"
+          "X X"
+          "C S";
+    /* I = image, H = headers, X = Checkboxes, C = Add Compoonent buttons and Save buttons  */
 }
 
-#lesson-inputs-wrapper > h2 {
+#lesson-pic {
+    grid-area: I;
+}
+
+#lesson-inputs-general {
+    grid-area: H;
+}
+
+/* Part of lesson-inputs-gen */
+#lesson-inputs-title {
+
+}
+/* Part of lesson-inputs-gen */
+#lesson-inputs-overview {
+    
+}
+
+/* Part of lesson-inputs-gen */
+#lesson-inputs-add-tags-btn {
 
 }
 
-#lesson-inputs-wrapper > img {
+#lesson-inputs inputs {
 
 }
 
+#tag-inputs {
+    grid-area: X;
+}
 
+#lesson-inputs-submit {
+    grid-area: S;
+}
+
+#comp-inputs-wrapper {
+    grid-area: C;
+}

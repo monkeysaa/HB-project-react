@@ -129,7 +129,7 @@ function CreateComp({setComps}) {
   };
 
   return (
-    <React.Fragment>
+    <div className='comp-inputs' id='comp-inputs-wrapper'>
         <p>Add a New Lesson Component</p>
  
 {/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
@@ -137,7 +137,7 @@ function CreateComp({setComps}) {
       <TextInput saveComp={saveComp}/>
       <ImgInput saveFile={saveFile}/>
 
-    </React.Fragment>
+    </div>
   )
 }
 

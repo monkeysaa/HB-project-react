@@ -4,6 +4,9 @@ function NewLesson() {
   const history = ReactRouterDOM.useHistory();
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
+  const [grades, setGrades] = React.useState([]);
+  const [subjects, setSubjects] = React.useState([]);
+
   // const [lessonPic, setLessonPic] = React.useState(null);
 
   // comps: An array of POJOs, each with data for a single lesson component. 
@@ -67,7 +70,7 @@ function NewLesson() {
 
   return (
     <div className='create-lesson'>
-      <section className="lesson-inputs" id='lesson-inputs-complete'>
+      <section className="lesson-mockup" id='lesson-inputs-complete'>
         <h2>Create a Lesson</h2>
         <form id="lesson-input-form" 
           onSubmit={createLesson}>
@@ -83,41 +86,49 @@ function NewLesson() {
 
             <section className="lesson_inputs" id='lesson-inputs-general'>
               <input 
+                id='lesson-inputs-title' 
                 type="text" 
                 placeholder="First, give your lesson a compelling title..."
                 onChange={(e) => setTitle(e.target.value)}
                 value={title} 
               /><br/>
 
-              <input 
-                type="text" 
+              <textarea 
+                id='lesson-inputs-overview' 
+                name='overview'
+                rows='5' cols='20'
                 placeholder="Then, add a catchy description!"
                 onChange={(e) => setOverview(e.target.value)}
                 value={overview} 
               /><br/>
+              <button type='button' className='lesson-inputs' id='lesson-inputs-add-tags-btn'>Add Tags</button>
             </section>
+            <section className='lesson-inputs' id='tag-inputs'>
+              <section className='lesson-inputs' id='lesson-inputs-grades'>
+                {/* <input type="checkbox" className="grades" value="4th" 
+                  onChange={handleToggle} checked={state[key]}/>
+                  <label>4th</label> */}
 
-            <section className='lesson-inputs' id='lesson-inputs-grades'>
-              {/* <input type="checkbox" className="grades" value="4th" 
-                onChange={handleToggle} checked={state[key]}/>
-                <label>4th</label> */}
+                {/* TODO:  for loop to generate a unique checkbox for each item in GRADE_TAGS */}
 
-              {/* TODO:  for loop to generate a unique checkbox for each item in GRADE_TAGS */}
+                <input type="checkbox" className="tags" name="grades" value="5th"/><label>5th</label>
+                <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
+              </section>
 
-              <input type="checkbox" className="tags" name="grades" value="5th"/><label>5th</label>
-              <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
-            </section>
+              <section className='lesson-inputs' id='lesson-inputs-subjects'>
+                {/* TODO:  for loop to generate a unique checkbox for each item in SUBJ_TAGS */}
+                <input type="checkbox" className="tags" name="subjects" value="Math"/><label>Math</label>
+                <input type="checkbox" className="tags" name="subjects" value="Science"/><label>Science</label>
+                <input type="checkbox" className="tags" name="subjects" value="Writing"/><label>Writing</label>
+              </section>
+              <ShowTags setGrades={setGrades} setSubjs={setSubjects}/>
 
-            <section className='lesson-inputs' id='lesson-inputs-subjects'>
-              {/* TODO:  for loop to generate a unique checkbox for each item in SUBJ_TAGS */}
-              <input type="checkbox" className="tags" name="subjects" value="Math"/><label>Math</label>
-              <input type="checkbox" className="tags" name="subjects" value="Science"/><label>Science</label>
-              <input type="checkbox" className="tags" name="subjects" value="Writing"/><label>Writing</label>
             </section>
           </section>
-          <input type='submit' />
+          <input id='lesson-inputs-submit' type='submit' />
         </form> 
-        <ComponentInputContainer comps={comps} setComps={setComps}/>
+        {/* <ComponentInputContainer comps={comps} setComps={setComps}/> */}
+        <CreateComp setComps={setComps}/>
       </section>
         
 
