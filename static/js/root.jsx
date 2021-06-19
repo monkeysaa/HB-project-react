@@ -1,4 +1,5 @@
 "use strict";
+
 // variable names: hyphens for class, underscores for IDs, camel for other names
 // If I need a package, how do I get them?
 const Router = ReactRouterDOM.BrowserRouter;
@@ -11,20 +12,43 @@ const { useHistory, useParams, Redirect, Switch,
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
+  const [showNav, setShowNav] = React.useState(null);
   const history = ReactRouterDOM.useHistory();
-  const loggedIn = document.getElementById('login_state')
+  const login = document.getElementById('login_state');
+  
+  React.useEffect(() => {
+    if (login.getAttribute('data-loggedin') === 'True') {
+      setShowNav(<Route><Nav/></Route>);
+    }
+    else {
+      setShowNav(
+        <Route>
+          <header>
+          <img src='/static/img/desk-trans.png/'/>
+          <h1>DESK</h1>
+          <Link to="/login"><i className="fa fa-user-circle"></i> </Link> 
+          </header>
+        </Route>
+      )
+    }
+  }, [login]);
+  console.log(`Line 35, ${showNav}`)
+
+  React.useEffect(() => {
+    (login.getAttribute('data-loggedin') === 'True') ? setShowNav(true) : setShowNav(false)
+  }, [login]);
+
 
   // Create a Slate editor object that won't change across renders. 
   // const editor = useMemo(() => withReact(createEditor()), [])
   // // if not logged in, send to Search
 
 
-
   // No Nav while not logged in... except maybe an option to Search and sign up?
   // Once logged in, here's the Nav, then body send to Profile
   return (
     <React.Fragment>
-      <Nav/>
+      {showNav}
       <main>  
         <Switch>
           {/* Pre-signup Routes */}

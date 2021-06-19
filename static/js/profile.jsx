@@ -12,7 +12,7 @@ function ProfilePic({profilePic, addPic}) {
   const [file, setFile] = React.useState(null);
   const loggedIn = document.getElementById('login_state')
 
-  if (loggedIn.data-loggedin === false) {
+  if (loggedIn.getAttribute('data-loggedin') === 'False') {
     history.push(`/login`);
   }
 
@@ -110,7 +110,7 @@ function Profile() {
         <h2> Your Lessons </h2>
         <button onClick={createLesson}> Create New Lesson </button>
 
-        <MultiLessonDisplay lessons={lessons}/> 
+        <MultiLessonDisplay lessons={lessons} spec='wide'/> 
       </section>
     </div>
   );

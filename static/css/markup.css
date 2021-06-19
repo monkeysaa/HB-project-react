@@ -2,7 +2,7 @@
 
 /* Resets */
 
-html, body { 
+html, body, label, p { 
     margin: 0;
     padding: 0;
 }
@@ -26,6 +26,25 @@ h2, h3, h4, h5 {
 :link, :visited {
     color: #F9ECDD;
 }
+
+button {
+    /* text-shadow: 2px 2px 2px #0008; */
+    position: relative;
+    box-shadow: 0 0 1px #0008;
+    border-radius: 8px;
+    border: 1px solid (204, 204, 204);
+}
+    
+button:active {
+    top: 2px;
+    left: 2px;
+    text-shadow: 1px 1px 2px #0008;
+}
+
+#keywords-display {
+    
+}
+
 
 /*#####################################################################*/
 /* HEADER */
@@ -117,9 +136,7 @@ textarea {
     resize: none;
   }
 
-nav button {
-    border-radius: 0 4px 4px 0;
-}
+
 
 /*######################################################################
 /*##                          Body Styling                       ##
@@ -169,29 +186,30 @@ img {
      list-style-type: none; /* Remove bullets */
  }
 
- .search-parameters {
+ .search-display {
      flex: 1;
-
-     border: solid black;
+     max-width: 45%;
      /* TODO: remove later */
  }
 
+.keywords-display {
+    width: 100%;
+    border-radius: 50px;
+}
+
  .results-display {
      flex: 2;
-     border: solid blue;
+     background-color: dark grey;
+     border-radius: 8px;
+     padding: 2em;
  }
 
- .parameters-buttons {
-    border: solid green;
- }
-
- /* OR SEARCH FORM */
- .search-filter-section {
-    border: solid red;
+ /* SEARCH FORM */
+ .search-heading {
+     margin-bottom: 1em;
  }
 
 .tag-display {
-    border: solid orange;
     border-radius: 1em;
     padding: 2em;
 }
@@ -199,11 +217,26 @@ img {
 .tag-display ul {
     margin: 0;
     list-style: none;
-    columns: 8em;
 }
 
-#grade-tags, #subject-tags * {
+.filter-label {
+    margin: 0;
+    font-weight: extra bold;
+}
+
+#grade-filters, #subject-filters {
+    background: #eee;
+    /* color: white; */
+    margin: 1em 0em;
+    border-radius: 1em;
+    padding: 1em 1.5em;
+}
+
+#grade-tags, #subject-tags {
     list-style-type: none; /* Remove bullets */
+    white-space: nowrap;
+    font-size: .8em;
+    padding: 0;
     column-count: 2;
 }
 
@@ -242,6 +275,7 @@ img {
     color: white;
 }
 
+
 .lesson-card a[href] {
     text-decoration: none;
     color: #f39f02;
@@ -267,8 +301,6 @@ img {
 
 .lesson-card h3 {
     font-size: 150%;
-    margin-bottom: auto;
-    height: 2em;
     overflow: hidden;
     text-align: center;
     margin-top: 0.5em;
@@ -279,14 +311,17 @@ img {
     order: -1;
     /* default order for unordered element is 0, so this pulls it up */
 } 
-.lesson-card.narrow {
+.lesson-card {
     padding: 0 1rem;
 }
 .lesson-card.narrow .lesson-banner {
     margin-inline: -1rem;
 }
 
-
+.lesson-card.narrow h3 {
+    margin-bottom: auto;
+    height: 2em;
+}
 
 .lesson-card .subjects {
     height: 3em;
@@ -299,8 +334,65 @@ img {
     margin-left: auto;
     background: none;
     border: none;
+    box-shadow: none;
     /* auto margins take up all the extra space, so if you want pin on RIGHT, auto on LEFT */
 }
+
+.lesson-card.wide {
+    margin: 2rem 1rem;
+    border: solid #333333;
+    display: grid; 
+    grid: "P P T F"
+          "P P O O"
+          "P P S S"
+          "P P G A";
+    grid-template-columns: minmax(min-content, 20%) minmax(min-content, 20%) 1fr auto;
+    grid-template-rows: min-content auto auto auto;
+    
+}
+
+.lesson-card.wide > h3 {
+    grid-area: T;
+    margin: 1rem 0rem;
+}
+
+.lesson-card.wide > .lesson-banner {
+    grid-area: P;
+    min-width: 200px;
+    margin-left: -1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+}
+
+.lesson-card.wide > .author {
+    grid-area: A;
+    margin-left: 1rem;
+}
+
+.lesson-card.wide > .overview {
+    grid-area: O;
+    overflow: auto;
+}
+
+.lesson-card.wide > .grades {
+    grid-area: G;
+}
+
+.lesson-card.wide > .subjects {
+    grid-area: S;
+}
+
+.lesson-card.wide > .favorite-pin {
+    grid-area: F;
+    border: none;
+}
+
+.lessons-directory-carousel {
+    
+}
+
+
+
 
 
 
@@ -452,7 +544,7 @@ img {
 }
 
 .greeting-btns > button:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 2px 6px 0 rgba(0,0,0,0.24), 0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
 #primary-btn {
@@ -482,6 +574,26 @@ img {
 
 .Profile-top {
     display: flex;
+}
+
+/*########################################x##############################
+/*##                          Create a Lesson                          ##
+/*#####################################################################*/
+
+.lesson-mockup {
+    border: solid blue;
+}
+
+#lesson-inputs-wrapper {
+    border: solid orange;
+}
+
+#lesson-inputs-wrapper > h2 {
+
+}
+
+#lesson-inputs-wrapper > img {
+
 }
 
 

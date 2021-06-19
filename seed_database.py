@@ -94,13 +94,17 @@ for lesson in lesson_data:
             crud.assign_comp(comps_in_db[1], db_lesson)
             tag = crud.get_tag_by_name('Science')
             crud.assign_tag_to_lesson(tag, db_lesson), 
-            tag = crud.get_tag_by_name('Comprehension')
+            tag = crud.get_tag_by_name('4th')
             crud.assign_tag_to_lesson(tag, db_lesson)
 
     elif db_lesson.title == 'Multiplying fractions':
             crud.assign_comp(comps_in_db[3], db_lesson)
             crud.assign_comp(comps_in_db[4], db_lesson)
             tag = crud.get_tag_by_name('Math')
+            crud.assign_tag_to_lesson(tag, db_lesson)
+            tag = crud.get_tag_by_name('4th')
+            crud.assign_tag_to_lesson(tag, db_lesson)
+            tag = crud.get_tag_by_name('5th')
             crud.assign_tag_to_lesson(tag, db_lesson)
 
     elif db_lesson.title == 'Trophic cascades':
@@ -113,6 +117,13 @@ for lesson in lesson_data:
             crud.assign_tag_to_lesson(tag, db_lesson), 
             tag = crud.get_tag_by_name('Writing')
             crud.assign_tag_to_lesson(tag, db_lesson)
+            tag = crud.get_tag_by_name('5th')
+            crud.assign_tag_to_lesson(tag, db_lesson)
+            tag = crud.get_tag_by_name('6th')
+            crud.assign_tag_to_lesson(tag, db_lesson)
+            tag = crud.get_tag_by_name('7th')
+            crud.assign_tag_to_lesson(tag, db_lesson)
+
 
     elif db_lesson.title == 'Call to action intro':
             crud.assign_comp(comps_in_db[5], db_lesson)
@@ -130,6 +141,8 @@ for lesson in lesson_data:
             crud.assign_tag_to_lesson(tag, db_lesson), 
             tag = crud.get_tag_by_name('Writing')
             crud.assign_tag_to_lesson(tag, db_lesson)
+            tag = crud.get_tag_by_name('6th')
+            crud.assign_tag_to_lesson(tag, db_lesson), 
     
 
 # Commit to database 

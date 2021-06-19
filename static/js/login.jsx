@@ -24,7 +24,7 @@ function Login() {
       .then(res => {
         if (res === 'success') {
           setLoggedIn(true);
-          document.getElementById('login_state').setAttribute('data-loggedin', true);
+          document.getElementById('login_state').setAttribute('data-loggedin', 'True');
           history.push('/profile');
 
         } else {

@@ -1,30 +1,18 @@
 
-// function NoNav() {
-//   return(
-//     <header>
-//       <img src='/static/img/desk-trans.png/'/>
-//       <h1>DESK</h1>
-//    </header>
-//   );
-// }
+'use strict';
 
-function Nav() {
+
+function Nav({showNav}) {
   const history = ReactRouterDOM.useHistory();
-  const loggedIn = document.getElementById('login_state')
-
-  let showNav = false;
-
-  if (loggedIn.dataset.loggedin === 'True') {
-    showNav = true;
-  }
 
   function processLogout() {
     console.log('processing Logout...')
     fetch('/api/session')
     .then(response => response.json())
     .then(data => {
-      if (data.success == true) {
-        document.getElementById('login_state').setAttribute(data-loggedin, false);
+      if (data.success === true) {
+        console.log(data.success)
+        document.getElementById('login_state').setAttribute('data-loggedin', 'False');
         history.push(`/login`);
       }
       else {
@@ -45,7 +33,6 @@ function Nav() {
           <Link to="/users">Lesson Directory</Link>
       {/* TODO: Hoist into JS and replace with {searchbar} for readability */}
           <Searchbar />
-      {/* <Link to="/login"><i className="fa fa-user-circle"></i> Login</Link> */}
           <Link to="/create_lesson">Create Lesson</Link>
           <Link to="/logout" onClick={processLogout}>Log Out</Link>
         </nav>)
@@ -54,6 +41,7 @@ function Nav() {
         <header>
           <img src='/static/img/desk-trans.png/'/>
           <h1>DESK</h1>
+          <Link to="/login"><i className="fa fa-user-circle"></i> </Link> 
         </header>
       )}
     </React.Fragment>

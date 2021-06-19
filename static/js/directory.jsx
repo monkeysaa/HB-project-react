@@ -1,19 +1,14 @@
-function Lesson(props) {
-  return (
-    <ul>
-      <Link to={`/lesson/${props.lesson_id}`}>{props.title}</Link>
-    </ul>
-  )
-}
+
   
 function User(props) {
   
   return (
-    <ul>
+    <ul className='lessons-directory-carousel'>
       <li>
         {props.handle}: <br/>
-        {/* Decide whether to display narrow or wide */}
-        <MultiLessonDisplay lessons={props.lessons}/>
+        <section id='lesson-samples'>
+          <MultiLessonDisplay lessons={props.lessons} />
+        </section>
       </li>
     </ul>
   )
@@ -27,18 +22,9 @@ function Directory(props) {
     fetch('/api/users')
     .then(response => response.json())
     .then(data => {
-      // const userList = [];
-      // for (const u of data.users){
-      //   userList.push(<User key={u.id} handle={u.handle} email={u.email} lessons={u.lessons}/>);
-      // }
-      // setAllUserList(userList);
       const userList = [];
       for (const u of data.users) {
         console.log(u.lessons);
-        const lessonsHTML = [];
-        // lessonsHTML.push(
-        //   // <MultiLessonDisplay lessons={u.lessons}/>
-        // )
         userList.push(<User key={u.id} handle={u.handle} email={u.email} lessons={u.lessons}/>);
       }
       setAllUserList(userList);
@@ -50,10 +36,29 @@ function Directory(props) {
   return(
     <React.Fragment>
       <h2>Directory</h2>
-      <ul>
-        {allUserList}
-        {/* {lessonsHTML} */}
-      </ul>
+      {allUserList}
     </React.Fragment>
   )
 }
+
+// Final Markup structure: 
+//<React.Fragment>
+{/* <h2>Directory</h2>
+    <ul className='lessons-directory-carousel'>
+      <li>
+        {props.handle}: <br/>
+        <section id='lesson-samples'>
+          <MultiLessonDisplay lessons={props.lessons} />
+        </section>
+      </li>
+    </ul>
+    <ul className='lessons-directory-carousel'>
+      <li>
+        {props.handle}: <br/>
+        <section id='lesson-samples'>
+          <MultiLessonDisplay lessons={props.lessons} />
+        </section>
+      </li>
+    </ul>
+  </ul>
+  </React.Fragment> */}

@@ -183,7 +183,10 @@ def logout():
     """Log user out of session by clearing session cookies. """
     
     session.clear()
-    return {'success': True}
+    try: 
+        print(session['user_id'])
+    except: 
+        return {'success': True}
 
 
 # # LESSON ROUTES
@@ -394,15 +397,12 @@ def create_component():
 @app.route('/api/search/<search_params>', methods=["POST"])
 def run_search(search_params):
     """Search for lesson by term."""
-
-    print('WE HAVE ARRIVED HERE')
     
     data = request.get_json()
     param = data['param']
     searchtype = data['type']
     
     print(searchtype, param)
-
 
     # data = request.get_json()
     # term = data['searchString']
@@ -419,12 +419,27 @@ def run_search(search_params):
     lesson_matches = set() # a set of Lesson objects
 
     if searchtype == 'searchstring': 
-        lessons = crud.get_lessons_by_term(param)
-    elif searchtype == 'usersearch':
+        params = param.split(' ')
+        for param in params: 
+            lessons = crud.get_lessons_by_term(param)
+            print('lessons from string')
+            for lesson in lessons:
+                lesson_matches.add(lesson)
+            
+            # If user passes username as keyword
+            try: 
+                user_queried = crud.get_user_by_username(param)
+                lessons = crud.get_lessons_by_user(user_queried.user_id)
+                print('lessons from usersearch')
+
+            except: 
+                pass
+    else:
         print(param)
         user_queried = crud.get_user_by_username(param)
         print(user_queried)
         lessons = crud.get_lessons_by_user(user_queried.user_id)
+    
     for lesson in lessons:
         lesson_matches.add(lesson)
 
@@ -433,7 +448,7 @@ def run_search(search_params):
         lesson_data.append(lesson.as_dict())
     import pprint
     pprint.pprint(lesson_data)
-    return {'success': True, 'lesson_data': lesson_data, 'search': param}
+    return {'success': True, 'lesson_data': lesson_data, 'search': params}
     # return {'search_terms': search_terms, 'lesson_data': lesson_data}
 
 

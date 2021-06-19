@@ -21,7 +21,11 @@
           // Subject tags
           // Grades tags
 
-
+function SearchParam(props) {
+  return(
+    <button className='keywords-display' type='button'>{props.keyword}✖️</button>
+  );
+}
 
 function TagFilter(props) {
 
@@ -30,10 +34,6 @@ function TagFilter(props) {
     // if (e.target.checked) {
     //  display a Filter button with e.target.value as text
     // }, 
-
-    // if e.target.checked === false {
-        // remove filter button
-    // }
   }
 
   return (
@@ -45,7 +45,7 @@ function TagFilter(props) {
         value={props.name}
         onChange={handleToggle}
         /> 
-        {props.name}  
+        {`\xa0${props.name}`}  
       </label>
     </li>
   );
@@ -54,7 +54,7 @@ function TagFilter(props) {
 // function BuildButtons...
 
 
-function ShowFilters({setGrades, setSubjs}){
+function ShowTags({setGrades = null, setSubjs = null}){
 
   const GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', 
                   '7th', '8th', '9th', '10th', '11th', '12th']
@@ -71,8 +71,7 @@ function ShowFilters({setGrades, setSubjs}){
   GRADES.map((grade, index) => {
     gradeTagsHTML.push(<TagFilter key={index} name={grade} checked={false}/>)
   });
- 
-  
+
   const subjectTagsHTML = []
   SUBJECTS.map((subject, index) => {
     subjectTagsHTML.push(<TagFilter key={index} name={subject} checked={false}/>)
@@ -81,11 +80,11 @@ function ShowFilters({setGrades, setSubjs}){
   return (
     <React.Fragment>
       <section id='grade-filters'>
-        <p>Filter by grade</p>
+        <p className='filter-label'>GRADE</p>
         <ul id='grade-tags'>  { gradeTagsHTML } </ul>
       </section>
       <section id='subject-filters'>
-        <p>Filter by subject</p>
+        <p className='filter-label'>SUBJECT</p>
         <ul id='subject-tags'> { subjectTagsHTML } </ul>
       </section>
     </React.Fragment>
@@ -101,7 +100,7 @@ function Search() {
   const [searchstring, setSearchstring] = React.useState(params);
   const [usersearch, setUsersearch] = React.useState('');
   const [searchtype, setSearchtype] = React.useState('searchstring');
-  const [keyword, setKeyword] = React.useState(params); // search keyword for displayed results
+  const [keywords, setKeywords] = React.useState([params]); // search keyword for displayed results
   const [grades, setGrades] = React.useState([]);
   const [subjects, setSubjects] = React.useState([]);
 
@@ -123,7 +122,14 @@ function Search() {
     .then(data => {
       setSearchstring('');
       console.log(data.lesson_data);
-      setKeyword(data.search);
+      setKeywords(data.search);
+      console.log(data.search);
+      const keywordsHTML = [];
+      for (const keyword of data.search) {
+        keywordsHTML.push(<SearchParam keyword={`${keyword}  `}/>);
+      }
+      console.log(keywordsHTML);
+      setKeywords(keywordsHTML);
       setMatches(data.lesson_data);
       //let taggedLessons = [];
       //for (const lesson of data.lesson_data) {
@@ -141,37 +147,34 @@ function Search() {
     processSearch();
   }, []);
 
+  // const processUserSearch = () => {
+  //   console.log(`processing Search for: ${usersearch}`);
+  //   const search = {'param': usersearch, 'type': searchtype}
 
-
-  const processUserSearch = () => {
-    console.log(`processing Search for: ${usersearch}`);
-    const search = {'param': usersearch, 'type': searchtype}
-
-    fetch(`/api/search/${usersearch}`, {
-      method: 'POST',
-      body: JSON.stringify(search),
-      headers: {
-          'Content-Type': 'application/json'
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-      setUsersearch('');
-      setKeyword(data.search);
-      setMatches(data.lesson_data);
-    })
-  };
+  //   fetch(`/api/search/${usersearch}`, {
+  //     method: 'POST',
+  //     body: JSON.stringify(search),
+  //     headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     setUsersearch('');
+  //     setKeywords(data.search);
+  //     setMatches(data.lesson_data);
+  //   })
+  // };
 
   return (
     <div className='search'>
       {/* FILTERS */}
-      <section className='search-parameters'>
-      <h1>Lesson Search</h1>
+      <section className='search-display'>
       <section className='parameter-buttons'>
-          <p> Current Search Parameters: </p>
+          <p className='search-heading'> Searching for...</p>
           <ul className='search-keywords'>
             <li>
-              {keyword && <button id='keyword-display' type='button'>{keyword}</button>}
+              {keywords}
             </li>
             
             {/* TODO: for (tag of tags) => build button for tag */}
@@ -183,22 +186,23 @@ function Search() {
 
       <section className='search-filter-section'>
         <form className='search-form'>
-          <label className='label'>Filter Lessons</label>
-            <p> Search by term: </p>
+            <p> Search by keyword or username: </p>
             <input 
               id = 'searchstring'
               type = 'text'
               name = 'query'
-              placeholder = 'by subject, i.e. fractions'
+              placeholder = 'i.e. fractions or alic'
               onChange={(e) => {setSearchstring(e.target.value); setSearchtype(e.target.id)}}
               value={searchstring}
             />
-            <button className='search-btn'
-              type="button" 
-              onClick={processSearch}>
-              <i className="fa fa-search"></i>
-            </button>
-            <p> Search by user: </p>
+            <Link to={`/search/${searchstring}`}>
+              <button className='search-btn'
+                type="button" 
+                onClick={processSearch}>
+                <i className="fa fa-search"></i>
+              </button></Link>
+ 
+            {/* <p> Search by user: </p>
             <input 
               id = 'usersearch'
               type = 'text'
@@ -211,17 +215,18 @@ function Search() {
               type="button" 
               onClick={processUserSearch}>
               <i className="fa fa-search"></i>
-            </button>
-
-          <ShowFilters setGrades={setGrades} setSubjs={setSubjects}/>
+            </button><br></br> */}
+          <label className='label'>Filter Lessons</label>
+          <ShowTags setGrades={setGrades} setSubjs={setSubjects}/>
         </form>
       </section>
       </section>
 
       {/* RESULTS */}
       <section className='results-display'>
-        <p>Results: {matches.length} lessons </p>
-        <MultiLessonDisplay lessons={matches} /> 
+        {(matches.length !== 1) && <p>Results: {matches.length} lessons </p>}
+        {(matches.length === 1) && <p>Results: {matches.length} lesson </p>}
+        <MultiLessonDisplay lessons={matches} spec='wide'/> 
       </section>
     </div>
   );
