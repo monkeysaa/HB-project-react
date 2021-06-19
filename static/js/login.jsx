@@ -25,6 +25,7 @@ function Login() {
         if (res === 'success') {
           setLoggedIn(true);
           document.getElementById('login_state').setAttribute('data-loggedin', 'True');
+          console.log('User now logged in. Nav should re-render.')
           history.push('/profile');
 
         } else {

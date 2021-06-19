@@ -1,9 +1,10 @@
-
 'use strict';
 
 
 function Nav({showNav}) {
   const history = ReactRouterDOM.useHistory();
+  console.log('line 6 of Nav.jsx');
+  console.log(`showNav is ${showNav}`);
 
   function processLogout() {
     console.log('processing Logout...')
@@ -13,6 +14,7 @@ function Nav({showNav}) {
       if (data.success === true) {
         console.log(data.success)
         document.getElementById('login_state').setAttribute('data-loggedin', 'False');
+        console.log('user now logged out')
         history.push(`/login`);
       }
       else {

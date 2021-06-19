@@ -12,31 +12,52 @@ const { useHistory, useParams, Redirect, Switch,
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
-  const [showNav, setShowNav] = React.useState(null);
   const history = ReactRouterDOM.useHistory();
+  const [showNav, setShowNav] = React.useState(false);
   const login = document.getElementById('login_state');
+  const showNavJSX = [];
   
   React.useEffect(() => {
-    if (login.getAttribute('data-loggedin') === 'True') {
-      setShowNav(<Route><Nav/></Route>);
-    }
-    else {
-      setShowNav(
-        <Route>
-          <header>
-          <img src='/static/img/desk-trans.png/'/>
-          <h1>DESK</h1>
-          <Link to="/login"><i className="fa fa-user-circle"></i> </Link> 
-          </header>
-        </Route>
-      )
-    }
-  }, [login]);
-  console.log(`Line 35, ${showNav}`)
+    if (login.getAttribute('data-loggedin') === 'False') {
+      // if (login.dataset.loggedin === 'False') {
+        console.log('Line 20 of root.jsx. User not logged in.')
+        setShowNav(false);
+        let f = 0;
+        showNavJSX.push(
+          <Nav key={f} showNav={showNav}/>
+        );
+      } else {
+        console.log('Line 20 of root.jsx. User logged in.')
+        setShowNav(true);
+        let f = 0;
+        showNavJSX.push(
+          <Nav key={f} showNav={true}/>
+        );
+      }
+  }, [])
 
-  React.useEffect(() => {
-    (login.getAttribute('data-loggedin') === 'True') ? setShowNav(true) : setShowNav(false)
-  }, [login]);
+
+  // React.useEffect(() => {
+  //   if (login.getAttribute('data-loggedin') === 'True') {
+  //     setShowNav(<Route><Nav/></Route>);
+  //   }
+  //   else {
+  //     setShowNav(
+  //       <Route>
+  //         <header>
+  //         <img src='/static/img/desk-trans.png/'/>
+  //         <h1>DESK</h1>
+  //         <Link to="/login"><i className="fa fa-user-circle"></i> </Link> 
+  //         </header>
+  //       </Route>
+  //     )
+  //   }
+  // }, [login]);
+  // console.log(`Line 35, ${showNav}`)
+
+  // React.useEffect(() => {
+  //   (login.getAttribute('data-loggedin') === 'True') ? setShowNav(true) : setShowNav(false)
+  // }, [login]);
 
 
   // Create a Slate editor object that won't change across renders. 
@@ -48,14 +69,16 @@ function Controller() {
   // Once logged in, here's the Nav, then body send to Profile
   return (
     <React.Fragment>
-      {showNav}
+      <Nav showNav={showNav}/>
       <main>  
         <Switch>
           {/* Pre-signup Routes */}
           <Route exact={true} path="/">
+          <Nav showNav={showNav}/>
             <Home />
           </Route> 
           <Route path="/login">
+            <Nav showNav={showNav}/>
             <Login />
           </Route>
           <Route path="/signup">
@@ -64,6 +87,7 @@ function Controller() {
 
           {/* Pre-signup Routes */}
           <Route path="/profile">
+              <Nav showNav={showNav}/>
               <Profile />
           </Route>
           <Route exact={true} path="/users">
