@@ -5,6 +5,7 @@ function NewLesson() {
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
   const [grades, setGrades] = React.useState([]);
+  const [lessonPic, setLessonPic] = React.useState('/static/img/placeholder-image.png')
   const [subjects, setSubjects] = React.useState([]);
 
   // const [lessonPic, setLessonPic] = React.useState(null);
@@ -50,7 +51,7 @@ function NewLesson() {
           alert('something done broke.');
       } else if (res.success == true) {
           <Alert key='successful-lesson' variant='success'>
-            Lesson {res.lesson_id} created successfully!
+            Lesson created successfully!
           </Alert>
           alert(`Lesson ${res.lesson_id} created successfully!`);
           history.push(`/lessons/${res.lesson_id}`);
@@ -61,12 +62,24 @@ function NewLesson() {
   // Handle this with React rather than JS
   const displayElement = (id) => {
     // remove hidden attribute on an element
-    console.log(id);
     if (document.getElementById(id).hidden) {
       document.getElementById(id).removeAttribute("hidden");
     } 
-
   };
+
+  // TODO: Figure out SetLesson & Display a temporary image upon upload
+  // const displayImg = (evt) => {
+
+  //   console.log(document.getElementById('lesson-img-display'));
+  //   const pic = evt.originalEvent.srcElement.files[0];
+  //   const img = document.getElementById('lesson-img-display');
+
+  //   let reader = new FileReader();
+  //   reader.onloadend = function() {
+  //     img.src = reader.result;
+  //   }
+  //   reader.readAsDataURL(pic);
+  // };
 
   return (
     <div className='create-lesson'>
@@ -81,7 +94,13 @@ function NewLesson() {
                 id = 'lesson-pic'
                 // TODO: May not need "name on line 90"
                 type='file' name='lesson-pic' 
-                onChange={() => displayElement('placeholder')}/> 
+              />
+              {/* onChange={() => displayElement('placeholder')}/>  */}
+              <img className='lesson_inputs' 
+                  id='placeholder-img' 
+                  src='/static/img/placeholder-image.png' 
+                  // hidden/>
+              />
             </section>
 
             <section className="lesson_inputs" id='lesson-inputs-general'>
@@ -96,55 +115,55 @@ function NewLesson() {
               <textarea 
                 id='lesson-inputs-overview' 
                 name='overview'
-                rows='5' cols='20'
+                rows='8' cols='75'
                 placeholder="Then, add a catchy description!"
                 onChange={(e) => setOverview(e.target.value)}
                 value={overview} 
               /><br/>
-              <button type='button' className='lesson-inputs' id='lesson-inputs-add-tags-btn'>Add Tags</button>
+
+              <button type='button' 
+                className='lesson-inputs' 
+                onClick={() => displayElement('tag-inputs')}
+                id='lesson-inputs-add-tags-btn'>Add Grade and Subject Tags
+              </button>
             </section>
-            <section className='lesson-inputs' id='tag-inputs'>
-              <section className='lesson-inputs' id='lesson-inputs-grades'>
-                {/* <input type="checkbox" className="grades" value="4th" 
-                  onChange={handleToggle} checked={state[key]}/>
-                  <label>4th</label> */}
-
-                {/* TODO:  for loop to generate a unique checkbox for each item in GRADE_TAGS */}
-
-                <input type="checkbox" className="tags" name="grades" value="5th"/><label>5th</label>
-                <input type="checkbox" className="tags" name="grades" value="6th"/><label>6th</label>
-              </section>
-
-              <section className='lesson-inputs' id='lesson-inputs-subjects'>
-                {/* TODO:  for loop to generate a unique checkbox for each item in SUBJ_TAGS */}
-                <input type="checkbox" className="tags" name="subjects" value="Math"/><label>Math</label>
-                <input type="checkbox" className="tags" name="subjects" value="Science"/><label>Science</label>
-                <input type="checkbox" className="tags" name="subjects" value="Writing"/><label>Writing</label>
-              </section>
-              <ShowTags setGrades={setGrades} setSubjs={setSubjects}/>
-
+            <section className='lesson-inputs' id='tag-inputs' hidden>
+              <ShowTags />
             </section>
+            <section id="components-display">
+              <CompContainer comps={comps}/>
+            </section>
+          </section>
+          <section className='lesson-inputs' id='add-comps-btns'>
+            <CreateComp setComps={setComps}/>
+            <p>Add a New Lesson Component</p>
+            <button type='button' 
+                className='lesson-inputs' 
+                onClick={() => displayElement('comp-input-url')}
+                id='lesson-inputs-add-url-btn'>Add Link
+            </button>
+            <button type='button' 
+              className='lesson-inputs' 
+              onClick={() => displayElement('comp-input-img')}
+              id='lesson-inputs-add-img-btn'>Add Image
+            </button>
+            <button type='button' 
+              className='lesson-inputs' 
+              onClick={() => displayElement('comp-input-text')}
+              id='lesson-inputs-add-text-btn'>Add Text
+            </button>
+            <button type='button' 
+              className='lesson-inputs' 
+              onClick={() => displayElement('comp-input-url')}
+              id='lesson-inputs-add-url-btn'>Add Video
+            </button>
           </section>
           <input id='lesson-inputs-submit' type='submit' />
         </form> 
-        {/* <ComponentInputContainer comps={comps} setComps={setComps}/> */}
-        <CreateComp setComps={setComps}/>
       </section>
-        
-
 
       {/* Add a plus --> when clicked,adds a component */}
       {/* Show a minus */}
-
-      <section className="lesson-display">
-        <p hidden>Display a Lesson</p>
-        <h2 className="new_lesson">{title}</h2>
-        <img id='placeholder' src='/static/img/placeholder.png' hidden/>
-        <h3 className="new_lesson">{overview}</h3>
-        <div id="comps">
-          <CompContainer comps={comps}/>
-        </div>
-      </section>
     </div>
 
   )

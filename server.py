@@ -28,11 +28,19 @@ app.jinja_env.undefined = StrictUndefined
 
 GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th',
           '9th', '10th', '11th', '12th']
-SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies', 
-            'Arts/Music', 'Foreign Lang.']
+SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Civics', 
+            'Arts/Music', 'Foreign Lang', 'Reasoning']
+
+# MVP:  
+#     """View all lessons."""
+#     """Display a single lesson in React"""
+#     """Edit existing lesson page"""
+#     """Process edit_lesson function"""
+#     """Display search page"""
+#     """Process search function"""
+
 
 # Basic REACT Routing
-# TODO: catch-all to set this up as the default
 @app.route('/', defaults={'path': ""})
 @app.route('/<path:path>')
 def display_react(path):
@@ -61,7 +69,6 @@ def view_users():
         user_lessons = user.as_dict()
         user_lessons['lessons'] = lessons
         users.append(user_lessons)
-    print(f'{users} from server.py /api/users endpoint')
     return {'users': users}
 
 
@@ -133,9 +140,8 @@ def update_profile_info():
     #     user.email = request.form['email']   
     # if request.form['password'] != '':
     #     user.handle = request.form['password']    
-
-
     # save to database
+
     try:
         response = crud.update_profile_pic(user_id, profile_pic) 
         if response == 'Success!':
@@ -473,125 +479,6 @@ def run_search(search_params):
 #     return render_template('search.html', term=term, lessons=lessons)
 
 
-
-
-# DEFUNCT JINJA ROUTES
-# View all users link in Nav. Later, remove this route.
-# @app.route('/users')
-# def all_users():
-#     """View all users."""
-    
-#     users = crud.get_users()
-#     return render_template('all_users.html', users=users)
-
-
-# Direct here from search for lesson by author? 
-# Or remove this route and use JS for dynamic display? 
-# @app.route('/users/<user_id>')
-# def show_public_lessons(user_id):
-#     """View all public lessons by a user"""
-#     user = crud.get_user_by_id(user_id)
-#     pub_lessons = crud.get_public_lessons(user.user_id)
-
-#     return render_template('user_profile.html', user=user, lessons=pub_lessons)
-
-
-# ROUTES NEEDED
-#     """View all lessons."""
-#     """Display a single lesson in React"""
-#     """Edit existing lesson page"""
-#     """Process edit_lesson function"""
-#     """Display search page"""
-#     """Process search function"""
-
-
-
-
-
-# Sign up & Login for new users, from Homepage
-# @app.route('/signup', methods=['POST'])
-# def register_user():
-#     """Create and log in a new user."""
-
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-    
-#     # Check if user email is already in the database
-#     user = crud.get_user_by_email(email)
-#     try:
-#         user = crud.create_user(handle, email, password)
-#     except:
-#         flash('Email is already in use. Try again.')
-#         return redirect('/')
-
-#     session['user_id'] = user.user_id
-
-#     # return render_template('user_profile.html', user=user, lessons=[])
-#     # ONCE PROFILE, REDIRECT TO THERE
-#     return redirect('/')
-
-
-# # # Homepage login form
-# @app.route('/login', methods=['POST'])
-# def verify_user():
-#     """Authenticate user and display profile page"""
-
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-
-#     try: 
-#         user = crud.get_user_by_email(email)
-        
-#         if password == user.password:
-#             session['user_id'] = user.user_id
-#             #flash(f"User {session['user_id']} logged in!")
-#             user_lessons = crud.get_lessons_by_user(user.user_id)
-#             # return render_template('user_profile.html', user=user, lessons=user_lessons)
-#             # ONCE PROFILE, REDIRECT TO THERE
-#             return redirect('/')
-
-#         else:
-#             flash(f"Wrong password. It should be: {user.password}.")
-#             return redirect('/')
-
-#     except:
-#         flash("Email not in our system. Try again.")
-#         return redirect('/')
-
-
-
-
-
-
-
-
-
-
-# @app.route('/component', methods=['POST'])
-# def create_component():
-#     """Add component to Lessons in the db and display via Cloudinary."""
-
-#     my_file = request.files['my-file'] # note: request arg should match name var on form
-    
-#     #Upload to Cloudinary
-#     # result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
-#     #                                     api_secret=CLOUD_SECRET,
-#     #                                     cloud_name='hackbright')
-
-#     result = CLIENT.upload_file('my_file', 'hackbright-project', 'pdf')
-    
-#     #Create component
-#     component = crud.create_comp('pdf', 'pdf')
-#     session['comp_id'] = component.comp_id
-#     # component.url = result['secure_url']
-
-#     #Attach to lesson
-#     lesson = crud.get_lesson_by_id(session['lesson_id'])
-#     crud.assign_comp(component, lesson)
-#     # run a crud function that saves this url to the database and returns it. 
-
-#     # work out display, e.g. <img src="{{ user.profile_url }}">
-#     return redirect(f'/lessons/{lesson.lesson_id}')
 
 
 if __name__ == '__main__':

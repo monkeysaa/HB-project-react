@@ -1,40 +1,25 @@
 "use strict";
 
 // Page will: 
-    // Later: Take in search string if coming from Nav. Either run search and display results or run relative search and display. 
-    // Display Search Filters
-        // Search input (text)
-        // Show search tags applied
-        // Remove filters
-        // Filter Display
-          // Subject tags
-          // Grades tags
-    // Display matching lessons
-        // Show # Matches
-        // Code for MultiLessonDisplay --> LessonsCards in profile.jsx
+    // Take in search string if coming from Nav. 
+    // Run search and display resulting lessons
+    // Filter search and display resulting lessons 
+        // Show search options, including subj and grade checkboxes
+        // Show search tags applied (as removable buttons)
+        // Show filter tags applied (as removable buttons)
+        // Show num lessons and wide lesson cards for each match
 
 
-// TODO: Make it work from Nav
-        // Show search tags applied
-        // Remove filters
-        // Filter Display
-          // Subject tags
-          // Grades tags
-
-function SearchParam(props) {
+// Displays user search keywords and selected filters 
+function Button(props) {
   return(
     <button className='keywords-display' type='button'>{props.keyword}✖️</button>
   );
 }
 
-function TagFilter(props) {
 
-  const handleToggle = (e) => {
-    console.log(`value=${e.target.value}, checked=${e.target.checked}`);
-    // if (e.target.checked) {
-    //  display a Filter button with e.target.value as text
-    // }, 
-  }
+// Tag template
+function TagInput(props) {
 
   return (
     <li>
@@ -43,7 +28,6 @@ function TagFilter(props) {
         type="checkbox" 
         name="subject-tag" 
         value={props.name}
-        onChange={handleToggle}
         /> 
         {`\xa0${props.name}`}  
       </label>
@@ -51,30 +35,24 @@ function TagFilter(props) {
   );
 }
 
-// function BuildButtons...
 
-
-function ShowTags({setGrades = null, setSubjs = null}){
+// Display Tag checkboxes for user input
+function DisplayTagInputs(){
 
   const GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', 
                   '7th', '8th', '9th', '10th', '11th', '12th']
-  const SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Social Studies', 
-                    'Arts/Music', 'Languages', 'Critical Thinking']
+  const SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Civics', 
+                    'Arts/Music', 'Languages', 'Reasoning']
 
-  React.useEffect(() => {
-    setGrades('not yet implemented'); 
-    setSubjs('not yet implemented'); 
-
-  }, []);
 
   const gradeTagsHTML = []
   GRADES.map((grade, index) => {
-    gradeTagsHTML.push(<TagFilter key={index} name={grade} checked={false}/>)
+    gradeTagsHTML.push(<TagInput key={index} name={grade} checked={false}/>)
   });
 
   const subjectTagsHTML = []
   SUBJECTS.map((subject, index) => {
-    subjectTagsHTML.push(<TagFilter key={index} name={subject} checked={false}/>)
+    subjectTagsHTML.push(<TagInput key={index} name={subject} checked={false}/>)
   });
 
   return (
@@ -88,25 +66,51 @@ function ShowTags({setGrades = null, setSubjs = null}){
         <ul id='subject-tags'> { subjectTagsHTML } </ul>
       </section>
     </React.Fragment>
-
   )
 }
 
+
 function Search() {
   let { params = ''} = useParams(); // search keyword from Nav-> URL
-  // const [tags, setTags] = React.useState([]);
+  const [tags, setTags] = React.useState([]);
   const [matches, setMatches] = React.useState([]); // array of db_data for matching lessons
-  // const [taggedLessons, setTaggedLessons] = React.useState([matches]);
   const [searchstring, setSearchstring] = React.useState(params);
-  const [usersearch, setUsersearch] = React.useState('');
   const [searchtype, setSearchtype] = React.useState('searchstring');
   const [keywords, setKeywords] = React.useState([params]); // search keyword for displayed results
-  const [grades, setGrades] = React.useState([]);
-  const [subjects, setSubjects] = React.useState([]);
-
 
   console.log(`This is line 33: ${searchstring}`);
 
+  // process search given URL parameters
+  React.useEffect(() => {
+    processSearch();
+  }, []);
+
+  // Apply filter for each box checked
+  React.useEffect(() => {
+    const tagsArray = []
+    debugger;
+    const tagEls = document.querySelectorAll('input[type="checkbox"]:checked')
+    for (const tag of tagEls) {
+      tagsArray.push(tag.value);
+    } 
+    setTags(tagsArray);
+  }, [document.querySelectorAll('input[type="checkbox"]:checked')]);
+
+
+  // Apply filter to the original search
+  React.useEffect(() => {
+    const refinedMatches = []
+    for (let lesson of matches) {
+      for (let tag of lesson.tags) {
+        if (tag in tags) {
+          refinedMatches.push(lesson);
+        }
+      }
+    }
+    setMatches(refinedMatches);
+  }, [tags, matches]);
+
+  // Process the original search
   const processSearch = () => {
     console.log(`processing Search for: ${searchstring}`);
     const search = {'param': searchstring, 'type': searchtype}
@@ -120,61 +124,34 @@ function Search() {
     })
     .then(response => response.json())
     .then(data => {
+
+      // resets search input to blank
       setSearchstring('');
-      console.log(data.lesson_data);
-      setKeywords(data.search);
-      console.log(data.search);
+
+      // build buttons displaying search terms to user
       const keywordsHTML = [];
       for (const keyword of data.search) {
-        keywordsHTML.push(<SearchParam keyword={`${keyword}  `}/>);
+        keywordsHTML.push(<Button keyword={`${keyword}  `}/>);
       }
-      console.log(keywordsHTML);
       setKeywords(keywordsHTML);
+
+      // identifies lesson matches
       setMatches(data.lesson_data);
-      //let taggedLessons = [];
-      //for (const lesson of data.lesson_data) {
-      //  for (tag of lesson.tags) {
-      //    console.log(tag);
-          // taggedLessons.push(tag);
-      //   }
-      // }
-      // setTags(taggedLessons);
+      tags ? applyFilters(tags, matches, setMatches) : null;
+
     })
   };
 
-  React.useEffect(() => {
-    console.log(`This is line 57: ${searchstring}`);
-    processSearch();
-  }, []);
-
-  // const processUserSearch = () => {
-  //   console.log(`processing Search for: ${usersearch}`);
-  //   const search = {'param': usersearch, 'type': searchtype}
-
-  //   fetch(`/api/search/${usersearch}`, {
-  //     method: 'POST',
-  //     body: JSON.stringify(search),
-  //     headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     setUsersearch('');
-  //     setKeywords(data.search);
-  //     setMatches(data.lesson_data);
-  //   })
-  // };
 
   return (
     <div className='search'>
-      {/* FILTERS */}
       <section className='search-display'>
       <section className='parameter-buttons'>
           <p className='search-heading'> Searching for...</p>
           <ul className='search-keywords'>
             <li>
               {keywords}
+              {}
             </li>
             
             {/* TODO: for (tag of tags) => build button for tag */}
@@ -217,7 +194,7 @@ function Search() {
               <i className="fa fa-search"></i>
             </button><br></br> */}
           <label className='label'>Filter Lessons</label>
-          <ShowTags setGrades={setGrades} setSubjs={setSubjects}/>
+          <DisplayTagInputs />
         </form>
       </section>
       </section>

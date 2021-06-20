@@ -10,11 +10,6 @@
 function ProfilePic({profilePic, addPic}) {
   const history = ReactRouterDOM.useHistory();
   const [file, setFile] = React.useState(null);
-  const loggedIn = document.getElementById('login_state')
-
-  if (loggedIn.getAttribute('data-loggedin') === 'False') {
-    history.push(`/login`);
-  }
 
   return(
     <React.Fragment>

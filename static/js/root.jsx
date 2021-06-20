@@ -10,28 +10,35 @@ const { useHistory, useParams, Redirect, Switch,
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
-  const history = ReactRouterDOM.useHistory();
-  const showNav = false;
-  const loggedIn = document.getElementById('login_state');
 
-  
-  if (loggedIn.dataset.loggedin === 'False') {
+  const history = ReactRouterDOM.useHistory();
+  const [showNav, setShowNav] = React.useState(null);
+
+  React.useEffect(() => {
+    if ((window.sessionStorage.loggedIn) && window.sessionStorage.loggedIn === true) {
+      setShowNav(true);
+    }
+    console.log(`Is user logged in? ${showNav}`);
+
+  }, [window.sessionStorage]);
+
+  // if (loggedIn.dataset.loggedin === 'False') {
+  //   return (
+  //     <React.Fragment>
+  //       <Nav showNav={false} />
+  //       <main>
+  //         <Switch>
+  //           <Route path="/login"><Login /></Route>
+  //           <Route exact={true} path="/"><Home/></Route>
+  //         </Switch>
+  //       </main>
+  //     </React.Fragment>
+  //   );
+  // } 
+  // else if (loggedIn.dataset.loggedin === 'True') {
     return (
       <React.Fragment>
-        <Nav showNav={false} />
-        <main>
-          <Switch>
-            <Route path="/login"><Login /></Route>
-            <Route exact={true} path="/"><Home/></Route>
-          </Switch>
-        </main>
-      </React.Fragment>
-    );
-  } 
-  else if (loggedIn.dataset.loggedin === 'True') {
-    return (
-      <React.Fragment>
-       <Nav showNav={true} />
+       <Nav showNav={showNav} setShowNav={setShowNav} />
         <main>
         <Switch>
           <Route path="/directory"><Directory /></Route>
@@ -39,7 +46,7 @@ function Controller() {
           <Route path="/lessons/:lesson_id" children={<SingleLesson />} />
           <Route path="/signup"><CreateNewUser /></Route>
           <Route path="/create_lesson"><NewLesson /></Route>
-          <Route path="/login"><Login /></Route>
+          <Route path="/login"><Login setShowNav={setShowNav}/></Route>
           <Route path="/profile"><Profile /></Route>
           <Route exact={true} path="/search/:params" children={<Search/>} />
           <Route path="/search"><Search /></Route>
@@ -51,7 +58,7 @@ function Controller() {
   } 
 
 
-}
+
 
 ReactDOM.render(
   <Router>

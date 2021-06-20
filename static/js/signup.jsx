@@ -21,9 +21,13 @@ function CreateNewUser({greeting}) {
     .then(response => response.json())
     .then(data => {
       if (data.success == false) {
-          alert('Email is already in use. Try again.');
+        <Alert variant='warning'>
+        Email already in use. Please try again or click log in if you already have an account.
+      </Alert>
       } else if (data.success === true) {
-          alert('User created successfully!');
+        <Alert variant='Success'>
+          User created successfully;
+      </Alert>
 
           history.push(`/profile`);
           // window.location.href = '/profile';

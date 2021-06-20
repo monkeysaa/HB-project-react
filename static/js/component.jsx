@@ -115,7 +115,8 @@ function CreateComp({setComps}) {
   const saveFile = (compToSave) => {
 
     const formData = new FormData();
-    formData.append('comp-pic', compToSave);
+    const file = document.getElementById('comp-pic').files[0];
+    formData.append('comp-pic', file);
 
     fetch('/api/components/', { 
       method: 'POST',
@@ -130,7 +131,6 @@ function CreateComp({setComps}) {
 
   return (
     <div className='comp-inputs' id='comp-inputs-wrapper'>
-        <p>Add a New Lesson Component</p>
  
 {/* if file upload functionality: <i className="fa-solid fa-image"></i>*/}
       <UrlInput saveComp={saveComp}/>
@@ -145,23 +145,24 @@ function TextInput({saveComp}) {
   const [text, setText] = React.useState('');
 
   return(
-    <React.Fragment>
+    <article id='comp-input-text' hidden>
       <label id='comp_text' htmlFor='comp_text' name='comp_text'>Add Text:</label>
       <textarea id='comp_text' name='comp_text' rows='5' cols='33'
         placeholder='Add Text'  value={text} 
         onChange={(e) => {setText(e.target.value)}}> </textarea>
       <button id='comp-text-btn'  type='button' onClick={() => {saveComp(text, 'text')}}>Add Text </button>
       <br></br><br></br>
-    </React.Fragment>
+    </article>
     
   )
 }
+
 
 function UrlInput({saveComp}) {
   const [url, setUrl] = React.useState('');
 
   return(
-    <React.Fragment>
+    <article id='comp-input-url' hidden>
       <label htmlFor="componentInput"></label>
       <i className="fa fa-link"></i>
       <input 
@@ -174,7 +175,7 @@ function UrlInput({saveComp}) {
       <button type='button' onClick={() => {saveComp(url, 'url') }}>
         <i className="fa fa-plus"/>
       </button>
-    </React.Fragment>
+    </article>
   )
 }
 
@@ -182,7 +183,7 @@ function ImgInput({saveFile}) {
   const [file, setFile] = React.useState(null);
 
   return(
-    <React.Fragment>
+    <article id='comp-input-img' hidden>
       <p>
       <i className="fa fa-image"></i>
       Upload an image
@@ -195,7 +196,7 @@ function ImgInput({saveFile}) {
         onClick={() => {saveFile(file)} }>
         <i className="fa fa-plus"/></button>
       </p>
-    </React.Fragment>
+    </article>
   )
 }
 
@@ -260,22 +261,23 @@ function CompCard(props) {
 
   const video_id = `comp_video_${props.id}`;
   const img_id = `comp_img_${props.id}`;
-  console.log(props.img);
   return (
-    <section className="component" id={props.id}>
+    <section className="comp-card wrapper" id={props.id}>
 
       {/* will display either img OR iFrame, but not both */}
       {(props.type === 'video' || props.type === 'url') &&  
-        (<div><h3> <a href={`${props.url}`}> {props.title} </a> </h3>
-        <IFrame props={props} video_id={video_id} img_id={img_id}/></div>)
-      }
-      {(props.type === 'img') && <img id={img_id} src={props.img}/>}
+        (<h3> <a href={`${props.url}`}> {props.title} </a> </h3>)}
+      {(props.type === 'video') && 
+        <IFrame props={props} video_id={video_id} img_id={img_id}/>}
+      {(props.type === 'img') && 
+        <img className='comp-card' id='comp-img' src={props.img}/>}
       {(props.source && props.favicon) ? 
-      (<p className='source'><img src={`${props.favicon}`}/> {props.source}</p> ) 
-      : null}
+        (<p className='comp-card'>
+        <img className='comp-card' id='comp-icon' src={`${props.favicon}`}/> 
+        {props.source}</p> ) : null}
       {(props.description) && <p> {props.description} </p> }
       {(props.text) && <div> {props.text} </div> }
-      {/* { <img src= {props.img} />} */}
+
       <p className='comp-btns'> 
         <button 
           type='button' 
@@ -293,6 +295,7 @@ function CompCard(props) {
           <i className="fa fa-trash" /> 
         </button>
       </p>
+      
     </section>
   );
 }

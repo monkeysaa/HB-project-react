@@ -1,7 +1,7 @@
 // fully controlled login form
 
 
-function Login() {
+function Login({setShowNav}) {
     const history = ReactRouterDOM.useHistory();
     
     // const [errorMessage, setErrorMessage] = React.useState(null);
@@ -10,6 +10,12 @@ function Login() {
     const [loggedIn, setLoggedIn] = React.useState(false)
   
     const handleLogin = () => {
+
+      if (email == '' || password == '') {
+        return (
+          
+        );
+      }
   
       const data = {"email": email, "password": password}
       console.log(`Line 15 of login.jsx, about to send ${data}`);
@@ -24,12 +30,14 @@ function Login() {
       .then(res => {
         if (res === 'success') {
           setLoggedIn(true);
-          document.getElementById('login_state').setAttribute('data-loggedin', 'True');
-          console.log('User now logged in. Nav should re-render.')
+          window.sessionStorage.loggedIn = true;
+          setShowNav(true);
           history.push('/profile');
 
         } else {
-          alert(res);
+          <Alert variant='warning'>
+          Login unsuccesful.
+        </Alert>
           console.log(res);
           // setErrorMessage(res);
         }
@@ -52,7 +60,7 @@ function Login() {
               value={email} 
             />
             <input 
-              type="text" 
+              type="password" 
               onChange={(e) => setPassword(e.target.value)}
               placeholder='Password'
               value={password} 

@@ -1,8 +1,11 @@
 'use strict';
 
 
-function Nav({showNav}) {
+function Nav({showNav, setShowNav}) {
   const history = ReactRouterDOM.useHistory();
+  const [click, setClick] = React.useState(false);
+  
+  const handleClick = () => setClick(!click);
 
   function processLogout() {
     console.log('processing Logout...')
@@ -10,8 +13,9 @@ function Nav({showNav}) {
     .then(response => response.json())
     .then(data => {
       if (data.success === true) {
-        document.getElementById('login_state').setAttribute('data-loggedin', 'False');
-        console.log('user now logged out')
+          window.sessionStorage.loggedIn = false;
+          setShowNav(false);
+          console.log('sessionStorage.loggedIn = false');
         history.push(`/login`);
       }
       else {
@@ -26,28 +30,26 @@ function Nav({showNav}) {
         <header>
           <img src='/static/img/desk-trans.png/'/>
           <h1>DESK</h1>
-          <Link to="/profile"><i className="fa fa-user-circle"></i> </Link> 
         </header>
       </React.Fragment>
-
-
     );
   }
-  else if (showNav === true) {
 
-  }
   return (
     <React.Fragment>    
         <nav>
-          <Link to="/"><i className="fa fa-home"/> </Link>
-      {/* TODO: On Profile page, authenticate that user is logged in before displaying. */}
-          <Link to="/profile">
-            <i className="fa fa-user-circle" alt="Profile"></i> Profile
-          </Link>
           <Link to="/directory">Lesson Directory</Link>
-      {/* TODO: Hoist into JS and replace with {searchbar} for readability */}
-          <Searchbar />
           <Link to="/create_lesson">Create Lesson</Link>
+          <Link to="/"><img src='/static/img/desk-trans.png'/> </Link>
+          <Searchbar />
+          {/* TODO: Fold profile and logout into a single drop-down from user-image  */}
+          {/* <div className='profile-icon' on Click={handleClick}>
+            <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
+          </div> */}
+          <Link to="/profile">            
+            <i className="fa fa-user-circle" alt="User info: Profile and Login"></i>
+             Profile
+          </Link>
           <Link to="/logout" onClick={processLogout}>Log Out</Link>
         </nav>
     </React.Fragment>

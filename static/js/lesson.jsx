@@ -47,7 +47,7 @@ function LessonCard(props) {
   const gradeTags = [];
   console.log(props.tags)
   for (const tag of props.tags) {
-      if (tag.category === 'subjects') {
+      if (tag.category === 'subject') {
           subjectTags.push(tag.name)
       }
       else {
@@ -89,7 +89,7 @@ function LessonCard(props) {
 //   const gradeTags = [];
 //   console.log(props.tags)
 //   for (const tag of props.tags) {
-//       if (tag.category === 'subjects') {
+//       if (tag.category === 'subject') {
 //           subjectTags.push(tag.name)
 //       }
 //       else {

@@ -31,7 +31,7 @@ function SingleLesson() {
   const gradeTags = [];
 
   for (const tag of tags) {
-      if (tag.category === 'subjects') {
+      if (tag.category === 'subject') {
           subjectTags.push(tag.name)
       }
       else {

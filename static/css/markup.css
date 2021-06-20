@@ -24,7 +24,7 @@ h2, h3, h4, h5 {
 }
 
 :link, :visited {
-    color: #F9ECDD;
+    color: rgba(75, 2, 75, 0.89);
 }
 
 button {
@@ -79,14 +79,18 @@ header > h1 {
 
 nav {
     color: #fff;
+    width: 100%;
     font-size: 130%;
+    text-align: center;
     display: flex;
     justify-content: space-around;
-    background-image: linear-gradient(to bottom right,#fd7e14, #EABE8D, #fd7e14);
+    /* justify-content: center; */
+    background-image: linear-gradient(to bottom right,#fd7e14, #ebad66, #fd7e14);
 
-    padding: .5em;
+    padding: 2em;
     border-radius: 0;
     border: none;
+    display: flex;
 }
 
 nav a {
@@ -95,8 +99,8 @@ nav a {
 }
 
 nav img {
-    height: 1.25em;
-    vertical-align: -.1em;
+    height: 4em;
+    margin-top: -2em;
 }
 
 nav input, .search-btn {
@@ -232,12 +236,26 @@ img {
     padding: 1em 1.5em;
 }
 
+.lesson-inputs #grade-filters {
+    flex: 110;
+    margin: 1em 0.5em;
+}
+.lesson-inputs #subject-filters {
+    margin: 1em 0.5em; 
+    flex: 100;
+}
+
+#subject-tags input, #grade-tags input {
+    margin-right: 0.5em;
+}
+
+
 #grade-tags, #subject-tags {
     list-style-type: none; /* Remove bullets */
     white-space: nowrap;
     font-size: .8em;
     padding: 0;
-    column-width: 6em;
+    column-width: 7em;
 }
 
 
@@ -581,7 +599,6 @@ img {
 /*#####################################################################*/
 
 .lesson_inputs {
-    border: solid blue;
 }
 
 #lesson-input-form {
@@ -593,11 +610,16 @@ img {
     grid: "I H"
           "X X"
           "C S";
-    /* I = image, H = headers, X = Checkboxes, C = Add Compoonent buttons and Save buttons  */
+    /* I = image, H = headers, X = Checkboxes, C = Add Compoonents and Save */
+    grid-template-columns: minmax(0,1fr) 1fr;
 }
 
-#lesson-pic {
+#placeholder-img {
     grid-area: I;
+    max-width: 100%;
+    max-height: 500px;
+    padding:0;
+    margin:0;
 }
 
 #lesson-inputs-general {
@@ -606,20 +628,27 @@ img {
 
 /* Part of lesson-inputs-gen */
 #lesson-inputs-title {
-
+    width: 100%;
+    font-size: 150%;
+    font-weight: bold;
 }
+
 /* Part of lesson-inputs-gen */
 #lesson-inputs-overview {
+    font-size: 150%;
+    height: 75%;
     
 }
 
 /* Part of lesson-inputs-gen */
 #lesson-inputs-add-tags-btn {
-
+    display: block;
+    margin: auto;
+    margin-bottom: 1em;
 }
 
-#lesson-inputs inputs {
-
+#tag-inputs {
+    display: flex;
 }
 
 #tag-inputs {
