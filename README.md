@@ -5,8 +5,7 @@ and share digital content. This web app was written as the final project
 for Hackbright Academy's full-stack software bootcamp program. 
 
 Originally envisioned as a tool for teachers to organize digital resources as 
-they adapted to remote teaching, DESK refers to user collections as "Lessons".  
-However, DESK's simple, fluid design provides an easy way to consolidate links, 
+they adapted to remote teaching, DESK refers to user collections as "Lessons". However, DESK's simple, fluid design provides an easy way to consolidate links, 
 text from email, photographs, and notes. Users can weave visual tapestries to
 tell digital stories, or simply copy and paste to cut out the clutter.  
 
@@ -85,7 +84,7 @@ Finally (Whew!) start the server with the call:
 
 	• SQLAlchemy
 
-    • Bootstrap
+    	• Bootstrap
 
 Integration with
 
