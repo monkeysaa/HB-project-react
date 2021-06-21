@@ -245,7 +245,7 @@ def create_lesson():
     db_lesson = crud.create_lesson(lesson_data)
 
     ### CREATE DB ASSOCIATION BETWEEN TAGS AND LESSON ###
-    if 'tags' in request.form:
+    if 'tags' in request.form and len(request.form['tags']) > 0:
         tags = request.form['tags'].split(',') # eg. '6th,science'
         # Set up new tag
         for tag in tags:
@@ -369,8 +369,10 @@ def create_component():
                 'text': text,
             }
 
-    else: 
-        comp_pic = request.files['comp-pic']
+    elif ('comp-img' in request.files):
+        print('comp-img exists')
+        comp_pic = request.files['comp-img']
+        print(f'received image: {comp_pic}')
         # My server integrates Cloudinary's API
         result = cloudinary.uploader.upload( comp_pic, api_key=CLOUD_KEY, 
             api_secret=CLOUD_SECRET, cloud_name='hackbright' )
@@ -379,7 +381,7 @@ def create_component():
             'type': 'img',
             'imgUrl': result['secure_url'],
         }
-
+        print(f'line 383, comp is {comp}')
     # TODO: get shortcut for this
     # Stored in a POSTGRES relational database. 
     # Rather 

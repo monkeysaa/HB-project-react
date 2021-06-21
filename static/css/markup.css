@@ -609,21 +609,26 @@ img {
     display: grid;
     grid: "I H"
           "X X"
-          "C S";
+          "C C"
+          "B S";
     /* I = image, H = headers, X = Checkboxes, C = Add Compoonents and Save */
     grid-template-columns: minmax(0,1fr) 1fr;
 }
 
-#placeholder-img {
+#lesson-inputs-lesson-pic {
     grid-area: I;
+}
+
+#placeholder-img {
     max-width: 100%;
     max-height: 500px;
     padding:0;
-    margin:0;
+    margin: 0;
 }
 
 #lesson-inputs-general {
     grid-area: H;
+    border: solid #3333;
 }
 
 /* Part of lesson-inputs-gen */
@@ -645,20 +650,48 @@ img {
     display: block;
     margin: auto;
     margin-bottom: 1em;
-}
-
-#tag-inputs {
-    display: flex;
+    border: solid #3333;
 }
 
 #tag-inputs {
     grid-area: X;
+    display: flex;
 }
 
 #lesson-inputs-submit {
     grid-area: S;
 }
 
-#comp-inputs-wrapper {
+#add-comps-btns {
+    grid-area: B;
+}
+
+#components-display {
     grid-area: C;
+}
+
+#comp-img {
+    height: 20em; 
+    object-fit: contains;
+}
+
+#comp-card {
+    border: solid #3333;
+}
+
+#comp-card-section {
+    display: flex;
+    width: 100%;
+}
+
+#comp-card-section {
+    flex: 1;
+}
+
+#comp-card-btns {
+    flex: .2;
+}
+
+#comp-text {
+    width: 100%;
 }
