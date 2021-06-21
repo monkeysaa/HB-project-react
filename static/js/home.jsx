@@ -35,10 +35,14 @@ function Home() {
     .then(response => response.json())
     .then(data => {
       if (data.success == false) {
-          alert('Email is already in use. Try again.');
+        <Alert variant='warning'>
+        Email already in use. Please try again or click log in if you already have an account.
+      </Alert>
       } else if (data.success === true) {
-          alert('User created successfully!');
-          history.push(`/profile`);
+        <Alert variant='success'>
+          You are now logged in!
+        </Alert>          
+      history.push(`/profile`);
       } else {
           alert('Something done broke');
       }

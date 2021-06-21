@@ -67,7 +67,9 @@ function EditLesson() {
       .then(response => response.json())
       .then(res => {
         if (res.success == true) {
-          alert('Lesson updated successfully!');
+          <Alert variant='warning'>
+            Lesson updated successfully!        
+          </Alert>          
           history.push(`/lessons/${res.lesson_id}`);
         } else {
           alert('something done broke.'); 

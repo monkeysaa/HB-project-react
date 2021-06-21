@@ -2,7 +2,7 @@
 
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, 
-        Prompt, Link, Route } = ReactRouterDOM;
+        Prompt, Link, Route, useEffect } = ReactRouterDOM;
 
 // const { Card, Button, ListGroup, ListGroupItem } = ReactBootstrap;
 // import { createEditor } from 'slate';

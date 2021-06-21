@@ -4,7 +4,7 @@ function NewLesson() {
   const history = ReactRouterDOM.useHistory();
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
-  const [grades, setGrades] = React.useState([]);
+  const [tags, setTags] = React.useState([]);
   const [lessonPic, setLessonPic] = React.useState('/static/img/placeholder-image.png')
   const [subjects, setSubjects] = React.useState([]);
 
@@ -53,7 +53,6 @@ function NewLesson() {
           <Alert key='successful-lesson' variant='success'>
             Lesson created successfully!
           </Alert>
-          alert(`Lesson ${res.lesson_id} created successfully!`);
           history.push(`/lessons/${res.lesson_id}`);
       }
     })
@@ -128,7 +127,7 @@ function NewLesson() {
               </button>
             </section>
             <section className='lesson-inputs' id='tag-inputs' hidden>
-              <ShowTags />
+              <DisplayTagInputs setTags={setTags}/>
             </section>
             <section id="components-display">
               <CompContainer comps={comps}/>

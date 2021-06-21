@@ -4,8 +4,9 @@ function Searchbar(){
 
   const processSearch = (e) => {
     e.preventDefault()
+    console.log(searchstring);
     
-    const search = searchstring
+    const search = searchstring;
     setSearchstring("");
     history.push(`/search/${search}`);
 

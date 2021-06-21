@@ -406,9 +406,9 @@ def run_search(search_params):
     
     data = request.get_json()
     param = data['param']
-    searchtype = data['type']
+    # searchtype = data['type']
     
-    print(searchtype, param)
+    print(param)
 
     # data = request.get_json()
     # term = data['searchString']
@@ -424,27 +424,27 @@ def run_search(search_params):
     #         lessons = crud.process_lesson_search(terms[category], category)
     lesson_matches = set() # a set of Lesson objects
 
-    if searchtype == 'searchstring': 
-        params = param.split(' ')
-        for param in params: 
-            lessons = crud.get_lessons_by_term(param)
-            print('lessons from string')
-            for lesson in lessons:
-                lesson_matches.add(lesson)
-            
-            # If user passes username as keyword
-            try: 
-                user_queried = crud.get_user_by_username(param)
-                lessons = crud.get_lessons_by_user(user_queried.user_id)
-                print('lessons from usersearch')
+    # if searchtype == 'searchstring': 
+    params = param.split(' ')
+    for param in params: 
+        lessons = crud.get_lessons_by_term(param)
+        print('lessons from string')
+        for lesson in lessons:
+            lesson_matches.add(lesson)
+        
+        # If user passes username as keyword
+        try: 
+            user_queried = crud.get_user_by_username(param)
+            lessons = crud.get_lessons_by_user(user_queried.user_id)
+            print('lessons from usersearch')
 
-            except: 
-                pass
-    else:
-        print(param)
-        user_queried = crud.get_user_by_username(param)
-        print(user_queried)
-        lessons = crud.get_lessons_by_user(user_queried.user_id)
+        except: 
+            pass
+    # else:
+    #     print(param)
+    #     user_queried = crud.get_user_by_username(param)
+    #     print(user_queried)
+    #     lessons = crud.get_lessons_by_user(user_queried.user_id)
     
     for lesson in lessons:
         lesson_matches.add(lesson)
