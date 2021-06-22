@@ -59,7 +59,7 @@ function Home() {
         <h2>Explore Lessons!</h2>
         <Searchbar />
       </div>
-      <section id='lesson-samples'>
+      <section className='lesson-samples'>
         <MultiLessonDisplay lessons={lessons} />
       </section>
       <section id='landing-signup'>

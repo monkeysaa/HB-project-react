@@ -27,6 +27,10 @@ h2, h3, h4, h5 {
     color: rgba(75, 2, 75, 0.89);
 }
 
+:is(h1, h2, h3, h4, h5, h6) a[href][href] {
+    color: inherit;
+}
+
 button {
     /* text-shadow: 2px 2px 2px #0008; */
     position: relative;
@@ -85,7 +89,7 @@ nav {
     display: flex;
     justify-content: space-around;
     /* justify-content: center; */
-    background-image: linear-gradient(to bottom right,#fd7e14, #ebad66, #fd7e14);
+    background-image: linear-gradient(to bottom right,#FFC074, #FFCB91, #FFC074);
 
     padding: 2em;
     border-radius: 0;
@@ -93,7 +97,7 @@ nav {
     display: flex;
 }
 
-nav a {
+nav a[href] {
     color: inherit;
     padding: 0 1em;
 }
@@ -152,7 +156,7 @@ main {
     padding: 2rem;
 }
 
-body {
+html {
     background: white;
     /* background-image: url('https://capitolmarket.net/wp-content/themes/capitolmarket/images/paperWhiteMiddle.jpg'); */
     color: rgb(42 46 51);
@@ -265,13 +269,13 @@ img {
 /*#####################################################################*/
 
 /* LESSON TILES */
-#lesson-samples {
+.lesson-samples {
     display: flex;
     overflow: auto;
     /* by default, flex-flow is "row"  Each cards will lay out horizontally*/
 }
 
-#lesson-samples > article {
+.lesson-samples > article {
     flex: 1 0 auto;
     width: calc(33% - 0.4em);
     max-width: 20em;
@@ -289,14 +293,14 @@ img {
     overflow: hidden;
     border-radius: 1em;
     margin: 0 .2em;
-    background: grey;
+    background: #326C63;
     color: white;
 }
 
 
 .lesson-card a[href] {
     text-decoration: none;
-    color: #f39f02;
+    color: #FAF1E6;
     text-shadow: 2px 2px 2px #0008;
     position: relative;
 }
@@ -305,6 +309,7 @@ img {
     top: 2px;
     left: 2px;
     text-shadow: 1px 1px 2px #0008;
+    color: #FAF1E6;
 }
 
 .lesson-card img {
@@ -406,7 +411,19 @@ img {
 }
 
 .lessons-directory-carousel {
-    
+    list-style-type: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.lessons-directory-carousel li{
+    /* border: 1px solid #333; */
+    /* background-color: light #01937C; */
+    border-radius: 8px;
+    padding: 2em;
+    margin-bottom: 1em;
+    margin-top: 1em;
 }
 
 
@@ -613,6 +630,7 @@ img {
           "B S";
     /* I = image, H = headers, X = Checkboxes, C = Add Compoonents and Save */
     grid-template-columns: minmax(0,1fr) 1fr;
+    column-gap: 1em;
 }
 
 #lesson-inputs-lesson-pic {
@@ -622,8 +640,10 @@ img {
 #placeholder-img {
     max-width: 100%;
     max-height: 500px;
+    border: solid #3333;
+    border-radius: 60px;
     padding:0;
-    margin: 0;
+    margin: 0 auto;
 }
 
 #lesson-inputs-general {
@@ -670,28 +690,131 @@ img {
     grid-area: C;
 }
 
-#comp-img {
+.comp-card-img {
     height: 20em; 
     object-fit: contains;
 }
 
-#comp-card {
-    border: solid #3333;
-}
 
-#comp-card-section {
+.comp-card-section {
     display: flex;
+    border: dashed 2px white;
+    border-radius: 8px;
     width: 100%;
+    margin: 1em 0; 
+    padding: 1em;
+    background: white;
+    color: #333;
 }
 
-#comp-card-section {
+.comp-card-section article {
     flex: 1;
+
+    display: grid; 
+    grid: "I T T"
+          "I F S"
+          "I . U"
+          "I D D";
+
+    grid-template-rows: 1fr min-content min-content auto;
+
 }
 
-#comp-card-btns {
-    flex: .2;
+.comp-card h3 {
+    grid-area: T;
+    padding: 1rem;
 }
 
-#comp-text {
+.comp-card iframe {
+    grid-area: I;
+}
+
+.comp-card-url {
+    grid-area: U;
+}
+
+.comp-card-icon {
+    grid-area: F;
+    margin-left: auto;
+    vertical-align: top;
+}
+
+.comp-card-source {
+    grid-area: S;
+}
+
+.comp-card-description {
+    grid-area: D;
+    padding: 1.5rem;
+}
+
+.comp-card-btns {
+    flex: none;
+}
+
+.comp-card-text {
     width: 100%;
+}
+
+
+/* Colors I like:  
+Chalkboard green: #13443E -- very pretty, very dark
+Chalkboard2: #326C63
+
+Pink: #E99497       233 148 151)
+
+Original Nav: linear-gradient(to bottom right,#fd7e14, #ebad66, #fd7e14
+Off-white:    color: #FAF1E6;
+
+
+*/
+
+
+html {
+    background: url('/static/img/chalkboard.jpg') fixed 100% !important;
+    color: white;
+}
+body {
+    background: #0003 !important;
+    color: inherit !important;
+}
+
+nav {
+    box-shadow: 0 1px 6px black;
+    background: #0006 !important;
+    color: white !important;
+}
+
+
+.lesson-samples {
+    padding: 0.5em;
+    box-shadow: inset 1px 1px 6px black;
+    background: linear-gradient(#0003, #0003), url('/static/img/lined-paper.jpg') #FAF1E6;
+    color: black;
+}
+.lesson-card {
+    background: #fffc;
+    color: #222;
+    box-shadow: 1px 1px 4px black;
+}
+.lesson-card h3 {
+    color: rgb(140, 3, 3); #13443E !important;
+}
+.lesson-card a[href] {
+    text-shadow: none !important;
+}
+
+#landing-search {
+    background: #f2ab48;
+    color: #333;
+}
+
+#landing-signup h2 {
+    color: white;
+}
+
+.lessons-directory-carousel li {
+    padding: 1em;
+    border-radius: 0.5em;
+    border: 2px dashed white !important;
 }

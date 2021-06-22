@@ -68,7 +68,8 @@ def view_users():
             lessons.append(lesson.as_dict()) # lessons = dictionary of each lesson
         user_lessons = user.as_dict()
         user_lessons['lessons'] = lessons
-        users.append(user_lessons)
+        if len(lessons) > 0:
+            users.append(user_lessons)
     return {'users': users}
 
 

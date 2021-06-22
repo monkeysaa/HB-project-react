@@ -6,7 +6,7 @@ function User(props) {
     <ul className='lessons-directory-carousel'>
       <li>
         {props.handle}: <br/>
-        <section id='lesson-samples'>
+        <section className='lesson-samples'>
           <MultiLessonDisplay lessons={props.lessons} />
         </section>
       </li>
@@ -47,7 +47,7 @@ function Directory(props) {
     <ul className='lessons-directory-carousel'>
       <li>
         {props.handle}: <br/>
-        <section id='lesson-samples'>
+        <section className='lesson-samples'>
           <MultiLessonDisplay lessons={props.lessons} />
         </section>
       </li>
@@ -55,7 +55,7 @@ function Directory(props) {
     <ul className='lessons-directory-carousel'>
       <li>
         {props.handle}: <br/>
-        <section id='lesson-samples'>
+        <section className='lesson-samples'>
           <MultiLessonDisplay lessons={props.lessons} />
         </section>
       </li>
