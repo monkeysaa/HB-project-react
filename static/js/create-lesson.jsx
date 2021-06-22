@@ -109,16 +109,15 @@ function NewLesson() {
                 placeholder="First, give your lesson a compelling title..."
                 onChange={(e) => setTitle(e.target.value)}
                 value={title} 
-              /><br/>
+              />
 
               <textarea 
                 id='lesson-inputs-overview' 
                 name='overview'
-                rows='8' cols='75'
                 placeholder="Then, add a catchy description!"
                 onChange={(e) => setOverview(e.target.value)}
                 value={overview} 
-              /><br/>
+              />
 
               <button type='button' 
                 className='lesson-inputs' 

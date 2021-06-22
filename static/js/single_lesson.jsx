@@ -8,6 +8,7 @@ function SingleLesson() {
   const [overview, setOverview] = React.useState('');
   const [author, setAuthor] = React.useState('');
   const [tags, setTags] = React.useState([]);
+  const [profilePic, setProfilePic] = React.useState('');
 
   let { lesson_id } = useParams();
 
@@ -18,6 +19,8 @@ function SingleLesson() {
       .then((data) => {
         console.log(data.lesson.tags);
         setAuthor(data.lesson.author);
+        console.log(data.lesson.profile_pic);
+        setProfilePic(data.lesson.profile_pic);
         setTitle(data.lesson.title);
         setLessonPic(data.lesson.imgUrl);
         setOverview(data.lesson.overview);
@@ -49,9 +52,13 @@ function SingleLesson() {
         {sessionStorage.username === author &&
         <button onClick={editLesson}>Edit Lesson</button>}
       </div>
+      <header className='lesson-header'>
+        <h2>{`${title}`}</h2>
+        {profilePic && <img src={profilePic}></img>} 
+        <address>{author} </address>
+      </header>
       <img src={lessonPic}></img>
-      <h2>{`${title} by ${author}`}</h2>
-      <h3>{overview}</h3>
+      <p>{overview}</p>
       {(subjectTags.length != 0) && <p>Subjects: {subjectTags.join(', ')} </p>}
       {(gradeTags.length != 0) && <p>Grades: {gradeTags.join(', ')} </p>}
       <CompContainer comps={comps}/>

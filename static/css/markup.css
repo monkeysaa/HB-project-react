@@ -73,7 +73,7 @@ button:active {
 /*#####################################################################*/
 
 
-nav, header {
+nav, #root > header {
     box-shadow: 0 1px 6px black;
     background: #0006 !important;
     color: white !important;
@@ -127,8 +127,7 @@ nav img {
 }
 
 nav input, .search-btn {
-    background-color: rgb(250, 247, 253);
-    color: rgb(51 51 51);
+    color: white;
     border: none;
     display: inline-block; 
     box-sizing: border-box;
@@ -141,23 +140,6 @@ nav input {
 
 nav input[type=text] {
     border-radius: 4px 0 0 4px;
-    border-top-color: initial;
-    border-top-style: none;
-    border-top-width: initial;
-    border-right-color: initial;
-    border-right-style: none;
-    border-right-width: initial;
-    border-bottom-color: initial;
-    border-bottom-style: none;
-    border-bottom-width: initial;
-    border-left-color: initial;
-    border-left-style: none;
-    border-left-width: initial;
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-width: initial;
-    border-image-outset: initial;
-    border-image-repeat: initial;
 }
 
 
@@ -379,6 +361,13 @@ img {
     height: 2em;
 }
 
+.lesson-card.narrow .author img {
+    height: 2em;
+    width: 2em;
+    display: inline;
+    vertical-align: baseline;
+}
+
 .lesson-card .subjects {
     height: 3em;
     overflow: hidden;
@@ -397,14 +386,16 @@ img {
 
 .lesson-card.wide {
     margin: 2rem 1rem;
-    border: solid #333333;
+    background: linear-gradient(#FFFC, #FFFC), linear-gradient(#0003, #0003), url('/static/img/lined-paper.jpg') #FAF1E6;
+    color: black;
+
     display: grid; 
     grid: "P P T F"
           "P P O O"
-          "P P S S"
+          "P P S A"
           "P P G A";
     grid-template-columns: minmax(min-content, 20%) minmax(min-content, 20%) 1fr auto;
-    grid-template-rows: min-content auto auto auto;
+    grid-template-rows: min-content auto auto min-content;
     
 }
 
@@ -420,13 +411,18 @@ img {
     margin-right: 1rem;
 }
 
-.lesson-banner img {
-
-}
-
 .lesson-card.wide > .author {
     grid-area: A;
     margin-left: 1rem;
+    align-self: end;
+}
+
+.author > img {
+    border-radius: 50%;
+    height: 2em;
+    width: 2em;
+    object-fit: cover;
+    margin-left: auto;
 }
 
 .lesson-card.wide > .overview {
@@ -436,10 +432,16 @@ img {
 
 .lesson-card.wide > .grades {
     grid-area: G;
+    align-content: start;
+    display: grid;
+    margin: 0;
 }
 
 .lesson-card.wide > .subjects {
     grid-area: S;
+    align-content: end;
+    display: grid;
+    margin: 0;
 }
 
 .lesson-card.wide > .favorite-pin {
@@ -463,8 +465,33 @@ img {
     margin-top: 1em;
 }
 
+.lesson-header {
+    display: grid;
+    grid: "P H"
+          "P A";
+    grid-template-columns: min-content 1fr;
+    justify-content: start;
+    text-align: start;
+}
 
+.lesson-header img {
+    grid-area: P;
+    border-radius: 50%;
+    max-height: 4em;
+    margin-right: 1em;
+}
 
+.lesson-header address::before {
+    content: "by ";
+}
+
+.lesson-header h2 {
+    font: 2.5em;
+}
+
+.lesson img {
+    margin: 1em auto;
+}
 
 
 
@@ -491,6 +518,7 @@ img {
 nav input.searchstring {
     background: rgb(0 0 0 / 40%);
     border: white 1px;
+
 }
 
 #greeting {
@@ -519,6 +547,14 @@ nav input.searchstring {
     
 }
 
+.searchbar {
+    display: flex;
+}
+
+.searchbar input, .searchbar button {
+    background: #fff3;
+    font-size: 1.3rem;
+}
 
 #greeting > h2 {
     flex: 2;
@@ -701,6 +737,8 @@ nav input.searchstring {
 
 #lesson-inputs-general {
     grid-area: H;
+    display: flex;
+    flex-flow: column;
     /* border: solid #3333; */
 }
 
@@ -714,8 +752,9 @@ nav input.searchstring {
 /* Part of lesson-inputs-gen */
 #lesson-inputs-overview {
     font-size: 150%;
-    height: 75%;
-    
+    width: 100%;
+    flex: 1 0 auto;
+    margin: 1em 0;
 }
 
 /* Part of lesson-inputs-gen */

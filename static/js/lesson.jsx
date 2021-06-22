@@ -23,6 +23,7 @@ function MultiLessonDisplay({lessons, spec='narrow'}) {
         overview = {lesson.overview}
         tags={lesson.tags}
         spec={spec}
+        profilePic = {lesson.profile_pic}
       />
     );
   }
@@ -65,7 +66,9 @@ function LessonCard(props) {
       <h3><a href={`/lessons/${props.id}`} > {props.title}  </a> </h3> 
       <a className="lesson-banner" href={`/lessons/${props.id}`}>
         <img src={props.img}/></a>
-      {(props.author && props.spec === 'wide') && <p className='author'>{props.author}</p>}
+      {(props.profilePic) ? 
+        <p className='author'><img src={props.profilePic}/>{props.author}</p>: 
+        <p className='author'>{props.author}</p>}
       <p className='overview'> {props.overview} </p>
       {(gradeTags !== []) && <p className='grades'>Grade: {gradeTags.join(', ')} </p>}
       {(subjectTags !== []) && <p className='subjects'>Subject: {subjectTags.join(', ')} </p>}
