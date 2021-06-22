@@ -290,8 +290,15 @@ img {
     max-width: 20em;
     min-width: 10em;
 
-    display: flex;  /* this makes it a flex CONTAINER vs. flex ITEM */
-    flex-flow: column;
+    display: grid;
+    grid: "I I"
+          "T T"
+          "O O"
+          "G G"
+          "S S"
+          "A F";
+    /* grid-template-columns: ; */
+    grid-template-rows: min-content 1fr auto auto 1fr min-content;
 }
 
 .profile-carousel > article {
@@ -338,6 +345,7 @@ img {
 }
 
 .lesson-card h3 {
+    grid-area: T;
     font-size: 150%;
     overflow: hidden;
     text-align: center;
@@ -345,10 +353,16 @@ img {
 }
 
 .lesson-card .lesson-banner {
+    grid-area: I;
     padding: 0;
     order: -1;
     /* default order for unordered element is 0, so this pulls it up */
 } 
+
+.lesson-card .author {
+    grid-area: A;
+}
+
 .lesson-card {
     padding: 0 1rem;
 }
@@ -368,12 +382,22 @@ img {
     vertical-align: baseline;
 }
 
+.lesson-card.narrow > .grades {
+    grid-area: G;
+}
+
 .lesson-card .subjects {
+    grid-area: S;
     height: 3em;
     overflow: hidden;
 }
 
+.lesson-card .overview {
+    grid-area: O;
+}
+
 .lesson-card .favorite-pin {
+    grid-area: F;
     font-size: 2em;
     display: block;
     margin-left: auto;
