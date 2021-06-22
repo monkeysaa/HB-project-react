@@ -176,7 +176,7 @@ def login():
             user_lessons = crud.get_lessons_by_user(user.user_id)
             print(user.user_id)
             print(session['user_id'])
-            return jsonify('success')
+            return {'success': True, 'username': user.handle}
             # later return JSON that includes both user and lesson info
         else: 
             return jsonify(f'Wrong password. It should be: {user.password}.')

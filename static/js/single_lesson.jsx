@@ -46,8 +46,8 @@ function SingleLesson() {
   return (
     <section className="lesson">
       <div>
-        <h3>Lesson ID: {lesson_id}</h3>
-        <button onClick={editLesson}>Edit Lesson</button>
+        {sessionStorage.username === author &&
+        <button onClick={editLesson}>Edit Lesson</button>}
       </div>
       <img src={lessonPic}></img>
       <h2>{`${title} by ${author}`}</h2>

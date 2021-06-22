@@ -16,7 +16,7 @@ function Searchbar(){
     <form className='searchbar'>
       <input 
         type="text" 
-        id="searchstring" 
+        className="searchstring" 
         onChange={(e) => setSearchstring(e.target.value)}
         value={searchstring} 
         placeholder="Search here..."/>

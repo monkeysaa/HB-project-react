@@ -13,9 +13,9 @@ function Nav({showNav, setShowNav}) {
     .then(response => response.json())
     .then(data => {
       if (data.success === true) {
+          window.sessionStorage.username = null;
           window.sessionStorage.loggedIn = false;
           setShowNav(false);
-          console.log('sessionStorage.loggedIn = false');
         history.push(`/login`);
       }
       else {

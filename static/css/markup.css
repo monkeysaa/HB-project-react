@@ -140,8 +140,24 @@ nav input {
 }
 
 nav input[type=text] {
-    border: 2px solid silver; 
     border-radius: 4px 0 0 4px;
+    border-top-color: initial;
+    border-top-style: none;
+    border-top-width: initial;
+    border-right-color: initial;
+    border-right-style: none;
+    border-right-width: initial;
+    border-bottom-color: initial;
+    border-bottom-style: none;
+    border-bottom-width: initial;
+    border-left-color: initial;
+    border-left-style: none;
+    border-left-width: initial;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
 }
 
 
@@ -164,9 +180,9 @@ html {
     min-height: 100%;
 }
 body {
-    background: #0003 !important;
+    background: #0004 !important;
     color: inherit !important;
-    min-height: 100%;
+    min-height: 100vh;
 }
 
 img {
@@ -239,8 +255,8 @@ img {
 }
 
 #grade-filters, #subject-filters {
-    background: #eee;
-    color: #333;
+    background: rgba(238, 238, 238, 0.336);
+    color: #eee;
     margin: 1em 0em;
     border-radius: 1em;
     padding: 1em 1.5em;
@@ -471,13 +487,10 @@ img {
 #landing-search-div form {
     flex: 2;
 }
-
-.searchbar {
-    justify-content: flex-end;
-    color: rgb(51 51 51);
-    border: grey;
-    display: inline-block; 
-    box-sizing: border-box;
+ 
+nav input.searchstring {
+    background: rgb(0 0 0 / 40%);
+    border: white 1px;
 }
 
 #greeting {
@@ -520,7 +533,8 @@ img {
 }
 
 #signup > h2, #landing-signup > h2 {
-    color: white;
+    /* color: white; */
+    color: inherit !important;
 }
 
 /* Holds h2 and form on HOME */
@@ -537,11 +551,11 @@ img {
     /* min-width: max-content; */
     padding: 1rem;
     border-radius: 1rem;
-    background: ;
     box-shadow: 1px 1px 4px black;
     max-width: 50%;
     align-content: center;
-
+    background: #0003;
+    /* color: black; */
     display: flex;
     flex-direction: column;
 }
@@ -556,11 +570,18 @@ img {
     align-content: center;
     padding: 1 rem;
     border-radius: 1 rem;
-    background: #ffb700cc;
+    background: #f8f8f86f;
+    color: black;
+
     /* flex-direction: column; */
 }
+/*     background: #f5abf785;  - semi-translilac 
+           background: #bef0af9c; - light green 
+           
+           */
 
 #landing-signup > h2 {
+    color: white;
     flex: 2;
     align-self: center;
     padding-right: 1em;
@@ -574,11 +595,16 @@ img {
     border: none;
     padding: 0.25em;
     margin: 0.2em;
+    /* color: inherit !important; */
+
 }
 
 #welcome-footnote {
     margin-bottom: 0;
     margin-top: 1rem;
+    /* color: #3333; */
+    color: inherit !important;
+
 }
 
 .greeting-btns {
@@ -675,7 +701,7 @@ img {
 
 #lesson-inputs-general {
     grid-area: H;
-    border: solid #3333;
+    /* border: solid #3333; */
 }
 
 /* Part of lesson-inputs-gen */

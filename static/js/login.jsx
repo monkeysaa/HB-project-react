@@ -33,9 +33,10 @@ function Login({setShowNav}) {
       })
       .then(response => response.json())
       .then(res => {
-        if (res === 'success') {
+        if (res.success === true) {
           setLoggedIn(true);
           window.sessionStorage.loggedIn = true;
+          window.sessionStorage.username = res.username;
           setShowNav(true);
           history.push('/profile');
 

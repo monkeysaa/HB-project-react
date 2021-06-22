@@ -76,6 +76,7 @@ class Lesson(db.Model):
             'overview': self.overview,
             'public': self.public,
             'author': self.author.handle,
+            'profile_pic': self.author.profile_pic,
             'imgUrl': self.imgUrl, 
             'tags': tag_data
             # 'comp_ids': comp_ids,
