@@ -101,12 +101,10 @@ function Profile() {
         <h2>{`${username} at ${email}`}</h2>
         <ProfilePic addPic={addPic} profilePic={profilePic} />
       </section>
-      <section id='user-profile-lessons' className='lesson-samples'>
         <h2> Your Lessons </h2>
         <button onClick={createLesson}> Create New Lesson </button>
 
         <MultiLessonDisplay lessons={lessons} spec='wide'/> 
-      </section>
     </div>
   );
 }

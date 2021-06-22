@@ -85,8 +85,8 @@ function NewLesson() {
         <h2>Create a Lesson</h2>
         <form id="lesson-input-form" 
           onSubmit={createLesson}>
-          <section className='lesson-inputs' id='lesson-inputs-wrapper'>
-            
+          
+          <section className='lesson-inputs' id='lesson-inputs-wrapper'>  
            {/* Lesson Image Submission: I in CSS Grid */}
             <section className="lesson_inputs" id='lesson-inputs-lesson-pic'>
               <input 
@@ -131,13 +131,15 @@ function NewLesson() {
             <section className='lesson-inputs' id='tag-inputs' hidden>
               <DisplayTagInputs setTags={setTags}/>
             </section>
+          </section>
+          {/* End CSS Grid for lesson-inputs-wrapper */}
 
-            {/* Lesson Components Display: C in CSS Grid */}
-            <section id="components-display">
-              <CompContainer comps={comps}/>
-              <CreateComp setComps={setComps} toggleInput={toggleInput}/>
-            </section>
-
+          {/* Lesson Components Display: C in CSS Grid */}
+          <section id="components-display">
+            <CompContainer comps={comps}/>
+            <CreateComp setComps={setComps} toggleInput={toggleInput}/>
+          </section>
+          <div className='floating-add-lesson-btns'>
             {/* "Floating" Add-Comp buttons: B in CSS Grid */}
             <section className='lesson-inputs' id='add-comps-btns'>
               <p>Add a New Lesson Component</p>
@@ -165,8 +167,7 @@ function NewLesson() {
 
             {/* "Floating" Save button: S in CSS Grid */}
             <button type='submit' id='lesson-inputs-submit' >Save Lesson</button>
-          </section> 
-          {/* End CSS Grid for lesson-inputs-wrapper */}
+          </div>
         </form> 
       </section>
 

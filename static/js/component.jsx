@@ -177,7 +177,7 @@ function UrlInput({saveComp}) {
       <label htmlFor="componentInput"></label>
       <i className="fa fa-link"></i>
       <input 
-        id = 'comp-url'
+        className = 'comp-url-field'
         type="text"  
         placeholder="Paste full website url here"
         onChange={(e) => { setUrl(e.target.value)}}

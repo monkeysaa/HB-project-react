@@ -63,23 +63,26 @@ function CompCard(props) {
 
 
 {/* TODO: Build out buttons that trash and reposition this component */}
-      {/* <p className='comp-card-btns'> 
+      <p className='comp-card-btns'> 
         <button 
+          className='comp-card-up'
           type='button' 
           onClick={() => console.log('figure out how to move comp')}> 
-          <i className="fa fa-toggle-up" /> 
+          ▲
+        </button>
+        <button 
+          className='comp-card-down'
+          type='button' 
+          onClick={() => console.log('figure out how to move comp')}> 
+          ▼
         </button>
         <button 
           type='button' 
-          onClick={() => console.log('figure out how to move comp')}> 
-          <i className="fa fa-toggle-down" /> 
-        </button> */}
-        <button 
-          type='button' 
+          className='comp-card-trash'
           onClick={() => console.log('figure out how to trash comp')}> 
           <i className="fa fa-trash" /> 
         </button>
-      {/* </p> */}
+      </p>
 
     </section>
   );

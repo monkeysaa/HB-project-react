@@ -14,7 +14,7 @@ html, body, label, p {
 /* Typography */
 
 html {
-    font-family: Ubuntu, sans-serif;
+    font-family: 'Varela Round', sans-serif;
     font-weight: 300;
     line-height: 1.5;
 }
@@ -34,9 +34,25 @@ h2, h3, h4, h5 {
 button {
     /* text-shadow: 2px 2px 2px #0008; */
     position: relative;
-    box-shadow: 0 0 1px #0008;
-    border-radius: 8px;
-    border: 1px solid (204, 204, 204);
+    box-shadow: 1px 1px 2px black;
+    border-radius: 0.5em;
+    background: #0006;
+    color: white;
+    border: 1px solid white;
+    padding: 0.25rem 0.5rem;
+}
+
+main input,
+main textarea {
+    border: none;
+    background: #0006;
+    color: white;
+    padding: 0.25em;
+    box-shadow: inset 1px 1px 2px black;
+}
+
+::placeholder {
+    color: #FFFC;
 }
     
 button:active {
@@ -56,11 +72,16 @@ button:active {
 /* Nav */
 /*#####################################################################*/
 
+
+nav, header {
+    box-shadow: 0 1px 6px black;
+    background: #0006 !important;
+    color: white !important;
+}
+
 header {
     /* background-color: #fd7e14; */
-    background-image: linear-gradient(to bottom right,#fd7e14, #ebad66, #fd7e14);
     width: 100%;
-    color: #fff;
     text-align: center;
     padding: 2em;
 
@@ -82,14 +103,12 @@ header > h1 {
 }
 
 nav {
-    color: #fff;
     width: 100%;
     font-size: 130%;
     text-align: center;
     display: flex;
     justify-content: space-around;
     /* justify-content: center; */
-    background-image: linear-gradient(to bottom right,#FFC074, #FFCB91, #FFC074);
 
     padding: 2em;
     border-radius: 0;
@@ -125,24 +144,6 @@ nav input[type=text] {
     border-radius: 4px 0 0 4px;
 }
 
-input, .search-btn {
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin: 8px 0;
-    box-sizing: border-box; 
-}
-
-textarea {
-    width: 100%;
-    height: 150px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    resize: none;
-  }
 
 
 
@@ -156,11 +157,16 @@ main {
     padding: 2rem;
 }
 
+
 html {
-    background: white;
-    /* background-image: url('https://capitolmarket.net/wp-content/themes/capitolmarket/images/paperWhiteMiddle.jpg'); */
-    color: rgb(42 46 51);
-    font-family: 'Varela Round', sans-serif;
+    background: url('/static/img/chalkboard.jpg') fixed 100% !important;
+    color: white;
+    min-height: 100%;
+}
+body {
+    background: #0003 !important;
+    color: inherit !important;
+    min-height: 100%;
 }
 
 img {
@@ -234,7 +240,7 @@ img {
 
 #grade-filters, #subject-filters {
     background: #eee;
-    /* color: white; */
+    color: #333;
     margin: 1em 0em;
     border-radius: 1em;
     padding: 1em 1.5em;
@@ -273,9 +279,14 @@ img {
     display: flex;
     overflow: auto;
     /* by default, flex-flow is "row"  Each cards will lay out horizontally*/
+    padding: 0.5em;
+    box-shadow: inset 1px 1px 6px black;
+    background: linear-gradient(#0003, #0003), url('/static/img/lined-paper.jpg') #FAF1E6;
+    color: black;
 }
 
-.lesson-samples > article {
+/* These apply to all articles. You only want an override for WIDE cards */
+.lesson-samples > article.narrow {
     flex: 1 0 auto;
     width: calc(33% - 0.4em);
     max-width: 20em;
@@ -293,22 +304,28 @@ img {
     overflow: hidden;
     border-radius: 1em;
     margin: 0 .2em;
-    background: #326C63;
-    color: white;
+    background: #fffc;
+    color: #222;
+    box-shadow: 1px 1px 4px black;
 }
-
 
 .lesson-card a[href] {
     text-decoration: none;
-    color: #FAF1E6;
-    text-shadow: 2px 2px 2px #0008;
+    color: rgb(140, 3, 3);
     position: relative;
 }
 
-.lesson-card a[href]:active {
-    top: 2px;
-    left: 2px;
-    text-shadow: 1px 1px 2px #0008;
+.lesson-card h3 a[href]:hover,
+.lesson-card h3 a[href]:focus {
+    text-shadow: 2px 2px 2px #0008;
+    top: -2px;
+    left: -2px;
+}
+
+.lesson-card h3 a[href]:active {
+    top: 0;
+    left: 0;
+    text-shadow: none;
     color: #FAF1E6;
 }
 
@@ -383,8 +400,11 @@ img {
     grid-area: P;
     min-width: 200px;
     margin-left: -1rem;
-    margin-bottom: 0.5rem;
     margin-right: 1rem;
+}
+
+.lesson-banner img {
+
 }
 
 .lesson-card.wide > .author {
@@ -516,8 +536,8 @@ img {
     /* min-width: max-content; */
     padding: 1rem;
     border-radius: 1rem;
-    background-image: linear-gradient(to bottom right,#fd7e14, #f0ab5c, #fd7e14);
-    box-shadow: 0 0 2px black;
+    background: ;
+    box-shadow: 1px 1px 4px black;
     max-width: 50%;
     align-content: center;
 
@@ -535,8 +555,7 @@ img {
     align-content: center;
     padding: 1 rem;
     border-radius: 1 rem;
-    background-image: linear-gradient(to bottom right,#fd7e14, #EABE8D, #fd7e14);
-
+    background: #ffb700cc;
     /* flex-direction: column; */
 }
 
@@ -544,7 +563,6 @@ img {
     flex: 2;
     align-self: center;
     padding-right: 1em;
-    color: black;
 }
 
 #signup > input, #login-form > input {
@@ -622,12 +640,12 @@ img {
 }
 
 #lesson-inputs-wrapper {
-    border: solid #3333;
+    border: dashed 2px;
+    padding: 1em;
+    border-radius: 1em;
     display: grid;
     grid: "I H"
-          "X X"
-          "C C"
-          "B S";
+          "X X";
     /* I = image, H = headers, X = Checkboxes, C = Add Compoonents and Save */
     grid-template-columns: minmax(0,1fr) 1fr;
     column-gap: 1em;
@@ -670,7 +688,6 @@ img {
     display: block;
     margin: auto;
     margin-bottom: 1em;
-    border: solid #3333;
 }
 
 #tag-inputs {
@@ -685,6 +702,9 @@ img {
 #add-comps-btns {
     grid-area: B;
 }
+#add-comps-btns button {
+    margin: 0.25rem;
+}
 
 #components-display {
     grid-area: C;
@@ -693,6 +713,7 @@ img {
 .comp-card-img {
     height: 20em; 
     object-fit: contains;
+    margin-right: auto;
 }
 
 
@@ -714,10 +735,27 @@ img {
     grid: "I T T"
           "I F S"
           "I . U"
+          "I X X"
           "I D D";
 
-    grid-template-rows: 1fr min-content min-content auto;
+    grid-template-rows: min-content min-content min-content min-content 1fr;
+    grid-template-columns: auto min-content 1fr;
+    /* minmax(min-content, 20%) minmax(min-content, 20%) 1fr auto; */
 
+}
+
+.comp-card > * {
+    margin: 0;
+}
+
+.comp-card-text {
+    grid-area: X;
+    padding: 1.5rem;
+}
+
+.comp-url-field {
+    width: 600px;
+    margin: 1em;
 }
 
 .comp-card h3 {
@@ -735,8 +773,11 @@ img {
 
 .comp-card-icon {
     grid-area: F;
-    margin-left: auto;
-    vertical-align: top;
+    margin-left: 1.5rem;
+    margin-right: 0.5rem;
+    align-self: center;
+
+
 }
 
 .comp-card-source {
@@ -750,6 +791,13 @@ img {
 
 .comp-card-btns {
     flex: none;
+    width: 0;
+    position: relative;
+    left: 1.25rem;
+}
+
+.comp-card-section:not(:hover, :focus-within) .comp-card-btns {
+    opacity: 0.5;
 }
 
 .comp-card-text {
@@ -768,53 +816,3 @@ Off-white:    color: #FAF1E6;
 
 
 */
-
-
-html {
-    background: url('/static/img/chalkboard.jpg') fixed 100% !important;
-    color: white;
-}
-body {
-    background: #0003 !important;
-    color: inherit !important;
-}
-
-nav {
-    box-shadow: 0 1px 6px black;
-    background: #0006 !important;
-    color: white !important;
-}
-
-
-.lesson-samples {
-    padding: 0.5em;
-    box-shadow: inset 1px 1px 6px black;
-    background: linear-gradient(#0003, #0003), url('/static/img/lined-paper.jpg') #FAF1E6;
-    color: black;
-}
-.lesson-card {
-    background: #fffc;
-    color: #222;
-    box-shadow: 1px 1px 4px black;
-}
-.lesson-card h3 {
-    color: rgb(140, 3, 3); #13443E !important;
-}
-.lesson-card a[href] {
-    text-shadow: none !important;
-}
-
-#landing-search {
-    background: #f2ab48;
-    color: #333;
-}
-
-#landing-signup h2 {
-    color: white;
-}
-
-.lessons-directory-carousel li {
-    padding: 1em;
-    border-radius: 0.5em;
-    border: 2px dashed white !important;
-}

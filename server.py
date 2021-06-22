@@ -232,7 +232,7 @@ def create_lesson():
 
     ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
     if 'lesson-pic' not in request.files:
-        lesson_data['imgUrl'] = "/static/img/placeholder.png"
+        lesson_data['imgUrl'] = "/static/img/placeholder-image.png"
     else: 
         my_file = request.files['lesson-pic']
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
