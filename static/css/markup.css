@@ -369,12 +369,13 @@ img {
 }
 
 .lesson-card .favorite-pin {
-    font-size: 1.5em;
+    font-size: 2em;
     display: block;
     margin-left: auto;
     background: none;
     border: none;
     box-shadow: none;
+    color: #390040
     /* auto margins take up all the extra space, so if you want pin on RIGHT, auto on LEFT */
 }
 
@@ -629,6 +630,10 @@ img {
     display: flex;
 }
 
+.change-profile-pic {
+    margin-inline: auto;
+    max-width: max-content;
+}
 /*########################################x##############################
 /*##                          Create a Lesson                          ##
 /*#####################################################################*/
@@ -649,6 +654,10 @@ img {
     /* I = image, H = headers, X = Checkboxes, C = Add Compoonents and Save */
     grid-template-columns: minmax(0,1fr) 1fr;
     column-gap: 1em;
+}
+
+#lesson-pic {
+    margin: auto;
 }
 
 #lesson-inputs-lesson-pic {
@@ -697,6 +706,15 @@ img {
 
 #lesson-inputs-submit {
     grid-area: S;
+}
+
+.floating-add-lesson-btns {
+    display: flex;
+    border: dashed 2px white;
+    border-radius: 8px;
+    justify-content: space-between;
+    margin: 1em 0; 
+    padding: 1em;
 }
 
 #add-comps-btns {
@@ -776,8 +794,7 @@ img {
     margin-left: 1.5rem;
     margin-right: 0.5rem;
     align-self: center;
-
-
+    height: 1em;
 }
 
 .comp-card-source {

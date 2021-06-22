@@ -5,7 +5,7 @@ function NewLesson() {
   const [title, setTitle] = React.useState('');
   const [overview, setOverview] = React.useState('');
   const [tags, setTags] = React.useState([]);
-  const [lessonPic, setLessonPic] = React.useState('/static/img/placeholder-image.png')
+  const [lessonPic, setLessonPic] = React.useState('/static/img/placeholder-img.png')
   const [subjects, setSubjects] = React.useState([]);
 
   // const [lessonPic, setLessonPic] = React.useState(null);
@@ -97,7 +97,7 @@ function NewLesson() {
               <img 
                 className='lesson_inputs' 
                 id='placeholder-img' 
-                src='/static/img/placeholder-image.png' 
+                src='/static/img/placeholder-img.png' 
               />
             </section>
 

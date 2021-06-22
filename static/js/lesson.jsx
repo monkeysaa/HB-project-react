@@ -11,7 +11,7 @@ function MultiLessonDisplay({lessons, spec='narrow'}) {
     
   for (const lesson of lessons) {
     if (lesson.imgUrl == null) {
-        lesson.imgUrl = "/static/img/placeholder.png"
+        lesson.imgUrl = "/static/img/placeholder-img.png"
     }
     lessonCards.push(
       <LessonCard
