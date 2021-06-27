@@ -1,19 +1,19 @@
 [
     {
         "title": "Wolves",
-        "overview": "about wolves",
+        "overview": "Every living thing goes through stages of life known as a life cycle. In this lesson, you'll learn about the life cycle of a wolf.",
         "public": true,
         "imgUrl": "/static/img/grey_wolves.png"
     },
     {
         "title": "Multiplying fractions",
-        "overview": "about multiplying fractions",
+        "overview": "Let's learn how to multiple fractions!",
         "public": false,
-        "imgUrl": "/static/img/multiply_fractions.png"
+        "imgUrl": "/static/img/multiply_fractions.jpeg"
     },
     {
         "title": "Trophic cascades",
-        "overview": "evolution due to trophic cascades",
+        "overview": "When wolves came back to Yellowstone National Park, amazing things occurred because of something called a 'trophic cascade'...",
         "public": true,
         "imgUrl": "/static/img/wolves_rivers.jpg"
     },
@@ -25,8 +25,109 @@
     },
     {
         "title": "Call to action intro",
-        "overview": "about writing CTAs",
+        "overview": "Ever wanted to get people to do your bidding? If you do it right, a call to action makes your readers feel inspired to take action.",
         "public": true,
         "imgUrl": "/static/img/unimpressed.jpg"
+    },
+    {
+        "title": "History of Tree Houses",
+        "overview": "A tree house, tree fort or treeshed is a platform or building constructed around, next to or among the trunk or branches of one or more mature trees while above ground level...",
+        "public": true,
+        "imgUrl": "/static/img/treehouse.jpg"
+    },
+    {
+        "title": "Experience Tree-Top Living at One of These Sustainable Tree Houses",
+        "overview": "These extraordinary tree houses meld sustainable materials with hospitality design, offering an innovative and adventurous way to connect with nature.",
+        "public": true,
+        "imgUrl": "/static/img/the-willow-andamp-juniper-tree-house-by-artistree.jpg"
+    },
+    {
+        "title": "Whimsical Trio of Tiny Tree Houses",
+        "overview": "HoneyTree Farm, a collection of playful bunks in the Texas Hill Country, lets you sleep high in the canopy of live oaks and sycamore trees.",
+        "public": true,
+        "imgUrl": "/static/img/a-massive-industrial-style-door-rolls-up-and-ties-the-living-area-and-the-book-nook-to-the-outdoors-where-a-large-tree-punctures-the-wood-decking.jpg"
+    },
+    {
+        "title": "Why Red Pandas are the Coolest",
+        "overview": "The red panda has reddish-brown fur, a long, shaggy tail, and a waddling gait due to its shorter front legs; it is roughly the size of a domestic cat, though with a longer body.",
+        "public": true,
+        "imgUrl": "/static/img/red-panda.jpg"
+    },
+    {
+        "title": "A Brief History of Roller-skating",
+        "overview": "Roller-skating was invented in 1735 by John Joseph Merlin, a Belgian who famously introduced his new wheeled shoes at a party in London and promptly crashed into a mirror.",
+        "public": true,
+        "imgUrl": "/static/img/Albany_Creek_SkatesFI.jpg"
+    },
+    {
+        "title": "The Etymology of 'Ballonicorn'",
+        "overview": "The Balloonicorn is a cosmetic item for all classes. It is an inflatable, team-colored unicorn that floats behind the player.",
+        "public": true,
+        "imgUrl": "/static/img/balloonicorn_1.jpg"
+    },
+    {
+        "title": "Did Ada Lovelace invent the computer?",
+        "overview": "Augusta Ada King, Countess of Lovelace was an English mathematician and writer known for her work on an early computer known as the Analytical Engine.",
+        "public": true,
+        "imgUrl": "/static/img/entity-women-that-did-ada-lovelace-1320x720.jpg"
+    },
+    {
+        "title": "How Hollywood Screen Siren Hedy Lamarr Helped Pioneer WiFi and GPS",
+        "overview": "This world renowned Hollywood starlet co-invented an early version of frequency-hopping spread spectrum communication which was the foundation of many of our modern wireless technologies.",
+        "public": true,
+        "imgUrl": "/static/img/Hedy-Lamarr.jpg"
+    },    
+    {
+        "title": "Colour theory: A jargon-free design guide",
+        "overview": "Everything you need to know about colour theory, from concepts to terminology.",
+        "public": true,
+        "imgUrl": "/static/img/5EB5SFA628AuuGHQgxAKVY-970-80.jpg"
+    },
+    {
+        "title": "The Golden Ratio",
+        "overview": "If you're a designer or artist, you should know about the Golden Ratio. We explain what it is and how you can use it.",
+        "public": true,
+        "imgUrl": "/static/img/fBDDfnojKNjUycTegbeswJ-970-80.png"
+    },
+    {
+        "title": "Disrupting the Computer Industry Before It Existed: Admiral Grace Hopper",
+        "overview": "Grace Hopper was one of the most influential computer scientists of all time. She developed the first human-computer code compiler and helped popularize the term 'bug'",
+        "public": true,
+        "imgUrl": "/static/img/Grace_Hopper_computer_bug_resize_md.jpg"
+    },
+    {
+        "title": "Katherine Johnson: Pioneering NASA mathematician",
+        "overview": "The stars were always within reach for Katherine Johnson. Using her mathematics skills, she helped NASA send astronauts to the moon... ",
+        "public": true,
+        "imgUrl": "/static/img/katherine-johnson-1621618840.png"
+    },
+    {
+        "title": "Why is Women's History Month in March?",
+        "overview": "It all began with one single day in 1908 in New York City when thousands of women united and marched for better labor laws, conditions, and the right to vote...",
+        "public": true,
+        "imgUrl": "/static/img/womens-history.png"
+    },
+    {
+        "title": "Graphic Design 101: The designer's guide to Gestalt Theory",
+        "overview": "In the simplest terms, gestalt theory is based on the idea that the human brain will attempt to simplify and organize complex images or designs that consist of many elements...",
+        "public": true,
+        "imgUrl": "/static/img/gestalt-principles-8-638.jpg"
+    },
+    {
+        "title": "The Cryptanalyst Who Brought Down the Mob",
+        "overview": "Elizebeth helped develop the methods that led to the creation of the powerful new science of cryptology and laid the foundation for modern codebreaking today.",
+        "public": true,
+        "imgUrl": "/static/img/Codebreaker_Friedman_portrait_canoncial-resize-500x0-50.jpg"
+    },    {
+        "title": "US Legislative process",
+        "overview": "'I'm Just a Bill' is a 1976 Schoolhouse Rock! segment, featuring a song of the same title written by Dave Frishberg.",
+        "public": true,
+        "imgUrl": "/static/img/just_a_bill.jpg"
+    },
+    {
+        "title": "The Preamble to the US Constitution",
+        "overview": "Need to memorize the preamble to the U.S. Constitution?",
+        "public": true,
+        "imgUrl": "/static/img/DivePastSchoolHouseRock_Dana.jpg"
     }
 ]

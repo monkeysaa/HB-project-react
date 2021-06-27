@@ -104,6 +104,7 @@ function NewLesson() {
             {/* Lesson Headers Submission: H in CSS Grid */}
             <section className="lesson_inputs" id='lesson-inputs-general'>
               <input 
+                autoComplete = 'off'
                 id='lesson-inputs-title' 
                 type="text" 
                 placeholder="First, give your lesson a compelling title..."

@@ -108,7 +108,7 @@ function EditLesson() {
               value={title}
           /><br/>
           <h2>{`Edit your lesson overview:`}</h2>
-          <input 
+          <textarea 
             className="edit_lesson"
             type="text" 
             placeholder="Then, add a catchy description!"

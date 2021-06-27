@@ -90,16 +90,21 @@ header {
     justify-content: center;
 }
 
-header > img {
+header > a > img {
     order: -1;
     max-width: 75px;
     margin: 0;
 }
 
-header > h1 {
+header > a > h1 {
     font-weight: extra bold;
     align-self: center;
     margin-right: 75px;
+    color: white;
+}
+
+header > a {
+    text-decoration: none;
 }
 
 nav {
@@ -283,7 +288,7 @@ img {
     color: black;
 }
 
-/* These apply to all articles. You only want an override for WIDE cards */
+/* Narrow lesson card display */
 .lesson-samples > article.narrow {
     flex: 1 0 auto;
     width: calc(33% - 0.4em);
@@ -291,14 +296,13 @@ img {
     min-width: 10em;
 
     display: grid;
-    grid: "I I"
-          "T T"
-          "O O"
-          "G G"
-          "S S"
-          "A F";
-    /* grid-template-columns: ; */
-    grid-template-rows: min-content 1fr auto auto 1fr min-content;
+    grid: "I I" min-content 
+          "T T" auto
+          "O O" auto
+          ". ." 1fr
+          "G G" auto
+          "S S" auto
+          "A F" min-content;                  
 }
 
 .profile-carousel > article {
@@ -371,8 +375,13 @@ img {
 }
 
 .lesson-card.narrow h3 {
-    margin-bottom: auto;
     height: 2em;
+}
+
+.lesson-card.narrow .overview {
+    margin: 1em 0;
+    max-height: 11em;
+    overflow: hidden;
 }
 
 .lesson-card.narrow .author img {
@@ -384,6 +393,7 @@ img {
 
 .lesson-card.narrow > .grades {
     grid-area: G;
+
 }
 
 .lesson-card .subjects {
@@ -489,6 +499,16 @@ img {
     margin-top: 1em;
 }
 
+.lessons-directory-carousel > li > img{
+    /* border: 1px solid #333; */
+    /* background-color: light #01937C; */
+    height: 2em;
+    width: 2em;
+    object-fit: cover;
+    display: inline-block;
+    border-radius: 50%;
+}
+
 .lesson-header {
     display: grid;
     grid: "P H"
@@ -498,10 +518,13 @@ img {
     text-align: start;
 }
 
-.lesson-header img {
+/* main lesson pic on single-page */
+.lesson-header > .profile-pic {
     grid-area: P;
     border-radius: 50%;
-    max-height: 4em;
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover;
     margin-right: 1em;
 }
 
@@ -513,9 +536,15 @@ img {
     font: 2.5em;
 }
 
-.lesson img {
+.lesson-display > img {
     margin: 1em auto;
+    max-width: 100%;
 }
+
+.lesson-display-overview {
+    margin-top: 2em;
+}
+
 
 
 
@@ -606,7 +635,8 @@ nav input.searchstring {
 
 #signup, #login-form {
     flex: 1.5;
-    margin: 100px 200px 100px;
+    margin: 100px auto 100px;
+    vertical-align: center;
 
     /* min-width: max-content; */
     padding: 1rem;
@@ -630,13 +660,15 @@ nav input.searchstring {
     align-content: center;
     padding: 1 rem;
     border-radius: 1 rem;
-    background: #f8f8f86f;
+    background: #d5f8f66f;
     color: black;
 
     /* flex-direction: column; */
 }
 /*     background: #f5abf785;  - semi-translilac 
            background: #bef0af9c; - light green 
+               background: #f8f8f86f;
+
            
            */
 
@@ -831,8 +863,12 @@ nav input.searchstring {
     width: 100%;
     margin: 1em 0; 
     padding: 1em;
-    background: white;
-    color: #333;
+    color: #222;
+    box-shadow: 1px 1px 4px black;
+    background: linear-gradient(#fffc, #fffc),
+                linear-gradient(#0003, #0003),
+                url('/static/img/lined-paper.jpg') #FAF1E6;
+
 }
 
 .comp-card-section article {
@@ -848,7 +884,6 @@ nav input.searchstring {
     grid-template-rows: min-content min-content min-content min-content 1fr;
     grid-template-columns: auto min-content 1fr;
     /* minmax(min-content, 20%) minmax(min-content, 20%) 1fr auto; */
-
 }
 
 .comp-card > * {
@@ -858,6 +893,7 @@ nav input.searchstring {
 .comp-card-text {
     grid-area: X;
     padding: 1.5rem;
+    padding-right: 0;
 }
 
 .comp-url-field {
@@ -870,8 +906,13 @@ nav input.searchstring {
     padding: 1rem;
 }
 
+.comp-card-url {
+    padding-left: 1.5rem;
+}
+
 .comp-card iframe {
     grid-area: I;
+    max-width: 50vw;
 }
 
 .comp-card-url {
@@ -893,6 +934,7 @@ nav input.searchstring {
 .comp-card-description {
     grid-area: D;
     padding: 1.5rem;
+    padding-right: 0;
 }
 
 .comp-card-btns {

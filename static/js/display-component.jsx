@@ -54,7 +54,7 @@ function CompCard(props) {
           <img className='comp-card-icon' src={`${props.favicon}`}/>
            <p className='comp-card-source'>{props.source}</p>
            </React.Fragment>}
-        <p className='comp-card-url'>{props.url}</p>
+        <a className='comp-card-url' href={props.imgUrl}>{props.url}</a>
         {(props.description) && 
           <p className='comp-card-description'>{props.description}</p>}
         {(props.text) && 

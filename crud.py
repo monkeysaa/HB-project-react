@@ -2,6 +2,7 @@
 
 from model import *
 from flask import session
+from sqlalchemy import desc
 
 # Creation functions
 def create_user(handle, email, pwd, pic):
@@ -70,13 +71,13 @@ def lesson_exists(title, author_id):
 def get_all_lessons():
     """Return all lessons."""
 
-    return Lesson.query.all()
+    return Lesson.query.order_by(Lesson.title).all()
 
 
 def get_users():
     """Return all users."""
 
-    return User.query.all()
+    return User.query.order_by(User.email).all()
 
 
 def get_components():
@@ -141,7 +142,7 @@ def get_lessons_by_term(term):
     """Basic: Get lessons by search term in title or description."""
 
     lessons = Lesson.query.filter((Lesson.title.like(f'%{term}%')) | 
-    (Lesson.overview.like(f'%{term}%'))).all()
+    (Lesson.overview.like(f'%{term}%'))).order_by(desc(Lesson.lesson_id)).all()
 
     matching_components = Comp.query.filter(
         (Comp.title.like(f'%{term}%')) | 

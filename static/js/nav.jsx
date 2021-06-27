@@ -28,31 +28,33 @@ function Nav({showNav, setShowNav}) {
     return (
       <React.Fragment>
         <header>
-          <img src='/static/img/desk-trans.png/'/>
-          <h1>DESK</h1>
+          <Link to="/"><img src='/static/img/desk-trans.png'/> </Link>
+          <Link to="/"><h1>DESK</h1></Link>
         </header>
       </React.Fragment>
     );
   }
 
-  return (
-    <React.Fragment>    
-        <nav>
-          <Link to="/directory">Lesson Directory</Link>
-          <Link to="/create_lesson">Create Lesson</Link>
-          <Link to="/"><img src='/static/img/desk-trans.png'/> </Link>
-          <Searchbar />
-          {/* TODO: Fold profile and logout into a single drop-down from user-image  */}
-          {/* <div className='profile-icon' on Click={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
-          </div> */}
-          <Link to="/profile">            
-            <i className="fa fa-user-circle" alt="User info: Profile and Login"></i>
-             Profile
-          </Link>
-          <Link to="/logout" onClick={processLogout}>Log Out</Link>
-        </nav>
-    </React.Fragment>
-  );
+  else {
+    return (
+      <React.Fragment>    
+          <nav>
+            <Link to="/directory">Lesson Directory</Link>
+            <Link to="/create_lesson">Create Lesson</Link>
+            <Link to="/"><img src='/static/img/desk-trans.png'/> </Link>
+            <Searchbar />
+            {/* TODO: Fold profile and logout into a single drop-down from user-image  */}
+            {/* <div className='profile-icon' on Click={handleClick}>
+              <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
+            </div> */}
+            <Link to="/profile">            
+              <i className="fa fa-user-circle" alt="User info: Profile and Login"></i>
+               Profile
+            </Link>
+            <Link to="/logout" onClick={processLogout}>Log Out</Link>
+          </nav>
+      </React.Fragment>
+    );
+  }  
 }
 

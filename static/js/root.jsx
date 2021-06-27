@@ -12,13 +12,12 @@ const { useHistory, useParams, Redirect, Switch,
 function Controller() {
 
   const history = ReactRouterDOM.useHistory();
-  const [showNav, setShowNav] = React.useState(null);
+  const [showNav, setShowNav] = React.useState();
 
   React.useEffect(() => {
-    if ((window.sessionStorage.loggedIn) && window.sessionStorage.loggedIn === true) {
+    if (window.sessionStorage.username) {
       setShowNav(true);
     }
-    console.log(`Is user logged in? ${showNav}`);
 
   }, [window.sessionStorage]);
 

@@ -5,7 +5,7 @@ function User(props) {
   return (
     <ul className='lessons-directory-carousel'>
       <li>
-        {props.handle}: <br/>
+        <img src={props.profile_pic}/> {props.handle}:
         <section className='lesson-samples'>
           <MultiLessonDisplay lessons={props.lessons} />
         </section>
@@ -24,8 +24,7 @@ function Directory(props) {
     .then(data => {
       const userList = [];
       for (const u of data.users) {
-        console.log(u.lessons);
-        userList.push(<User key={u.id} handle={u.handle} email={u.email} lessons={u.lessons}/>);
+        userList.push(<User key={u.id} profile_pic = {u.profile_pic} handle={u.handle} email={u.email} lessons={u.lessons}/>);
       }
       setAllUserList(userList);
     })

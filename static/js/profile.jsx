@@ -14,7 +14,7 @@ function ProfilePic({profilePic, addPic}) {
   return(
     <React.Fragment>
       <img id="profile-img" src={profilePic}/>
-      <p className='change-profile-pic'> Add or change your profile pic: 
+      <p className='change-profile-pic'> Add or change your profile pic: <br/>
         <input 
           id = 'profile-pic' 
           type='file' 

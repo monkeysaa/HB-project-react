@@ -47,18 +47,18 @@ function SingleLesson() {
   }
 
   return (
-    <section className="lesson">
+    <section className="lesson-display">
       <div>
         {sessionStorage.username === author &&
         <button onClick={editLesson}>Edit Lesson</button>}
       </div>
       <header className='lesson-header'>
-        <h2>{`${title}`}</h2>
-        {profilePic && <img src={profilePic}></img>} 
+        <h2 >{`${title}`}</h2>
+        {profilePic && <img src={profilePic} className='profile-pic'></img>} 
         <address>{author} </address>
       </header>
-      <img src={lessonPic}></img>
-      <p>{overview}</p>
+      <img className='lesson-pic' src={lessonPic}></img>
+      <p className='lesson-display-overview'>{overview}</p>
       {(subjectTags.length != 0) && <p>Subjects: {subjectTags.join(', ')} </p>}
       {(gradeTags.length != 0) && <p>Grades: {gradeTags.join(', ')} </p>}
       <CompContainer comps={comps}/>

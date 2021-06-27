@@ -12,7 +12,7 @@ function Home() {
     fetch('/api/lessons')
     .then(response => response.json())
     .then(res => {
-        setLessons(res.lessons.slice(0, 5));
+        setLessons(res.lessons.slice(1, 10));
     })
 
   }
