@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.6
 """CRUD operations."""
 
 from model import *
@@ -22,11 +23,13 @@ def create_lesson(lesson_dict):
     # lesson_dict: 
     # {'title': '', 'author_id': int, description: '', imgUrl: '' or None, 'public': False}
 
-    new_lesson = Lesson(title=lesson_dict['title'], 
-                      overview=lesson_dict['overview'], 
-                      author_id=lesson_dict['author_id'], 
-                      public=lesson_dict['public'],
-                      imgUrl=lesson_dict['imgUrl'])
+    new_lesson = Lesson(
+        title=lesson_dict['title'], 
+        overview=lesson_dict['overview'], 
+        author_id=lesson_dict['author_id'], 
+        public=lesson_dict['public'],
+        imgUrl=lesson_dict['imgUrl'],
+    )
     
     db.session.add(new_lesson)
     db.session.commit()
@@ -37,9 +40,17 @@ def create_lesson(lesson_dict):
 def create_comp(c_type, url, imgUrl, text, title, source, yt_id, favicon, description):
     """Create and return a new component."""
 
-    new_component = Comp(comp_type=c_type, yt_id=yt_id, url=url, imgUrl=imgUrl, 
-                        text=text, title=title, source=source, favicon=favicon, 
-                        description=description)
+    new_component = Comp(
+        comp_type=c_type, 
+        yt_id=yt_id, 
+        url=url, 
+        imgUrl=imgUrl, 
+        text=text, 
+        title=title, 
+        source=source, 
+        favicon=favicon, 
+        description=description,
+    )
     
     db.session.add(new_component)
     db.session.commit()
@@ -63,7 +74,9 @@ def lesson_exists(title, author_id):
     # Refactor later for efficiency
     lesson = Lesson.query.filter(
         (Lesson.title==title) & (Lesson.author_id==author_id)
-        ).first()
+    ).first()
+    # PHIL: spaces around operators
+    # and also return lesson is not None
     if lesson==None:
         return False
     return True
@@ -108,15 +121,13 @@ def get_lessons_by_tag(tag):
 
     return get_tag_by_name(tag).lessons
 
-# def get_components_by_tag(tag):
-
-#     return get_comp_by_name(tag).comps
-
 
 def get_public_lessons(user_id):
     """Return lessons marked public"""
 
-    return Lesson.query.filter((Lesson.author_id==user_id) & (Lesson.public==True)).all()
+    return Lesson.query.filter(
+        (Lesson.author_id==user_id) & (Lesson.public==True)
+    ).all()
 
 
 def get_lesson_by_id(lesson_id):
@@ -141,8 +152,10 @@ def get_lessons_by_user(user_id):
 def get_lessons_by_term(term):
     """Basic: Get lessons by search term in title or description."""
 
-    lessons = Lesson.query.filter((Lesson.title.like(f'%{term}%')) | 
-    (Lesson.overview.like(f'%{term}%'))).order_by(desc(Lesson.lesson_id)).all()
+    lessons = Lesson.query.filter(
+        (Lesson.title.like(f'%{term}%')) | 
+        (Lesson.overview.like(f'%{term}%'))
+    ).order_by(desc(Lesson.lesson_id)).all()
 
     matching_components = Comp.query.filter(
         (Comp.title.like(f'%{term}%')) | 

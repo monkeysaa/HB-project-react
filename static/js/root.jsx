@@ -10,7 +10,6 @@ const { useHistory, useParams, Redirect, Switch,
 // import { ShowLessonTest } from 'display_lesson.jsx';
 
 function Controller() {
-
   const history = ReactRouterDOM.useHistory();
   const [showNav, setShowNav] = React.useState();
 
@@ -55,8 +54,6 @@ function Controller() {
       </React.Fragment>
     );
   } 
-
-
 
 
 ReactDOM.render(

@@ -1,18 +1,23 @@
+#!/usr/bin/env python3.6
 """Script to seed database."""
-import os
-import json
-from random import choice, randint
-import requests
+
+# PHIL: alphebatize
 from bs4 import BeautifulSoup
-import urllib.request
-import re
-import string
-
 import crud
+import json
 from model import *
-import server
+import os
 from process_link import (handle_url, scrape_data)
+from random import choice, randint
+import re
+import requests
+import server
+import string
+import urllib.request
 
+
+# PHIL: os.system is dangerous, use Subprocess module
+# or at the very lease use Popen()
 os.system('dropdb lessons')
 os.system('createdb lessons')
 connect_to_db(server.app, echo=False)
@@ -22,28 +27,34 @@ db.create_all()
 # Load lesson data from JSON file
 with open('static/data/lessons.json') as f:
     lesson_data = json.loads(f.read())
-    print(len(lesson_data))
-
 
 # Create users, store them in list so we can assign fake lessons to them
-PROFILE_PICS = ['https://t3.ftcdn.net/jpg/02/43/30/32/360_F_243303237_jRLK4CIIwClVcAET3OXB5BSNQRA1QZ0z.jpg',
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQknVbr55-ORSi-V0btHeyH8PMMXu1LeRmRjJ6cwGrawmjWm3jWWglL9tAK4jiT1coUh7E&usqp=CAU',
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE9aCijGWP8QsXdFVnLVOmYTLlTsU13Ij44g&usqp=CAU',
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj_Z8ZjtiXW4QVMxjMXnTfdC-A0X2jaDqkaN2NA0gT6SIe5lhJWE2wthsFygYgxBfRRnU&usqp=CAU',
-                'https://cdn2.vectorstock.com/i/thumb-large/95/61/default-placeholder-businesswoman-half-length-por-vector-20889561.jpg'
-                ]
+#PHIL: style: if closing bracket gets its own line, so does opening one
+PROFILE_PICS = [
+    'https://t3.ftcdn.net/jpg/02/43/30/32/360_F_243303237_jRLK4CIIwClVcAET3OXB5BSNQRA1QZ0z.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQknVbr55-ORSi-V0btHeyH8PMMXu1LeRmRjJ6cwGrawmjWm3jWWglL9tAK4jiT1coUh7E&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE9aCijGWP8QsXdFVnLVOmYTLlTsU13Ij44g&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj_Z8ZjtiXW4QVMxjMXnTfdC-A0X2jaDqkaN2NA0gT6SIe5lhJWE2wthsFygYgxBfRRnU&usqp=CAU',
+    'https://cdn2.vectorstock.com/i/thumb-large/95/61/default-placeholder-businesswoman-half-length-por-vector-20889561.jpg',
+]
 users_in_db = []
 
-PROFILE_NAMES = ['ali',
-                'Mr.T',
-                'Ms.Jackson',
-                'Mx.Roboto',
-                'Ms.Molly'
-                ]
-import pdb; pdb.set_trace()
+#PHIL: ditto
+PROFILE_NAMES = [
+    'ali',
+    'Mr.T',
+    'Ms.Jackson',
+    'Mx.Roboto',
+    'Ms.Molly',
+]
+
+# import pdb
+# pdb.set_trace()
+
 for n in range(5):
     handle = PROFILE_NAMES[n]
-    email = f'{handle}@email.com'  # Voila! A unique email!
+    # Voila! A unique email!
+    email = f'{handle}@email.com'  
     password = 'test'
     profile_pic = PROFILE_PICS[n]
 
@@ -61,10 +72,17 @@ with open('static/data/components.json') as f:
 comps_in_db = []
 for c in comp_data:
     # create a component and append it to comps_in_db
-    db_comp = crud.create_comp(c['type'], c['url'], c['imgUrl'], c['text'],
-                               c['title'], c['source'], c['yt_id'], 
-                               c['favicon'], c['description'])
-    
+    db_comp = crud.create_comp(
+        c['type'], 
+        c['url'], 
+        c['imgUrl'], 
+        c['text'],
+        c['title'], 
+        c['source'], 
+        c['yt_id'], 
+        c['favicon'], 
+        c['description'],
+    )
     comps_in_db.append(db_comp)
 
 
@@ -74,8 +92,9 @@ tags = {
     'grade': ['Pre-K', 'K', '1st', '2nd', '3rd'],
     'subject': ['Math', 'Writing', 'Reading', 'Science', 'Civics', 
                 'Languages', 'Arts/Music', 'Reasoning', 'Environment']
-    }
+}
 
+# PHIL: doubleindentationsadness
 for category, tags in tags.items():
         for tag in tags:
             tag = crud.create_tag(tag, category)
@@ -89,6 +108,7 @@ for n in range(4, 13):
 # Create fake lessons, store them in a list so we can assign fake components...
 lessons_in_db = []
 for lesson in lesson_data:
+
     # choose an author at random
     user = choice(users_in_db)
 
@@ -97,8 +117,7 @@ for lesson in lesson_data:
     db_lesson = crud.create_lesson(lesson)
     lessons_in_db.append(db_lesson)
 
-    # assign components to lessons by hard-coding
-
+    # assign components to lessons by hard-coded assignment
     if db_lesson.title == 'Wolves':
             crud.assign_comp(comps_in_db[0], db_lesson)
             crud.assign_comp(comps_in_db[1], db_lesson)

@@ -7,7 +7,8 @@
 // TODO: If website's X-Frames set to DENY, do not render iFrame. 
 // X-Frame-Options listed within the HTTP response header
 
-// 
+// PHIL: do props instead of deconstructing props into
+// vars.
 function ComponentInputContainer({comps, setComps}) {
   const [inputComps, setInputComps] = React.useState([0]);
   const compsHTML = [];
@@ -27,7 +28,7 @@ function ComponentInputContainer({comps, setComps}) {
     key += 1;
   }
 
-   function addComponent(index = -1, comp = 0) {
+  function addComponent(index = -1, comp = 0) {
     let tempComps = [...inputComps];
 
     if (index < 0 || index > tempComps.length) {
@@ -71,6 +72,7 @@ function ComponentInputContainer({comps, setComps}) {
 // Logic for back-end communication should happen in parent. 
 // pass saveComp as a function that takes 2 inputs: type and text. 
 
+// PHIL: don't deconstruct
 function CreateComp({setComps, toggleInput}) {
 
   const saveComp = (compToSave, compType, button_id) => {

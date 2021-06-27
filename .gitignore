@@ -3,3 +3,15 @@ env/
 .DS_Store
 *.sh
 __pycache__
+
+
+templates/demo.css
+templates/markup.html
+templates/test.html
+
+static/data/incomplete-data.py
+test_server.py
+comments.txt
+
+package.json
+yarn.lock

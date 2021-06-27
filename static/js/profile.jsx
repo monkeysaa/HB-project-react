@@ -42,6 +42,7 @@ function Profile() {
     fetch('/api/users/user/')
     .then((response) => response.json())
     .then((data) => {
+      console.log(`Data test PHIL: ${data}, ${typeof(data)}`);
       // should display user and lesson data from serverside display_profile()
       setUsername(data.user.handle);
       setEmail(data.user.email);

@@ -20,6 +20,8 @@ function CreateNewUser({greeting}) {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(`Data test PHIL: ${data}, ${typeof(data)}`);
+      console.log(typeof(data.success));
       if (data.success == false) {
         <Alert variant='warning'>
         Email already in use. Please try again or click log in if you already have an account.

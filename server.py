@@ -1,43 +1,48 @@
+#!/usr/bin/env python3.6
 """Server for lessons app."""
 
-from flask import Flask
-from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
-from model import connect_to_db
-from process_link import (handle_url, scrape_data)
-import cloudinary.uploader
-import crud
 import boto3
+import bs4
+import crud
+import cloudinary.uploader
+from flask import (
+    Flask, render_template, request, flash, session, redirect, jsonify
+)
+# from jinja2 import StrictUndefined
+from model import connect_to_db
 import os 
 import pprint
-import bs4
-
-from jinja2 import StrictUndefined
+from process_link import (handle_url, scrape_data)
 
 app = Flask(__name__)
 app.secret_key = "SECRET!"
 
 # API INFO
-s3 = boto3.resource('s3')
+AWS_KEY = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 CLIENT = boto3.client('s3')
 CLOUD_KEY = os.environ['CLOUDINARY_KEY']
 CLOUD_SECRET = os.environ['CLOUDINARY_SECRET']
-AWS_KEY = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+s3 = boto3.resource('s3')
 
-app.jinja_env.undefined = StrictUndefined
+# app.jinja_env.undefined = StrictUndefined
 
 GRADES = ['Pre-K', 'K', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th',
-          '9th', '10th', '11th', '12th']
+          '9th', '10th', '11th', '12th',]
 SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Civics', 
-            'Arts/Music', 'Foreign Lang', 'Reasoning']
+            'Arts/Music', 'Foreign Lang', 'Reasoning',]
+
+PROFILE_PLACEHOLDER = 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+IMG_PLACEHOLDER = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
 
 # MVP:  
-#     """View all lessons."""
-#     """Display a single lesson in React"""
-#     """Edit existing lesson page"""
-#     """Process edit_lesson function"""
-#     """Display search page"""
-#     """Process search function"""
+#     User login and authentication
+#     Display all lessons in a user-lessons directory
+#     Display a single lesson 
+#     Create-lesson page, storing lesson and component data in DB
+#     Edit lesson and components, storing lesson and component data in DB
+#     Display search page
+#     Process search function
 
 
 # Basic REACT Routing
@@ -46,10 +51,9 @@ SUBJECTS = ['Math', 'Writing', 'Reading', 'Science', 'Civics',
 def display_react(path):
     """Defer to React code on all routes."""
 
-    try: 
-        if session['user_id']:
-            return render_template('react.html', isLoggedIn=True)
-    except:
+    if 'user_id' in session:
+        return render_template('react.html', isLoggedIn=True)
+    else:
         return render_template('react.html', isLoggedIn=False)
 
 
@@ -62,10 +66,12 @@ def view_users():
 
     users = []
     for user in crud.get_users():
-        print(user.user_id)
+        # PHIL: debug ? use 'logger' library
+        print(user.user_id) 
         lessons = []
+        # lessons = dictionary of each lesson
         for lesson in user.lessons:
-            lessons.append(lesson.as_dict()) # lessons = dictionary of each lesson
+            lessons.append(lesson.as_dict()) 
         user_lessons = user.as_dict()
         user_lessons['lessons'] = lessons
         if len(lessons) > 0:
@@ -76,13 +82,13 @@ def view_users():
 # TODO: Add password hashing for security
 @app.route("/api/users", methods=["POST"])
 def signup():
+    """Enables user to save email, username/handle, and password to DB."""
 
     data = request.get_json()
     handle = data['handle']
     email = data['email']
     password = data['password']
-    # TODO: UPDATE TO USER PROFILE DEFAULT
-    profile_pic = 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
+    profile_pic = PROFILE_PLACEHOLDER
 
     try:
         db_user = crud.create_user(handle, email, password, profile_pic)
@@ -109,7 +115,7 @@ def display_profile():
 
     user_data = u.as_dict()
 
-    return jsonify({'user': user_data, 'lessons': lesson_data})
+    return {'user': user_data, 'lessons': lesson_data}
 
 
 @app.route("/api/users/user", methods=["POST"])
@@ -120,15 +126,22 @@ def update_profile_info():
     user = crud.get_user_by_id(user_id)
 
     ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
-    print()
-    print()
-    print('LINE 11 of SERVER')
     if 'profile-pic' in request.files:
         print('profile pic on back end')
         my_file = request.files['profile-pic']
-        result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
-                                        api_secret=CLOUD_SECRET,
-                                        cloud_name='hackbright')
+        # PHIL: the indentation here is wonky. You want to either:
+        # - move all args to their own lines and indent normally
+        # - line up with the args on the previous line
+        # - double-indent
+        # - normal indent
+        # what you have here is none of the above
+        # NOTE: we picked the first one already and changed this
+        result = cloudinary.uploader.upload(
+            my_file,
+            api_key=CLOUD_KEY, 
+            api_secret=CLOUD_SECRET,
+            cloud_name='hackbright'
+        )
         profile_pic = result['secure_url']
     
     ### UPDATE OTHER USER DATA ###
@@ -148,11 +161,10 @@ def update_profile_info():
         if response == 'Success!':
             return {'success': True, 'user': user.as_dict()}
         # TODO: Later crud function(s) to update all/other user data
-
+    # PHIL: catch a specific error
     except:
             flash('Error in database processing. Try again.')
             return {'success': False}
-
 
 
 @app.route("/api/session", methods=["POST"])
@@ -165,7 +177,7 @@ def login():
     email = data['email']
     password = data['password']
 
-    print('Hit the back end')
+    print('Login attempt hit the back end')
     print(email, password)
 
     user = crud.get_user_by_email(email)
@@ -178,6 +190,9 @@ def login():
             print(session['user_id'])
             return {'success': True, 'username': user.handle}
             # later return JSON that includes both user and lesson info
+
+    # PHIL: don't JSONify, let flask do it for you
+    # because the longer you maintain it as metadata, the better
         else: 
             return jsonify(f'Wrong password. It should be: {user.password}.')
     except:
@@ -189,12 +204,22 @@ def login():
 def logout():
     """Log user out of session by clearing session cookies. """
     
+    # PHIL:
+    # 1. The code is a bit counter-intuitive in that an "exception" is
+    # good. Instead, check `user_id in session`. In fact, you can even
+    # use that in yoru return:
+    #   return {'success': 'user_id' not in session}
+    # 2. In the event you really did need a counter-intuitive test like this
+    # leave a comment so people (you) know it's not a bug
+    # 3. As the code stands now you return nothing if you failed to clear
+    # the session instead of {'success': False} which the front-end could
+    # handle nicely, instead the FE is just gonna crash horribly
     session.clear()
-    try: 
-        print(session['user_id'])
-    except: 
+    if 'user_id' not in session:
         return {'success': True}
-
+    else:
+        return {'success': False}
+        
 
 # # LESSON ROUTES
 # TODO: Do I need this? Delete? 
@@ -207,7 +232,7 @@ def get_lessons_json():
 
     for lesson in lessons:
         if lesson.imgUrl == None:
-            lesson.imgUrl = 'https://res.cloudinary.com/hackbright/image/upload/v1620009615/khdpxzlw0yedslc9jlkb.jpg'
+            lesson.imgUrl = IMG_PLACEHOLDER
 
         lessons_list.append(
             lesson.as_dict()
@@ -222,25 +247,30 @@ def create_lesson():
 
     ### SAVE LESSON TO DATABASE ###
     # Set up default lesson data dict
+    #PHIL: why is this double-indented?
     lesson_data = {
-            'title': 'Untitled', 
-            'author_id': session['user_id'],
-            'overview': '', 
-            'imgUrl': None,
-            'public': False,
+        'title': 'Untitled', 
+        'author_id': session['user_id'],
+        'overview': '', 
+        'imgUrl': None,
+        'public': False,
     }
 
     ### UPLOAD PHOTO TO CLOUDINARY AND ATTACH URL ###
     if 'lesson-pic' not in request.files:
+        # PHIL magic strings go in constants
         lesson_data['imgUrl'] = "/static/img/placeholder-img.png"
     else: 
         my_file = request.files['lesson-pic']
+        # PHIL same indentation comment as before
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright')
         lesson_data['imgUrl'] = result['secure_url']
     
     ### SAVE LESSON TO DATABASE ###
+    # PHIL: DRY - loop over the vars you want and copy
+    # them in so it's easier to add more later
     lesson_data['title'] = request.form['title']
     lesson_data['overview'] = request.form['overview']
     db_lesson = crud.create_lesson(lesson_data)
@@ -297,24 +327,25 @@ def update_lesson(lesson_id):
     
     lesson_id = request.form['lesson_id']
     lesson = crud.get_lesson_by_id(lesson_id)
-    print(f'290, {lesson_id}, {lesson}')
+    print(f'update_lesson[top]: lesson_id: {lesson_id}, lesson: {lesson}')
 
     # If photo, upload to CLoudinary and save to imgUrl
     if 'my-file' in request.files:
         my_file = request.files['my-file']
+        # PHIL indentation
         result = cloudinary.uploader.upload(my_file, api_key=CLOUD_KEY, 
                                         api_secret=CLOUD_SECRET,
                                         cloud_name='hackbright') 
         imgUrl = crud.assign_lesson_img(result['secure_url'], lesson_id)
-    print(f'299, {imgUrl}')
-    # update database with other info 
+        print(f'after Cloudinary: {imgUrl}')
 
+    # update database with other info 
     if 'title' in request.form: 
         crud.update_lesson_title(lesson_id, request.form['title'])
     if 'overview' in request.form:
         crud.update_lesson_overview(lesson_id, request.form['overview'])
-    
-    print(f'307, {lesson.as_dict()}')
+    print(f'after updating lesson info, {lesson.as_dict()}')
+
     return {'success': True}
 
 
@@ -322,6 +353,8 @@ def update_lesson(lesson_id):
 @app.route('/api/components/')
 def get_comps(lesson_id):
     """Return all components for a given lesson id"""
+    # You're inconsistent on if you leave a blank line after your docstring
+    # or not. be consistent
     comp_dict = {}
 
     lesson = crud.get_lesson_by_id(1)
@@ -347,10 +380,16 @@ def create_component():
             # TODO: Data scraping algorithms need work
             try:    
                 s_comp = scrape_data(url) 
+            # catch a specific exception
             except Exception as e: 
                 print('Data scraping failed, but research is underway!', e)
                 # TODO: Make empty dict & use .get on all 
-                s_comp = {'title': None, 'source': None, 'favicon': None, 'descr': None}
+                s_comp = {
+                    'title': None, 
+                    'source': None, 
+                    'favicon': None, 
+                    'descr': None,
+                }
             
             comp = {
                 'type': v_comp['type'],
@@ -374,7 +413,6 @@ def create_component():
         print('comp-img exists')
         comp_pic = request.files['comp-img']
         print(f'received image: {comp_pic}')
-        # My server integrates Cloudinary's API
         result = cloudinary.uploader.upload( comp_pic, api_key=CLOUD_KEY, 
             api_secret=CLOUD_SECRET, cloud_name='hackbright' )
 
@@ -382,10 +420,9 @@ def create_component():
             'type': 'img',
             'imgUrl': result['secure_url'],
         }
-        print(f'line 383, comp is {comp}')
+        print(f'just before db call, comp is {comp}')
     # TODO: get shortcut for this
-    # Stored in a POSTGRES relational database. 
-    # Rather 
+
     db_comp = crud.create_comp(
         c_type = comp.get('type', None), 
         url = comp.get('url', None), 
@@ -395,8 +432,8 @@ def create_component():
         yt_id = comp.get('yt_id', None), 
         source = comp.get('source', None), 
         favicon = comp.get('favicon', None), 
-        description = comp.get('description', None))
-    
+        description = comp.get('description', None),
+    )
     
     # Return an HTTP 200 Okay response, with the data of the URL I created as the payload. 
     return {'success': True, 'comp': db_comp.as_dict()}
@@ -427,8 +464,7 @@ def run_search(search_params):
     #         lessons = crud.process_lesson_search(terms[category], category)
     lesson_matches = set() # a set of Lesson objects
 
-    # if searchtype == 'searchstring': 
-    params = param.split(' ')
+    params = param.split()
     for param in params: 
         lessons = crud.get_lessons_by_term(param)
         print('lessons from string')
@@ -440,7 +476,9 @@ def run_search(search_params):
             user_queried = crud.get_user_by_username(param)
             lessons = crud.get_lessons_by_user(user_queried.user_id)
             print('lessons from usersearch')
-
+        # PHIL: if anything went wrong at all, then ill is good?
+        # seems suspect to me. If there's a great reason for it, then
+        # there's a great reason for a comment
         except: 
             pass
     # else:

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.6
+
 """Models for educational videos app."""
 
 from flask_sqlalchemy import SQLAlchemy
@@ -10,10 +12,11 @@ class User(db.Model):
 
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True
-                        )
+    user_id = db.Column(
+        db.Integer,
+        autoincrement=True,
+        primary_key=True,
+    )
     handle = db.Column(db.String, unique=True, nullable=False)                 
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
@@ -33,7 +36,7 @@ class User(db.Model):
             'email': self.email,
             'password': self.password,
             'profile_pic': self.profile_pic,
-            'lessons': lesson_ids
+            'lessons': lesson_ids,
         }
 
     def __repr__(self):
@@ -66,7 +69,7 @@ class Lesson(db.Model):
             tag_dict = {
                 'id': tag.tag_id, 
                 'name': tag.name,
-                'category': tag.category
+                'category': tag.category,
             }
             tag_data.append(tag_dict)
 
@@ -78,7 +81,7 @@ class Lesson(db.Model):
             'author': self.author.handle,
             'profile_pic': self.author.profile_pic,
             'imgUrl': self.imgUrl, 
-            'tags': tag_data
+            'tags': tag_data,
             # 'comp_ids': comp_ids,
         }
 
@@ -87,10 +90,9 @@ class Lesson(db.Model):
 
 
 class Comp(db.Model):
-    """A component within a lesson."""
+    """A component (url, image, text, or video) within a lesson."""
 
     __tablename__ = 'comps'
-    # use an association table to map components to their lessons
     comp_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     comp_type = db.Column(db.String, nullable=False) # url, video, pdf, image, text
     text = db.Column(db.Text)
@@ -103,8 +105,10 @@ class Comp(db.Model):
     description = db.Column(db.Text) # metadata for video or site
     favicon = db.Column(db.String)
     imgUrl = db.Column(db.String)
-    yt_id = db.Column(db.String) # if YouTube video, YouTube's id for video rendering
-    # vid_length = db.Column(db.Float) # if video, length in minutes if using YouTube api.
+    # if YouTube video, YouTube's id for video rendering
+    yt_id = db.Column(db.String) 
+    # if video, length in minutes if using YouTube api.
+    # vid_length = db.Column(db.Float) 
 
     lessons = db.relationship('Lesson', secondary='lesson_comps', viewonly=True)
     tags = db.relationship('Tag', secondary='comp_tags', viewonly=True)
@@ -120,7 +124,7 @@ class Comp(db.Model):
             'yt_id': self.yt_id,
             'source': self.source,
             'favicon': self.favicon,
-            'description': self.description
+            'description': self.description,
         }
 
 
@@ -128,17 +132,20 @@ class Comp(db.Model):
         return f'<Component type={self.comp_type} id={self.comp_id}>'
 
 class Lesson_Comp(db.Model):
-    
+    "An association between lessons and their components"
+
     __tablename__ = 'lesson_comps'
 
-    comp_id = db.Column(db.Integer, 
-                       db.ForeignKey('comps.comp_id'), 
-                       primary_key=True
-                       )
-    lesson_id = db.Column(db.Integer, 
-                          db.ForeignKey('lessons.lesson_id'),
-                          primary_key=True
-                          )
+    comp_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('comps.comp_id'), 
+        primary_key=True,
+    )
+    lesson_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('lessons.lesson_id'),
+        primary_key=True,
+    )
     lesson = db.relationship('Lesson')
     comp = db.relationship('Comp')
 
@@ -158,36 +165,25 @@ class Tag(db.Model):
     lessons = db.relationship('Lesson', secondary='lesson_tags', viewonly=True)
     comps = db.relationship('Comp', secondary='comp_tags', viewonly=True)
 
-
-
-
-    # def as_lesson_tags_dict(self):
-        
-    #     lesson_ids = []
-    #     for lesson in self.lessons:
-    #         lesson_ids.append(lesson.lesson_id)
-
-    
-    # return {
-    #     'lessons': lesson_ids
-    # }
-
     def __repr__(self):
         return f'<Tag {self.category} {self.name}>'
 
 
 class Lesson_Tag(db.Model):
+    "An association between lessons and tags"
     
     __tablename__ = 'lesson_tags'
 
-    tag_id = db.Column(db.Integer, 
-                       db.ForeignKey('tags.tag_id'), 
-                       primary_key=True
-                       )
-    lesson_id = db.Column(db.Integer, 
-                          db.ForeignKey('lessons.lesson_id'),
-                          primary_key=True
-                          )
+    tag_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('tags.tag_id'), 
+        primary_key=True,
+    )
+    lesson_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('lessons.lesson_id'),
+        primary_key=True,
+    )
     lesson = db.relationship('Lesson')
     tag = db.relationship('Tag')
 
@@ -196,17 +192,26 @@ class Lesson_Tag(db.Model):
 
 
 class Comp_Tag(db.Model):
+    "An association between components and tags"
+
+    # Components may have a narrower range of tags than their lessons. 
+    # For example, certain videos may be better suited for younger or older
+    # audiences. Because components are designed to be reusable across lessons,
+    # it's useful to tag them separately.
+
     
     __tablename__ = 'comp_tags'
 
-    tag_id = db.Column(db.Integer, 
-                       db.ForeignKey('tags.tag_id'), 
-                       primary_key=True
-                       )
-    comp_id = db.Column(db.Integer, 
-                        db.ForeignKey('comps.comp_id'), 
-                        primary_key=True
-                        )
+    tag_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('tags.tag_id'), 
+        primary_key=True,
+    )
+    comp_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('comps.comp_id'), 
+        primary_key=True,
+    )
 
     comp = db.relationship('Comp')
     tag = db.relationship('Tag')
@@ -214,7 +219,7 @@ class Comp_Tag(db.Model):
     def __repr__(self):
         return f'<Assoc {self.tag.name} for {self.comp.name}>'
  
-
+# TODO: To be developed
 # class Fave(db.Model):
 #     """A favorite item."""
 
